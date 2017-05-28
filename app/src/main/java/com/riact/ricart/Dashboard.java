@@ -97,27 +97,27 @@ public class Dashboard extends Fragment {
 
             TextView t1v = new TextView(getActivity());
             t1v.setText(iv_no);
-            t1v.setTextColor(Color.WHITE);
+            t1v.setTextColor(Color.BLACK);
             t1v.setGravity(Gravity.CENTER);
-            t1v.setBackgroundResource(R.drawable.cell_shape);
+            t1v.setBackgroundResource(R.drawable.cell_shape2);
             tbrow.addView(t1v);
             TextView t2v = new TextView(getActivity());
             t2v.setText(date);
-            t2v.setTextColor(Color.WHITE);
+            t2v.setTextColor(Color.BLACK);
             t2v.setGravity(Gravity.CENTER);
-            t2v.setBackgroundResource(R.drawable.cell_shape);
+            t2v.setBackgroundResource(R.drawable.cell_shape2);
             tbrow.addView(t2v);
             TextView t3v = new TextView(getActivity());
             t3v.setText(amount);
-            t3v.setTextColor(Color.WHITE);
+            t3v.setTextColor(Color.BLACK);
             t3v.setGravity(Gravity.CENTER);
-            t3v.setBackgroundResource(R.drawable.cell_shape);
+            t3v.setBackgroundResource(R.drawable.cell_shape2);
             tbrow.addView(t3v);
             TextView t4v = new TextView(getActivity());
             t4v.setText(balance);
-            t4v.setTextColor(Color.WHITE);
+            t4v.setTextColor(Color.BLACK);
             t4v.setGravity(Gravity.CENTER);
-            t4v.setBackgroundResource(R.drawable.cell_shape);
+            t4v.setBackgroundResource(R.drawable.cell_shape2);
             tbrow.addView(t4v);
             stk.addView(tbrow);
 
