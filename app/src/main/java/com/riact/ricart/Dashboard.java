@@ -92,7 +92,6 @@ public class Dashboard extends Fragment {
             String date = c.getString("date");
             String amount = c.getString("amount");
             String balance = c.getString("balance");
-
             TableRow tbrow = new TableRow(getActivity());
             tbrow.setGravity(Gravity.CENTER_HORIZONTAL);
 
