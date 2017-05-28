@@ -1,6 +1,8 @@
 package com.riact.ricart;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
@@ -21,32 +23,48 @@ import java.util.List;
  */
 
 public class Order extends Fragment {
+    MultiSelectionSpinner tv0;
+    MultiSelectionSpinner spinner;
+    Button submitBtn;
 
     View myView;
-    Button newbtn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView= inflater.inflate(R.layout.order,container,false);
-        //TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
-        //signUp.setText(Html.fromHtml(outStanding));
-        newbtn= (Button)myView.findViewById(R.id.testbtn);
-        newbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(),"hi",Toast.LENGTH_LONG).show();
-            }
-        });
+        submitBtn = (Button) myView.findViewById(R.id.order_submit);
+        LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
 
-
-
-        MultiSelectionSpinner spinner=(MultiSelectionSpinner)myView.findViewById(R.id.input1);
-
+        TextView item1=new TextView(getActivity());
+        item1.setText("OIL");
+        item1.setTextColor(Color.BLACK);
+        linearLayout.addView(item1);
         List<String> list = new ArrayList<String>();
         list.add("List1");
         list.add("List2");
+        list.add("List3");
+        list.add("List4");
+        tv0= new MultiSelectionSpinner(getActivity());
+        tv0.setItems(list);
+        linearLayout.addView(tv0);
+        TextView item2=new TextView(getActivity());
+        item2.setText("RICE");
+        item2.setTextColor(Color.BLACK);
+        linearLayout.addView(item2);
+        tv0= new MultiSelectionSpinner(getActivity());
+        tv0.setItems(list);
+        linearLayout.addView(tv0);
 
-        spinner.setItems(list);
+
+
+
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),tv0.getSelectedItemsAsString(),Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         return myView;
     }
