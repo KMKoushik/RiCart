@@ -7,8 +7,11 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +23,29 @@ import java.util.List;
 public class Order extends Fragment {
 
     View myView;
+    Button newbtn;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView= inflater.inflate(R.layout.order,container,false);
         //TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
         //signUp.setText(Html.fromHtml(outStanding));
+        newbtn= (Button)myView.findViewById(R.id.testbtn);
+        newbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"hi",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
         MultiSelectionSpinner spinner=(MultiSelectionSpinner)myView.findViewById(R.id.input1);
 
         List<String> list = new ArrayList<String>();
         list.add("List1");
         list.add("List2");
+
         spinner.setItems(list);
 
         return myView;
