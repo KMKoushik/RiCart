@@ -3,10 +3,24 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
 
-
-    <com.riact.ricart.MultiSelectionSpinner
-        android:id="@+id/input1"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/order_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp" />
+        android:gravity="center">
+
+    </LinearLayout>
+
+
+        <Button
+            android:text="Submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/order_submit" />
+
+
+
 </RelativeLayout>
