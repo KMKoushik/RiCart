@@ -3,6 +3,7 @@
     <color name="colorPrimary">#9400D3</color>
     <color name="colorPrimaryDark">#940DDD</color>
     <color name="colorAccent">#9400D3</color>
+    <color name="popup">#ffffff</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>
