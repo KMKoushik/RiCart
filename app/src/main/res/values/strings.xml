@@ -6,6 +6,9 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_menu">MenuActivity</string>
 
+    <string name="RiCart">RiCart</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

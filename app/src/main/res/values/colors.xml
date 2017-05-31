@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#9400D3</color>
-    <color name="colorPrimaryDark">#940DDD</color>
-    <color name="colorAccent">#9400D3</color>
+    <color name="colorPrimary">#2C1099</color>
+    <color name="colorPrimaryDark">#1C1079</color>
+    <color name="colorAccent">#2C1099</color>
+
+    <color name="background">#add8e6</color>
+
     <color name="popup">#ffffff</color>
 
     <color name="black_overlay">#66000000</color>

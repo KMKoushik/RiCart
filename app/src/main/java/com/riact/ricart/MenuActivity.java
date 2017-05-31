@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_exit) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Warning");
             alert.setMessage("Do you want to exit?");
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -105,6 +105,15 @@ public class MenuActivity extends AppCompatActivity
                 public void onClick(DialogInterface dialog, int which)
                 {
                     System.exit(1);
+                }
+            });
+            alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+            {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+
                 }
             });
             alert.show();
