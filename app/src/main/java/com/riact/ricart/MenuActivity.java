@@ -116,6 +116,7 @@ public class MenuActivity extends AppCompatActivity
 
                 }
             });
+
             alert.show();
 
 

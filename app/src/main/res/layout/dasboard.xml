@@ -12,19 +12,43 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-    <TextView
+        <TextView
+            android:text="Welcome ARV Stores"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:id="@+id/welcome_text"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:gravity="left"
+            />
+
+        <TextView
         android:text="Outstanding Invoice details for Customer ARV - ARV STORES is SGD 1095.00
 Last updated on 2015-08-03 21:17"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:id="@+id/dashboard_text"
         android:textColor="#000000"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-    <TableLayout
+
+        <Button
+            android:text="Get full details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/get_details" />
+
+
+
+        <TableLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/tableLayout1"
         android:layout_width="match_parent"
