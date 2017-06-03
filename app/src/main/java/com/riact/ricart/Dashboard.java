@@ -42,19 +42,23 @@ public class Dashboard extends Fragment {
                 "}";
         myView= inflater.inflate(R.layout.dasboard,container,false);
         String outStanding="Your outstanding Invoice is "+"<font color='#EE0000'>SGD 2550.78</font><br>"+"Last updated on 2015-08-03 21:17 ";
-        TextView welcome=(TextView) myView.findViewById(R.id.welcome_text);
+        final TextView welcome=(TextView) myView.findViewById(R.id.welcome_text);
         welcome.setText(Html.fromHtml("Welcome <b>FOOD VALUE MINI - MART !</b> "));
         TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
         signUp.setText(Html.fromHtml(outStanding));
-        LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.ll_example);
+          LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
 
-            Button loginBtn=   (Button) myView.findViewById(R.id.get_details);
+
+              Button loginBtn=   (Button) myView.findViewById(R.id.get_details);
+
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     try {
+
                         init(myView,json);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -63,13 +67,14 @@ public class Dashboard extends Fragment {
                 }
             });
 
+
         return myView;
     }
 
     public void init(View myView,String json) throws JSONException {
 
-
-
+        LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
+        linearLayout.removeView(myView.findViewById(R.id.get_details));
         int drawableResId=R.drawable.cell_shape_header;
         TableLayout stk = (TableLayout) myView.findViewById(R.id.tableLayout1);
         TableRow tbrow0 = new TableRow(getActivity());
