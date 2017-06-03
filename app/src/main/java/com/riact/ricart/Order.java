@@ -55,6 +55,7 @@ public class Order extends Fragment {
         list.add("Coconut");
         spinner= new MultiSelectionSpinner(getActivity());
         spinner.setItems(list);
+        spinner.setBackgroundResource(R.drawable.spinner_shape);
         linearLayout.addView(spinner);
         TextView item2=new TextView(getActivity());
         item2.setText("RICE");
@@ -67,6 +68,7 @@ public class Order extends Fragment {
         list1.add("IR 8");
         tv0= new MultiSelectionSpinner(getActivity());
         tv0.setItems(list1);
+        spinner.setBackgroundResource(R.drawable.spinner_shape);
         linearLayout.addView(tv0);
 
         submitBtn.setOnClickListener(new View.OnClickListener() {

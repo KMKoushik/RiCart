@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity
 
             fm.beginTransaction().replace(R.id.content_menu,new NewOrder()).commit();
         } else if (id == R.id.nav_exit) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Warning");
             alert.setMessage("Do you want to exit?");
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
@@ -107,6 +107,16 @@ public class MenuActivity extends AppCompatActivity
                     System.exit(1);
                 }
             });
+            alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+            {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+
+                }
+            });
+
             alert.show();
 
 
