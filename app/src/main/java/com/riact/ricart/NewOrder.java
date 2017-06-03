@@ -1,13 +1,17 @@
 package com.riact.ricart;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -21,6 +25,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -43,6 +49,7 @@ public class NewOrder extends Fragment {
     private LayoutInflater menuInflater;
     CheckedTextView checkstat;
     String selectedFromList;
+    Point p=new Point();
 //    final CheckedTextView checkBox = (CheckedTextView) myView.findViewById(R.id.checkedTextView1);
     //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
    // final SharedPreferences.Editor editor = preferences.edit();
@@ -86,6 +93,14 @@ public class NewOrder extends Fragment {
         // Adding items to listview
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.listitem1, R.id.label, products);
         lv.setAdapter(adapter);
+        Button cart=(Button)myView.findViewById(R.id.cart);
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(getActivity(),p,CheckBoxClick.selectedStrings);
+                Toast.makeText(getActivity(),CheckBoxClick.selectedStrings.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 
@@ -246,6 +261,57 @@ public class NewOrder extends Fragment {
 
 
 
+    }
+
+    private void showPopup(final Activity context, Point p, ArrayList<String> data) {
+        int popupWidth = 500;
+        int popupHeight = 800;
+        String dats="";
+        for (String temp : data) {
+            dats+="\n"+temp;
+            System.out.println(temp);
+        }
+
+
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewGroup = (LinearLayout) context.findViewById(R.id.popup);
+        LayoutInflater layoutInflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+        View layout = layoutInflater.inflate(R.layout.popup_layout, viewGroup);
+
+
+
+        // Creating the PopupWindow
+        final PopupWindow popup = new PopupWindow(context);
+        popup.setContentView(layout);
+        popup.setWidth(popupWidth);
+        popup.setHeight(popupHeight);
+        popup.setFocusable(true);
+        TextView txt=(TextView) layout.findViewById(R.id.textView2);
+        txt.setText(dats);
+
+        // Some offset to align the popup a bit to the right, and a bit down, relative to button's position.
+        int OFFSET_X = 30;
+        int OFFSET_Y = 30;
+
+        // Clear the default translucent background
+        popup.setBackgroundDrawable(new BitmapDrawable());
+
+        // Displaying the popup at the specified location, + offsets.
+        popup.showAtLocation(layout, Gravity.CENTER_HORIZONTAL, p.x , p.y);
+
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button close = (Button) layout.findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                popup.dismiss();
+            }
+        });
     }
 
    // @Override

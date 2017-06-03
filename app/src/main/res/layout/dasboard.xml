@@ -51,17 +51,7 @@ Last updated on 2015-08-03 21:17"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-      <!--  <TextView
-            android:text="1"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="10dp"
-            android:textSize="10sp"
-            android:textAlignment="center"
-            android:id="@+id/chumma"
-            android:textColor="#ffffff"
-            android:background="@drawable/round_text"
-           />-->
+      <!--  -->
 
 
 
