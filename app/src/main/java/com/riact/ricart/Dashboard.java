@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 public class Dashboard extends Fragment {
 
     View myView;
+    Button itembuttom;
 
     @Nullable
     @Override
@@ -47,7 +49,13 @@ public class Dashboard extends Fragment {
         TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
         signUp.setText(Html.fromHtml(outStanding));
         LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.ll_example);
-
+           itembuttom=(Button)myView.findViewById(R.id.getitems);
+        itembuttom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),CheckBoxClick.selectedStrings.toString(),Toast.LENGTH_LONG).show();
+            }
+        });
             Button loginBtn=   (Button) myView.findViewById(R.id.get_details);
             loginBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

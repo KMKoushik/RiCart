@@ -38,6 +38,12 @@ Last updated on 2015-08-03 21:17"
         android:layout_alignParentStart="true" />
 
         <Button
+            android:id="@+id/getitems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
+        <Button
             android:text="Get full details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
