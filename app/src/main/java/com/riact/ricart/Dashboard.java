@@ -49,9 +49,9 @@ public class Dashboard extends Fragment {
           LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
 
 
-              Button loginBtn=   (Button) myView.findViewById(R.id.get_details);
+              TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
 
-            loginBtn.setOnClickListener(new View.OnClickListener() {
+        detiledview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -75,6 +75,8 @@ public class Dashboard extends Fragment {
 
         LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
         linearLayout.removeView(myView.findViewById(R.id.get_details));
+        TextView tv=(TextView) myView.findViewById(R.id.customer_invoice);
+        tv.setVisibility(View.VISIBLE);
         int drawableResId=R.drawable.cell_shape_header;
         TableLayout stk = (TableLayout) myView.findViewById(R.id.tableLayout1);
         TableRow tbrow0 = new TableRow(getActivity());
@@ -83,28 +85,29 @@ public class Dashboard extends Fragment {
         tv0.setText(Html.fromHtml(" <b>IV NO </b>"));
         tv0.setTextColor(Color.WHITE);
         tv0.setBackgroundResource(drawableResId);
-        tv0.setGravity(Gravity.CENTER_HORIZONTAL);
+        tv0.setGravity(Gravity.CENTER);
+        tv0.setHeight(65);
         tbrow0.addView(tv0);
         TextView tv1 = new TextView(getActivity());
         tv1.setText(Html.fromHtml(" <b>IV DATE</b> "));
         tv1.setTextColor(Color.WHITE);
-
+        tv1.setHeight(65);
         tv1.setBackgroundResource(drawableResId);
-        tv1.setGravity(Gravity.CENTER_HORIZONTAL);
+        tv1.setGravity(Gravity.CENTER);
         tbrow0.addView(tv1);
         TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>AMOUNT</b>"));
         tv2.setTextColor(Color.WHITE);
         tv2.setBackgroundResource(drawableResId);
-        tv2.setGravity(Gravity.CENTER_HORIZONTAL);
-
+        tv2.setGravity(Gravity.CENTER);
+        tv2.setHeight(65);
         tbrow0.addView(tv2);
         TextView tv3 = new TextView(getActivity());
-        tv3.setText(Html.fromHtml(" <b>BALANCE AMT</b>"));
+        tv3.setText(Html.fromHtml(" <b>BALANCE</b>"));
         tv3.setTextColor(Color.WHITE);
         tv3.setBackgroundResource(drawableResId);
-        tv3.setGravity(Gravity.CENTER_HORIZONTAL);
-
+        tv3.setGravity(Gravity.CENTER);
+        tv3.setHeight(65);
         tbrow0.addView(tv3);
         stk.addView(tbrow0);
 
@@ -128,24 +131,28 @@ public class Dashboard extends Fragment {
             t1v.setText(iv_no);
             t1v.setTextColor(Color.BLACK);
             t1v.setGravity(Gravity.CENTER);
+            t1v.setHeight(65);
             t1v.setBackgroundResource(drawableResId);
             tbrow.addView(t1v);
             TextView t2v = new TextView(getActivity());
             t2v.setText(date);
             t2v.setTextColor(Color.BLACK);
             t2v.setGravity(Gravity.CENTER);
+            t2v.setHeight(65);
             t2v.setBackgroundResource(drawableResId);
             tbrow.addView(t2v);
             TextView t3v = new TextView(getActivity());
             t3v.setText(amount);
             t3v.setTextColor(Color.BLACK);
             t3v.setGravity(Gravity.CENTER);
+            t3v.setHeight(65);
             t3v.setBackgroundResource(drawableResId);
             tbrow.addView(t3v);
             TextView t4v = new TextView(getActivity());
             t4v.setText(balance);
             t4v.setTextColor(Color.BLACK);
             t4v.setGravity(Gravity.CENTER);
+            t4v.setHeight(65);
             t4v.setBackgroundResource(drawableResId);
             tbrow.addView(t4v);
             stk.addView(tbrow);

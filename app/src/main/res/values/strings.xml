@@ -7,6 +7,7 @@
     <string name="title_activity_menu">MenuActivity</string>
 
     <string name="RiCart">RiCart</string>
+    <string name="detailed_view">Get detailed view <u>here</u>.</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

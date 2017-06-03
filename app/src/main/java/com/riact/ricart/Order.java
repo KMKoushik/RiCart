@@ -18,8 +18,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,52 +47,145 @@ public class Order extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         p=new Point();
         myView= inflater.inflate(R.layout.order,container,false);
-        submitBtn = (Button) myView.findViewById(R.id.order_submit);
         LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
-
-        TextView item1=new TextView(getActivity());
-        item1.setText("OIL");
-        item1.setTextColor(Color.BLACK);
-        linearLayout.addView(item1);
-        List<String> list = new ArrayList<String>();
-        list.add("Palm");
-        list.add("Crude");
-        list.add("Sun flower");
-        list.add("Coconut");
-        spinner= new MultiSelectionSpinner(getActivity());
-        spinner.setItems(list);
-        spinner.setBackgroundResource(R.drawable.spinner_shape);
-        linearLayout.addView(spinner);
-        TextView item2=new TextView(getActivity());
-        item2.setText("RICE");
-        item2.setTextColor(Color.BLACK);
-        linearLayout.addView(item2);
-        List<String> list1 = new ArrayList<String>();
-        list1.add("Raw");
-        list1.add("Half Baked");
-        list1.add("Basmati");
-        list1.add("IR 8");
-        tv0= new MultiSelectionSpinner(getActivity());
-        tv0.setItems(list1);
-        spinner.setBackgroundResource(R.drawable.spinner_shape);
-        linearLayout.addView(tv0);
-
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String data=spinner.getSelectedItemsAsString()+" , "+tv0.getSelectedItemsAsString();
-                System.out.print("hiii:"+data);
-
-                showPopup(getActivity(),p,data);
+        String jsonData="{\n" +
+                "\"data\" : [\n" +
+                "{\n" +
+                "\"Description\": \"QBB 400GM DOZ\", \"UOM\":\"DOZ\",\"Qty\":\"12.0000\",\"Price\":\"1.00\",\"Amt\":\"12.00\"\n" +
+                "},{\n" +
+                "\"Description\": \"MEAT CURRY POWDER 25KG BAG\", \"UOM\":\"BAG\",\"Qty\":\"12.0000\",\"Price\":\"12.00\",\"Amt\":\"144.00\"\n" +
+                "},\n" +
+                "{\n" +
+                "\"Description\": \"MEAT CURRY POWDER 100G PACKET\", \"UOM\":\"PKT\",\"Qty\":\"10.0000\",\"Price\":\"1.10\",\"Amt\":\"11.00\"\n" +
+                "}\n" +
+                "\n" +
+                "]\n" +
+                "}";
 
 
-                Toast.makeText(getActivity(),data,Toast.LENGTH_LONG).show();
-            }
-        });
-
+        try {
+            showTable(myView,jsonData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return myView;
+    }
+
+    public void showTable(View myView,String json) throws JSONException {
+        int drawableResId=R.drawable.cell_shape_header;
+        TableLayout stk = (TableLayout) myView.findViewById(R.id.ordertable);
+        TableRow tbrow0 = new TableRow(getActivity());
+        tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
+        float textSize=11;
+        TextView tv0 = new TextView(getActivity());
+        tv0.setText(Html.fromHtml(" <b>Description</b>"));
+        tv0.setTextColor(Color.WHITE);
+        tv0.setBackgroundResource(drawableResId);
+        tv0.setGravity(Gravity.CENTER);
+        tv0.setHeight(65);
+        tv0.setTextSize(textSize);
+        tbrow0.addView(tv0);
+        TextView tv1 = new TextView(getActivity());
+        tv1.setText(Html.fromHtml(" <b>UOM</b> "));
+        tv1.setTextColor(Color.WHITE);
+        tv1.setHeight(65);
+        tv1.setTextSize(textSize);
+        tv1.setBackgroundResource(drawableResId);
+        tv1.setGravity(Gravity.CENTER);
+        tbrow0.addView(tv1);
+        TextView tv2 = new TextView(getActivity());
+        tv2.setText(Html.fromHtml(" <b>Qty</b>"));
+        tv2.setTextColor(Color.WHITE);
+        tv2.setBackgroundResource(drawableResId);
+        tv2.setGravity(Gravity.CENTER);
+        tv2.setHeight(65);
+        tv2.setTextSize(textSize);
+        tbrow0.addView(tv2);
+        TextView tv3 = new TextView(getActivity());
+        tv3.setText(Html.fromHtml(" <b>Price</b>"));
+        tv3.setTextColor(Color.WHITE);
+        tv3.setBackgroundResource(drawableResId);
+        tv3.setGravity(Gravity.CENTER);
+        tv3.setHeight(65);
+        tv3.setTextSize(textSize);
+        tbrow0.addView(tv3);
+        TextView tv4 = new TextView(getActivity());
+        tv4.setText(Html.fromHtml(" <b>Amt</b>"));
+        tv4.setTextColor(Color.WHITE);
+        tv4.setBackgroundResource(drawableResId);
+        tv4.setGravity(Gravity.CENTER);
+        tv4.setHeight(65);
+        tv4.setTextSize(textSize);
+        tbrow0.addView(tv4);
+        stk.addView(tbrow0);
+
+        JSONObject jsonObj = new JSONObject(json);
+        JSONArray contacts = jsonObj.getJSONArray("data");
+        for (int i = 0; i < contacts.length(); i++) {
+            if(i%2==0)
+                drawableResId=R.drawable.cell_shape;
+            else
+                drawableResId=R.drawable.cell_shape2;
+
+            JSONObject c = contacts.getJSONObject(i);
+            String description = c.getString("Description");
+            String uom = c.getString("UOM");
+            String Qty = c.getString("Qty");
+            String Price = c.getString("Price");
+            String amt= c.getString("Amt");
+            TableRow tbrow = new TableRow(getActivity());
+            tbrow.setGravity(Gravity.CENTER_HORIZONTAL);
+
+            TextView t1v = new TextView(getActivity());
+            t1v.setText(description);
+            t1v.setTextColor(Color.BLACK);
+            t1v.setGravity(Gravity.CENTER);
+            t1v.setHeight(125);
+
+            t1v.setTextSize(textSize);
+            t1v.setBackgroundResource(drawableResId);
+            tbrow.addView(t1v);
+            TextView t2v = new TextView(getActivity());
+            t2v.setText(uom);
+            t2v.setTextColor(Color.BLACK);
+            t2v.setGravity(Gravity.CENTER);
+            t2v.setHeight(125);
+            t2v.setTextSize(textSize);
+            t2v.setBackgroundResource(drawableResId);
+            tbrow.addView(t2v);
+            TextView t3v = new TextView(getActivity());
+            t3v.setText(Qty);
+            t3v.setTextColor(Color.BLACK);
+            t3v.setGravity(Gravity.CENTER);
+            t3v.setHeight(125);
+            t3v.setTextSize(textSize);
+            t3v.setBackgroundResource(drawableResId);
+            tbrow.addView(t3v);
+            TextView t4v = new TextView(getActivity());
+            t4v.setText(Price);
+            t4v.setTextColor(Color.BLACK);
+            t4v.setGravity(Gravity.CENTER);
+            t4v.setHeight(125);
+            t4v.setTextSize(textSize);
+            t4v.setBackgroundResource(drawableResId);
+            tbrow.addView(t4v);
+
+            TextView t5v = new TextView(getActivity());
+            t5v.setText(amt);
+            t5v.setTextColor(Color.BLACK);
+            t5v.setGravity(Gravity.CENTER);
+            t5v.setHeight(125);
+            t5v.setTextSize(textSize);
+            t5v.setBackgroundResource(drawableResId);
+            tbrow.addView(t5v);
+            stk.addView(tbrow);
+
+            // Phone node is JSON Object
+
+        }
+
+
     }
 
     private void showPopup(final Activity context,Point p,String data) {

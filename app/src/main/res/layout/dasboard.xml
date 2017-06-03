@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -38,14 +39,29 @@ Last updated on 2015-08-03 21:17"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-        <Button
-            android:text="Get full details"
+        <TextView
+            android:text="@string/detailed_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/get_details" />
+            android:layout_marginTop="10dp"
+            android:id="@+id/get_details"
+            android:textColor="#000000"
+            android:textSize="15sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+      <!--  <TextView
+            android:text="1"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="10sp"
+            android:textAlignment="center"
+            android:id="@+id/chumma"
+            android:textColor="#ffffff"
+            android:background="@drawable/round_text"
+           />-->
 
 
 
@@ -68,7 +84,7 @@ Last updated on 2015-08-03 21:17"
             android:layout_weight="1"
             >
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/customer_invoice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -76,7 +92,8 @@ Last updated on 2015-08-03 21:17"
                 android:textSize="18dp"
                 android:text="Customer Outstanding Invoices"
                 android:gravity="center"
-                android:layout_span="6"></TextView>
+                android:layout_span="6"
+                android:visibility="invisible"></TextView>
         </TableRow>
 
 
