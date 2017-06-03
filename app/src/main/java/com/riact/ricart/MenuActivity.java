@@ -93,7 +93,7 @@ public class MenuActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_new_order) {
 
-
+            fm.beginTransaction().replace(R.id.content_menu,new NewOrder()).commit();
         } else if (id == R.id.nav_exit) {
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Warning");
