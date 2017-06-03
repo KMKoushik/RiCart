@@ -357,8 +357,8 @@ public class NewOrder extends Fragment {
     }
 
     private void showPopup(final Activity context, Point p, ArrayList<String> data) {
-        int popupWidth = 500;
-        int popupHeight = 800;
+        int popupWidth = 750;
+        int popupHeight = 1300;
         String dats="";
         for (String temp : data) {
             dats+="\n"+temp;
@@ -383,8 +383,6 @@ public class NewOrder extends Fragment {
         popup.setWidth(popupWidth);
         popup.setHeight(popupHeight);
         popup.setFocusable(true);
-        TextView txt=(TextView) layout.findViewById(R.id.textView2);
-        txt.setText(dats);
 
         // Some offset to align the popup a bit to the right, and a bit down, relative to button's position.
         int OFFSET_X = 30;
