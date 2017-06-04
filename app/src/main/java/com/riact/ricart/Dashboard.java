@@ -15,10 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.riact.ricart.utils.UserDbHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by koushik on 28/5/17.
@@ -27,23 +32,29 @@ import org.json.JSONObject;
 public class Dashboard extends Fragment {
 
     View myView;
+     String json="{\n" +
+            "\"data\":  [ {\"iv_no\":\"352240\",\"date\":\"2015-04-30\",\"amount\":\"246.96\",\"balance\":\"246.96\"},\n" +
+            "{\"iv_no\":\"352476\",\"date\":\"2015-05-08\",\"amount\":\"129.47\",\"balance\":\"376.43\"},\n" +
+            " {\"iv_no\":\"352706\",\"date\":\"2015-05-15\",\"amount\":\"153.87\",\"balance\":\"530.30\"},\n" +
+            "{\"iv_no\":\"352801\",\"date\":\"2015-06-15\",\"amount\":\"150.00\",\"balance\":\"680.30\"}]\n" +
+            "\n" +
+
+            "}";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final  String json="{\n" +
-                "\"data\":  [ {\"iv_no\":\"352240\",\"date\":\"2015-04-30\",\"amount\":\"246.96\",\"balance\":\"246.96\"},\n" +
-                "{\"iv_no\":\"352476\",\"date\":\"2015-05-08\",\"amount\":\"129.47\",\"balance\":\"376.43\"},\n" +
-                " {\"iv_no\":\"352706\",\"date\":\"2015-05-15\",\"amount\":\"153.87\",\"balance\":\"530.30\"},\n" +
-                "{\"iv_no\":\"352801\",\"date\":\"2015-06-15\",\"amount\":\"150.00\",\"balance\":\"680.30\"}]\n" +
-                "\n" +
 
-                "}";
+        UserDbHandler db=new UserDbHandler(getActivity());
+        ArrayList userData=(ArrayList) db.getUser();
+        String name=(String)userData.get(0);
+
+        Toast.makeText(getActivity(),userData.toString(),Toast.LENGTH_LONG).show();
         myView= inflater.inflate(R.layout.dasboard,container,false);
         String outStanding="Your outstanding Invoice is "+"<font color='#EE0000'>SGD 2550.78</font><br>"+"Last updated on 2015-08-03 21:17 ";
         final TextView welcome=(TextView) myView.findViewById(R.id.welcome_text);
-        welcome.setText(Html.fromHtml("Welcome <b>FOOD VALUE MINI - MART !</b> "));
+        welcome.setText(Html.fromHtml("Welcome <b>"+name+"!</b> "));
         TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
         signUp.setText(Html.fromHtml(outStanding));
           LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);

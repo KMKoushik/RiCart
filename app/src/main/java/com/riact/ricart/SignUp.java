@@ -17,10 +17,18 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
+import com.riact.ricart.utils.UserDbHandler;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import static com.android.volley.VolleyLog.TAG;
 
 public class SignUp extends AppCompatActivity {
+    UserDbHandler userDb=new UserDbHandler(this);
     String resp;
     EditText email,password,confirmPassword,address,customername,phone;
     Button submit;
@@ -52,7 +60,13 @@ public class SignUp extends AppCompatActivity {
                 else {
                     if (passwordTxt.equals(confirmPwdTxt)) {
 
-                       String url= Constants.webAddress+"set_customers.php?cust_name="+nameTxt+"&cust_email="+emailTxt+"&cust_address="+addresstxt+"&cust_phone="+phoneTxt+"&user_password="+passwordTxt;
+                       String url=new String();
+                        try {
+                            url=Constants.webAddress+ "set_customers.php?cust_name="+nameTxt+"&cust_email="+emailTxt+"&cust_address="+URLEncoder.encode(addresstxt,"UTF-8")+"&cust_phone="+phoneTxt+"&user_password="+passwordTxt;
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println(url);
                         volleyStringRequst(url);
 
                     } else {
@@ -83,10 +97,9 @@ public class SignUp extends AppCompatActivity {
                 progressDialog.hide();
                 if(resp.equals("SUCCESS"))
                 {
+                    getUserRequest(Constants.webAddress+"get_customers.php?user_code="+email.getText().toString());
 
-                    Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                    startActivity(intent);
-                    finish();
+
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Failed to Signup",Toast.LENGTH_LONG).show();
@@ -108,6 +121,54 @@ public class SignUp extends AppCompatActivity {
         // Adding String request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
 
+
+    }
+    public void getUserRequest(String url)
+    {
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+
+
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+                resp= response.toString();
+                try{
+                    JSONArray userData=new JSONArray(resp);
+                    for (int i = 0; i < userData.length(); i++) {
+                        JSONObject user = userData.getJSONObject(i);
+                        String name=user.getString("cust_name");
+                        String email=user.getString("cust_email");
+                        String address=user.getString("cust_address");
+                        String phone=user.getString("cust_phone");
+                        userDb.addUsers(name,phone,address,email);
+                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                resp="Some error occured";
+                Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
 
     }
 

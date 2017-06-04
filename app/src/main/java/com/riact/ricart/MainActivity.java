@@ -21,6 +21,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Requests;
+import com.riact.ricart.utils.UserDbHandler;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText email,password;
     String resp;
+    UserDbHandler userDb=new UserDbHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         email=(EditText)findViewById(R.id.input_email);
         password=(EditText)findViewById(R.id.input_password);
         TextView signUp = (TextView) findViewById(R.id.titlename);
+
+        //user.addUsers("koushik","123456789","address","kkk@gmail.com");
+        if(!userDb.getUser().isEmpty()){
+            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
         String first = "No account yet? ";
         String next = "<font color='#EE0000'><u>Create one<u></font>";
         signUp.setText(Html.fromHtml(first + next));
@@ -53,11 +66,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String emailId=email.getText().toString();
                 String passwordText=password.getText().toString();
-                String url= Constants.webAddress+"valid_user.php?user_code="+emailId+"&user_password="+passwordText;
-                volleyStringRequst(url);
-                //Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                //startActivity(intent);
-                //finish();
+                if(emailId.equals("")||passwordText.equals(""))
+                {
+                    Toast.makeText(getApplicationContext(),"Enter all data",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    String url = Constants.webAddress + "valid_user.php?user_code=" + emailId + "&user_password=" + passwordText;
+                    volleyStringRequst(url);
+                }
 
             }
         });
@@ -79,10 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 progressDialog.hide();
                 if(resp.equals("SUCCESS"))
                 {
-
-                    Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                    startActivity(intent);
-                    finish();
+                    getUserRequest(Constants.webAddress+"get_customers.php?user_code="+email.getText().toString());
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Failed to login",Toast.LENGTH_LONG).show();
@@ -104,6 +117,56 @@ public class MainActivity extends AppCompatActivity {
         // Adding String request to request queue
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
 
+    }
+
+    public void getUserRequest(String url)
+    {
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+
+
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+                resp= response.toString();
+                try{
+                    JSONArray userData=new JSONArray(resp);
+                    for (int i = 0; i < userData.length(); i++) {
+                        JSONObject user = userData.getJSONObject(i);
+                        String name=user.getString("cust_name");
+                        String email=user.getString("cust_email");
+                        String address=user.getString("cust_address");
+                        String phone=user.getString("cust_phone");
+                        userDb.addUsers(name,phone,address,email);
+                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    }
+
+
+
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                resp="Some error occured";
+                Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
 
     }
+
+
 }

@@ -19,10 +19,9 @@
             android:layout_width="match_parent"
 
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:id="@+id/welcome_text"
             android:textColor="#000000"
-            android:textSize="15sp"
+            android:textSize="20sp"
             android:gravity="left"
             />
 
