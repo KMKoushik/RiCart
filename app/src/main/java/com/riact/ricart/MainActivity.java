@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         String first = "No account yet? ";
-        String next = "<font color='#EE0000'><u>Create one<u></font>";
+        String next = "<font color='#EE0000'><u>Register<u></font>";
         signUp.setText(Html.fromHtml(first + next));
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
