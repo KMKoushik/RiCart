@@ -80,7 +80,7 @@ public class NewOrder extends Fragment {
 
 
             // Listview Data
-        String products[] = {"oil", "rice", "snacks", "cosmetics", "vegetables"};
+        String products[] = {"oil items", "rice", "snacks", "cosmetics", "vegetables"};
 
         lv = (ListView) myView.findViewById(R.id.list_view);
         listview = (ListView)myView.findViewById(R.id.listView1);

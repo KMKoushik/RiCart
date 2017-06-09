@@ -119,8 +119,8 @@ public class MenuActivity extends AppCompatActivity
 
             alert.show();
 
-
         }
+        //else if(id=R.id.);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
