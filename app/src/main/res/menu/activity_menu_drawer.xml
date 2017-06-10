@@ -14,6 +14,10 @@
             android:icon="@drawable/neworder"
             android:title="New Order" />
         <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/profile"
+            android:title="Profile" />
+        <item
             android:id="@+id/nav_exit"
             android:icon="@drawable/exit"
             android:title="Exit" />

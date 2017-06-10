@@ -81,6 +81,7 @@ public class UserDbHandler extends SQLiteOpenHelper {
         }
 
         // return contact list
+        db.close();
         return user;
     }
 

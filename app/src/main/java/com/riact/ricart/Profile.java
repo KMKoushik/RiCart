@@ -17,8 +17,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
+import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.UserDbHandler;
 
 import org.json.JSONArray;
@@ -34,25 +37,19 @@ import java.util.ArrayList;
 public class Profile extends Fragment {
 
     View myView;
-    String json="{\n" +
-            "\"data\":  [ {\"iv_no\":\"352240\",\"date\":\"2015-04-30\",\"amount\":\"246.96\",\"balance\":\"246.96\"},\n" +
-            "{\"iv_no\":\"352476\",\"date\":\"2015-05-08\",\"amount\":\"129.47\",\"balance\":\"376.43\"},\n" +
-            " {\"iv_no\":\"352706\",\"date\":\"2015-05-15\",\"amount\":\"153.87\",\"balance\":\"530.30\"},\n" +
-            "{\"iv_no\":\"352801\",\"date\":\"2015-06-15\",\"amount\":\"150.00\",\"balance\":\"680.30\"}]\n" +
-            "\n" +
-
-            "}";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        UserDbHandler db=new UserDbHandler(getActivity());
-        ArrayList userData=(ArrayList) db.getUser();
-        String name=(String)userData.get(0);
-
-
+        myView= inflater.inflate(R.layout.profile,container,false);
+        EditText name=(EditText)myView.findViewById(R.id.profile_name);
+        EditText phone=(EditText)myView.findViewById(R.id.profile_phone);
+        EditText address=(EditText)myView.findViewById(R.id.profile_address);
+        name.setText(Constants.userData.get(0));
+        phone.setText(Constants.userData.get(1));
+        address.setText(Constants.userData.get(2));
 
 
         return myView;

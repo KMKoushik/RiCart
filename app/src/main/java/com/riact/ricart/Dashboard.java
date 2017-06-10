@@ -17,6 +17,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.UserDbHandler;
 
 import org.json.JSONArray;
@@ -51,6 +52,7 @@ public class Dashboard extends Fragment {
         String name=(String)userData.get(0);
 
         Toast.makeText(getActivity(),userData.toString(),Toast.LENGTH_LONG).show();
+        Constants.userData=userData;
         myView= inflater.inflate(R.layout.dasboard,container,false);
         String outStanding="Your outstanding Invoice is "+"<font color='#EE0000'>SGD 2550.78</font><br>"+"Last updated on 2015-08-03 21:17 ";
         final TextView welcome=(TextView) myView.findViewById(R.id.welcome_text);

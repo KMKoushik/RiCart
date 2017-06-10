@@ -94,7 +94,11 @@ public class MenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_new_order) {
 
             fm.beginTransaction().replace(R.id.content_menu,new NewOrder()).commit();
-        } else if (id == R.id.nav_exit) {
+        }else if(id==R.id.nav_profile){
+
+            fm.beginTransaction().replace(R.id.content_menu,new Profile()).commit();
+        }
+        else if (id == R.id.nav_exit) {
             final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Warning");
             alert.setMessage("Do you want to exit?");
@@ -120,7 +124,7 @@ public class MenuActivity extends AppCompatActivity
             alert.show();
 
         }
-        //else if(id=R.id.);
+        //
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
