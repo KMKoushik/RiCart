@@ -1,7 +1,6 @@
 package com.riact.ricart;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,21 +9,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.riact.ricart.utils.Constants;
-import com.riact.ricart.utils.UserDbHandler;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 
 /**
  * Created by koushik on 28/5/17.
@@ -46,13 +40,9 @@ public class Dashboard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        String name=(String)Constants.userData.get(0);
+        //Toast.makeText(getActivity(),Constants.items,Toast.LENGTH_LONG).show();
 
-        UserDbHandler db=new UserDbHandler(getActivity());
-        ArrayList userData=(ArrayList) db.getUser();
-        String name=(String)userData.get(0);
-
-        Toast.makeText(getActivity(),userData.toString(),Toast.LENGTH_LONG).show();
-        Constants.userData=userData;
         myView= inflater.inflate(R.layout.dasboard,container,false);
         String outStanding="Your outstanding Invoice is "+"<font color='#EE0000'>SGD 2550.78</font><br>"+"Last updated on 2015-08-03 21:17 ";
         final TextView welcome=(TextView) myView.findViewById(R.id.welcome_text);
@@ -75,12 +65,8 @@ public class Dashboard extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             });
-
-
         return myView;
     }
 

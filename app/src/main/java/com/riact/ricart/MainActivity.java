@@ -1,5 +1,11 @@
 package com.riact.ricart;
 
+/**
+ * Created by koushik on 28/5/17.
+ *
+ * A PIECE OF ADVICE: Dont touch my code if you don't know what you are doing.
+ */
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +32,8 @@ import com.riact.ricart.utils.UserDbHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import static com.android.volley.VolleyLog.TAG;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
         email=(EditText)findViewById(R.id.input_email);
         password=(EditText)findViewById(R.id.input_password);
         TextView signUp = (TextView) findViewById(R.id.titlename);
-
-        //user.addUsers("koushik","123456789","address","kkk@gmail.com");
-        if(!userDb.getUser().isEmpty()){
+        Constants.userData=(ArrayList<String>) userDb.getUser();
+        if(!Constants.userData.isEmpty()){
             Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
             startActivity(intent);
             finish();

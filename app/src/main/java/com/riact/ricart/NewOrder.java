@@ -29,8 +29,14 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.riact.ricart.utils.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import static android.R.attr.fragment;
 import static android.R.attr.value;
@@ -51,46 +57,40 @@ public class NewOrder extends Fragment {
     CheckedTextView checkstat;
     String selectedFromList;
     Point p=new Point();
-//    final CheckedTextView checkBox = (CheckedTextView) myView.findViewById(R.id.checkedTextView1);
-    //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-   // final SharedPreferences.Editor editor = preferences.edit();
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // p=new Point();
         myView = inflater.inflate(R.layout.new_order, container, false);
-        //submitBtn = (Button) myView.findViewById(R.id.order_submit);
+
         LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.neworder_layout);
-
-
-        // Listview Adapter
-
-
-        // Search EditText
         final EditText inputSearch;
+        ArrayList<String > prod=new ArrayList<>();
 
+        try {
+            JSONObject jsonObj = new JSONObject(Constants.items);
+            Iterator keys = jsonObj.keys();
 
-        // ArrayList for Listview
-        ArrayList<HashMap<String, String>> productList;
+            while(keys.hasNext()) {
 
+                String currentDynamicKey = (String)keys.next();
+                prod.add(currentDynamicKey);
+            }
 
-
-
-
-
-            // Listview Data
-        String products[] = {"oil items", "rice", "snacks", "cosmetics", "vegetables"};
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         lv = (ListView) myView.findViewById(R.id.list_view);
         listview = (ListView)myView.findViewById(R.id.listView1);
-       // listview1 = (ListView)myView.findViewById(R.id.listView2) ;
         checkstat=(CheckedTextView)myView.findViewById(R.id.checkedTextView1);
         inputSearch = (EditText) myView.findViewById(R.id.inputSearch);
         lv.setVisibility(View.INVISIBLE);
 
-        // Adding items to listview
-        adapter = new ArrayAdapter<String>(getActivity(), R.layout.listitem1, R.id.label, products);
+
+        adapter = new ArrayAdapter<String>(getActivity(), R.layout.listitem1, R.id.label, prod);
         lv.setAdapter(adapter);
         Button cart=(Button)myView.findViewById(R.id.cart);
         cart.setOnClickListener(new View.OnClickListener() {

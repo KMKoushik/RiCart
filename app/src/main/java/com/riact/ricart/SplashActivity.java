@@ -1,14 +1,23 @@
 package com.riact.ricart;
 
+import android.app.ProgressDialog;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
-import android.os.Bundle;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+import com.riact.ricart.utils.AppSingleton;
+import com.riact.ricart.utils.Constants;
+import com.riact.ricart.utils.ItemsDbHandler;
+import com.riact.ricart.utils.UserDbHandler;
 
-import android.support.v7.app.AppCompatActivity;
+import static com.android.volley.VolleyLog.TAG;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -21,24 +30,36 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        new Handler().postDelayed(new Runnable() {
+        volleyStringRequst(Constants.webAddress+"get_items.php");
 
-            /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
-             */
 
+    }
+
+    public void  volleyStringRequst(String url){
+
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+
+
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
             @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
+            public void onResponse(String response) {
+                Constants.items=response;
                 Intent i = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(i);
-
-                // close this activity
                 finish();
+
             }
-        }, SPLASH_TIME_OUT);
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
+
     }
 
 }

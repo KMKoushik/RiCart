@@ -9,4 +9,5 @@ import java.util.ArrayList;
 public class Constants {
     public static String webAddress="http://www.riact.com/Riact/Ricart/";
     public static ArrayList<String> userData;
+    public static String items="";
 }
