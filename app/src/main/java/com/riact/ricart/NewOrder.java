@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +44,6 @@ import java.util.Iterator;
 
 import static android.R.attr.fragment;
 import static android.R.attr.value;
-import static com.riact.ricart.CheckBoxClick.selectedStrings;
 
 /**
  * Created by anton on 05/29/17.
@@ -51,16 +52,17 @@ import static com.riact.ricart.CheckBoxClick.selectedStrings;
 public class NewOrder extends Fragment {
 
     View myView;
-    public ListView lv;
-    public ListView listview;
+    public ListView lv,listview;
     ArrayAdapter<String> adapter;
     private LayoutInflater menuInflater;
     CheckedTextView checkstat;
     String selectedFromList;
     LinearLayout linearLayout;
     Point p=new Point();
-     EditText inputSearch;
-    Model[] modelItems;
+    EditText inputSearch;
+    int isVisible=1;
+    ArrayList<Model> ItemList,oderList=new ArrayList<>();
+    HashMap<String,ArrayList> itemMap=new HashMap<String, ArrayList>();
 
 
     @Nullable
@@ -72,28 +74,30 @@ public class NewOrder extends Fragment {
         linearLayout = (LinearLayout) myView.findViewById(R.id.neworder_layout);
         listview= (ListView) myView.findViewById(R.id.listView1);
 
-        modelItems = new Model[5];
-        modelItems[0] = new Model("pizza", 0);
-        modelItems[1] = new Model("burger", 1);
-        modelItems[2] = new Model("olives", 1);
-        modelItems[3] = new Model("orange", 0);
-        modelItems[4] = new Model("tomato", 1);
 
-        MyAdapter myAdapter = new MyAdapter(getActivity(), modelItems);
-        listview.setAdapter(myAdapter);
-        listview.setVisibility(View.VISIBLE);
+
+
+
 
         ArrayList<String > prod=new ArrayList<>();
-
-
-
         try {
             JSONObject jsonObj = new JSONObject(Constants.items);
             Iterator keys = jsonObj.keys();
 
             while(keys.hasNext()) {
-
+                ArrayList<Model> modelItems = new ArrayList<>();
                 String currentDynamicKey = (String)keys.next();
+                JSONArray jsonArray=jsonObj.getJSONArray(currentDynamicKey);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject item= jsonArray.getJSONObject(i);
+                    String itemCode=item.getString("item_code");
+                    String itemdesc=item.getString("item_desc");
+                    String priceUom=item.getString("price_uom");
+                    float price=(float) item.getDouble("selling_price");
+                    modelItems.add(new Model(itemdesc,0,itemCode,priceUom,price));
+
+                }
+                itemMap.put(currentDynamicKey,modelItems);
                 prod.add(currentDynamicKey);
             }
 
@@ -101,9 +105,11 @@ public class NewOrder extends Fragment {
             e.printStackTrace();
         }
 
+        listview.setVisibility(View.INVISIBLE);
+
         lv = (ListView) myView.findViewById(R.id.list_view);
         inputSearch = (EditText) myView.findViewById(R.id.inputSearch);
-        lv.setVisibility(View.INVISIBLE);
+
 
 
         adapter = new ArrayAdapter<String>(getActivity(), R.layout.listitem1, R.id.label, prod);
@@ -116,7 +122,7 @@ public class NewOrder extends Fragment {
                 Toast.makeText(getActivity(),CheckBoxClick.selectedStrings.toString(),Toast.LENGTH_LONG).show();
             }
         });
-
+        lv.setVisibility(View.INVISIBLE);
 
 
 
@@ -135,26 +141,48 @@ public class NewOrder extends Fragment {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
 
+
                 NewOrder.this.adapter.getFilter().filter(cs);
                 lv.setVisibility(View.VISIBLE);
+                listview.setVisibility(View.INVISIBLE);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
                          selectedFromList =(String) (lv.getItemAtPosition(myItemInt));
-                        linearLayout.removeView(lv);
-
                         inputSearch.setText(selectedFromList);
+                        ItemList=itemMap.get(selectedFromList);
+                        MyAdapter itemAdapter = new MyAdapter(getActivity(), ItemList);
+                        listview.setAdapter(itemAdapter);
+                        lv.setVisibility(View.INVISIBLE);
+                        listview.setVisibility(View.VISIBLE);
+                        listview.setItemsCanFocus(false);
+                        listview.setOnItemClickListener( new AdapterView.OnItemClickListener()
+                        {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView , View view , int position ,long arg3)
+                            {
+                                CheckBox cb = (CheckBox)view.findViewById(R.id.checkBox1);
+                                if(!cb.isChecked()) {
+                                    oderList.add(ItemList.get(position));
+                                    ItemList.get(position).putValue(1);
+                                }
+                                else {
+                                    oderList.remove(ItemList.get(position));
+                                    ItemList.get(position).putValue(0);
+                                }
+                                cb.setChecked(!cb.isChecked());
+
+                                Toast.makeText(getActivity(),oderList.toString(),Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                         Toast.makeText(getActivity(),selectedFromList,Toast.LENGTH_LONG).show();
-
-
-
-
                     }
                 });
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                System.out.println("mudingichu");
+                System.out.println("Sethuru");
 
             }
 

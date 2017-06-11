@@ -45,7 +45,9 @@
 
 
 
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <ListView
                 android:id="@+id/list_view"
                 android:cacheColorHint="#00000000"
@@ -68,6 +70,9 @@
                 android:layout_weight="4"
                 android:cacheColorHint="#00000000"
                 android:scrollbars="none"
+                android:descendantFocusability="blocksDescendants"
+                android:focusable="false"
+            android:focusableInTouchMode = "false"
                 android:fadingEdge="vertical"
                 android:soundEffectsEnabled="true"
                 android:dividerHeight="1px"
@@ -80,6 +85,7 @@
                 android:layout_marginLeft="5dip"
                 android:layout_marginRight="5dip"
                 android:layout_marginBottom="5dip" />
+</RelativeLayout>
 
 
 

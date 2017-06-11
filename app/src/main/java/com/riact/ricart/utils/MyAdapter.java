@@ -5,22 +5,27 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.riact.ricart.R;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by koushik on 11/6/17.
  */
 
-public class MyAdapter extends ArrayAdapter {
-        Model[] modelItems = null;
+public class MyAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
+        ArrayList<Model> modelItems = null;
         Context context;
+        CheckBox cb;
+        TextView name;
 
-        public MyAdapter(Context context, Model[] resource) {
+        public MyAdapter(Context context, ArrayList resource) {
                 super(context, R.layout.list_item,resource);
                 // TODO Auto-generated constructor stub
                 this.context = context;
@@ -31,13 +36,19 @@ public class MyAdapter extends ArrayAdapter {
                 // TODO Auto-generated method stub
                 LayoutInflater inflater = ((Activity)context).getLayoutInflater();
                 convertView = inflater.inflate(R.layout.list_item, parent, false);
-                TextView name = (TextView) convertView.findViewById(R.id.textView1);
-                CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
-                name.setText(modelItems[position].getName());
-                if(modelItems[position].getValue() == 1)
+                name = (TextView) convertView.findViewById(R.id.textView1);
+                 cb= (CheckBox) convertView.findViewById(R.id.checkBox1);
+
+                name.setText(modelItems.get(position).getName());
+                if(modelItems.get(position).getValue() == 1)
                         cb.setChecked(true);
                 else
                         cb.setChecked(false);
                 return convertView;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.print("hello:");
         }
 }
