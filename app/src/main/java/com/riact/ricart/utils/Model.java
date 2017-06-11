@@ -5,10 +5,8 @@ package com.riact.ricart.utils;
  */
 
 public class Model {
-    String name;
-    int value; /* 0 -&gt; checkbox disable, 1 -&gt; checkbox enable */
-    String itemCode;
-    String uom;
+    String name,itemCode,uom;
+    int value;
     float price;
 
     public Model(String name, int value, String itemCode,String uom,float price) {

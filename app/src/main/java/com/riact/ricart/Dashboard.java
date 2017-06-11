@@ -58,10 +58,8 @@ public class Dashboard extends Fragment {
         welcome.setText(Html.fromHtml("Welcome <b>"+name+"!</b> "));
         TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
         signUp.setText(Html.fromHtml(outStanding));
-          LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
 
-
-              TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
+        TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
 
         detiledview.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,11 +163,6 @@ public class Dashboard extends Fragment {
             tbrow.addView(t4v);
             stk.addView(tbrow);
 
-            // Phone node is JSON Object
-
-
         }
-
-
     }
 }

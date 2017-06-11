@@ -55,13 +55,11 @@ public class NewOrder extends Fragment {
     public ListView lv,listview;
     ArrayAdapter<String> adapter;
     private LayoutInflater menuInflater;
-    CheckedTextView checkstat;
     String selectedFromList;
     LinearLayout linearLayout;
     Point p=new Point();
     EditText inputSearch;
-    int isVisible=1;
-    ArrayList<Model> ItemList,oderList=new ArrayList<>();
+    ArrayList<Model> ItemList;
     HashMap<String,ArrayList> itemMap=new HashMap<String, ArrayList>();
 
 
@@ -162,16 +160,15 @@ public class NewOrder extends Fragment {
                             {
                                 CheckBox cb = (CheckBox)view.findViewById(R.id.checkBox1);
                                 if(!cb.isChecked()) {
-                                    oderList.add(ItemList.get(position));
+                                    Constants.orderList.add(ItemList.get(position));
                                     ItemList.get(position).putValue(1);
                                 }
                                 else {
-                                    oderList.remove(ItemList.get(position));
+                                    Constants.orderList.remove(ItemList.get(position));
                                     ItemList.get(position).putValue(0);
                                 }
-                                cb.setChecked(!cb.isChecked());
 
-                                Toast.makeText(getActivity(),oderList.toString(),Toast.LENGTH_SHORT).show();
+                                cb.setChecked(!cb.isChecked());
 
                             }
                         });

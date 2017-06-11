@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by koushik on 11/6/17.
  */
 
-public class MyAdapter extends ArrayAdapter implements AdapterView.OnItemClickListener {
+public class MyAdapter extends ArrayAdapter  {
         ArrayList<Model> modelItems = null;
         Context context;
         CheckBox cb;
@@ -47,8 +47,4 @@ public class MyAdapter extends ArrayAdapter implements AdapterView.OnItemClickLi
                 return convertView;
         }
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.print("hello:");
-        }
 }
