@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.riact.ricart.utils.Constants;
+import com.riact.ricart.utils.Model;
+import com.riact.ricart.utils.MyAdapter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,12 +53,14 @@ public class NewOrder extends Fragment {
     View myView;
     public ListView lv;
     public ListView listview;
-    public  ListView listview1;
     ArrayAdapter<String> adapter;
     private LayoutInflater menuInflater;
     CheckedTextView checkstat;
     String selectedFromList;
+    LinearLayout linearLayout;
     Point p=new Point();
+     EditText inputSearch;
+    Model[] modelItems;
 
 
     @Nullable
@@ -65,9 +69,23 @@ public class NewOrder extends Fragment {
         // p=new Point();
         myView = inflater.inflate(R.layout.new_order, container, false);
 
-        LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.neworder_layout);
-        final EditText inputSearch;
+        linearLayout = (LinearLayout) myView.findViewById(R.id.neworder_layout);
+        listview= (ListView) myView.findViewById(R.id.listView1);
+
+        modelItems = new Model[5];
+        modelItems[0] = new Model("pizza", 0);
+        modelItems[1] = new Model("burger", 1);
+        modelItems[2] = new Model("olives", 1);
+        modelItems[3] = new Model("orange", 0);
+        modelItems[4] = new Model("tomato", 1);
+
+        MyAdapter myAdapter = new MyAdapter(getActivity(), modelItems);
+        listview.setAdapter(myAdapter);
+        listview.setVisibility(View.VISIBLE);
+
         ArrayList<String > prod=new ArrayList<>();
+
+
 
         try {
             JSONObject jsonObj = new JSONObject(Constants.items);
@@ -84,8 +102,6 @@ public class NewOrder extends Fragment {
         }
 
         lv = (ListView) myView.findViewById(R.id.list_view);
-        listview = (ListView)myView.findViewById(R.id.listView1);
-        checkstat=(CheckedTextView)myView.findViewById(R.id.checkedTextView1);
         inputSearch = (EditText) myView.findViewById(R.id.inputSearch);
         lv.setVisibility(View.INVISIBLE);
 
@@ -105,15 +121,6 @@ public class NewOrder extends Fragment {
 
 
 
-      /*  lstview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Toast.makeText(getActivity(), "An item of the ListView is clicked.", Toast.LENGTH_LONG).show();
-            }
-        });*/
-        // Bind data to the ListView
-//        lstview.setAdapter(adapter);
-
-
         /**
          * Enabling Search Filter
          * */
@@ -127,169 +134,18 @@ public class NewOrder extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                // When user changed the Text
-               /// listview.setVisibility(View.INVISIBLE);
+
                 NewOrder.this.adapter.getFilter().filter(cs);
-
-                listview.setVisibility(View.INVISIBLE);
-                listview.setVisibility(View.INVISIBLE);
-                //lv.setVisibility(View.VISIBLE);
-
-                lv.setVisibility(View.INVISIBLE);
                 lv.setVisibility(View.VISIBLE);
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
                          selectedFromList =(String) (lv.getItemAtPosition(myItemInt));
-                        lv.setVisibility(View.INVISIBLE);
+                        linearLayout.removeView(lv);
 
                         inputSearch.setText(selectedFromList);
-                        String search= inputSearch.getText().toString();
                         Toast.makeText(getActivity(),selectedFromList,Toast.LENGTH_LONG).show();
-                       // listview = (ListView)myView.findViewById(R.id.list_view);
-
-                       // listview.setVisibility(View.INVISIBLE);
-                        //listview.setVisibility(View.INVISIBLE);
-                        //string array
-                        String[] foody = {"sunflower", "palm", "groundnut", "coconut", "navrathna", "edho"};
-                        String[] rice1 = {"raw rice", "sambha" ,"IR8" ,"full boiled rice"};
-                        String[] snacks = {"lays", "cheetos" ,"bingo" ,"potato chips"};
-                        String[] cosmetics = {"fairness cream", "eyeliner" ,"eye lashes" ,"mehandi"};
-                        String[] vegetables = {"carrot", "beetrot" ,"beans" ,"bitter gourd"};
-                        String[] value = {};
-                        //ArrayList<String> selectedStrings = new ArrayList<String>();
-                        // set adapter for listview
-
-                        if(selectedFromList=="oil")
-                        {
-                            System.out.println(selectedFromList);
-                            value=foody;
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-                            listview.setAdapter(adapter1);
-                            listview.setVisibility(View.VISIBLE);
-
-                           /* for( int i = 0,j=0; i <= selectedStrings.size() - 1; i++)
-                            {
-                                for(j=0; j <= adapter1.getCount() - 1; i++)
-                                    // get element number 0 and 1 and put it in a variable,
-                                    // and the next time get element      1 and 2 and put this in another variable.
-                                    if(selectedStrings.get(i)==adapter1.getItem(j))
-                                    {
-                                        System.out.println(selectedStrings.get(i));
-                                        System.out.println(adapter1.getItem(i));
-                                        checkstat.setChecked(true);
-                                    }
-
-                            }*/
-                        }
-                        if(selectedFromList=="rice")
-                        {
-                            System.out.println(selectedFromList);
-                            value=rice1;
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-                            listview.setAdapter(adapter1);
-                            listview.setVisibility(View.VISIBLE);
-
-                           /* for( int i = 0,j=0; i <= selectedStrings.size() - 1; i++)
-                            {
-                                for(j=0; j <= adapter1.getCount() - 1; i++)
-                                    // get element number 0 and 1 and put it in a variable,
-                                    // and the next time get element      1 and 2 and put this in another variable.
-                                    if(selectedStrings.get(i)==adapter1.getItem(j))
-                                    {
-                                        System.out.println(selectedStrings.get(i));
-                                        System.out.println(adapter1.getItem(i));
-                                        checkstat.setChecked(true);
-                                    }
-
-                            }*/
-                        }
-                        if(selectedFromList=="snacks")
-                        {
-                            System.out.println(selectedFromList);
-                            value=snacks;
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-                            listview.setAdapter(adapter1);
-                            listview.setVisibility(View.VISIBLE);
-
-                           /* for( int i = 0,j=0; i <= selectedStrings.size() - 1; i++)
-                            {
-                                for(j=0; j <= adapter1.getCount() - 1; i++)
-                                    // get element number 0 and 1 and put it in a variable,
-                                    // and the next time get element      1 and 2 and put this in another variable.
-                                    if(selectedStrings.get(i)==adapter1.getItem(j))
-                                    {
-                                        System.out.println(selectedStrings.get(i));
-                                        System.out.println(adapter1.getItem(i));
-                                        checkstat.setChecked(true);
-                                    }
-
-                            }*/
-                        }
-                        if(selectedFromList=="cosmetics")
-                        {
-                            System.out.println(selectedFromList);
-                            value=cosmetics;
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-                            listview.setAdapter(adapter1);
-                            listview.setVisibility(View.VISIBLE);
-
-                           /* for( int i = 0,j=0; i <= selectedStrings.size() - 1; i++)
-                            {
-                                for(j=0; j <= adapter1.getCount() - 1; i++)
-                                    // get element number 0 and 1 and put it in a variable,
-                                    // and the next time get element      1 and 2 and put this in another variable.
-                                    if(selectedStrings.get(i)==adapter1.getItem(j))
-                                    {
-                                        System.out.println(selectedStrings.get(i));
-                                        System.out.println(adapter1.getItem(i));
-                                        checkstat.setChecked(true);
-                                    }
-
-                            }*/
-                        }
-                        if(selectedFromList=="vegetables")
-                        {
-                            System.out.println(selectedFromList);
-                            value=vegetables;
-                            ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-                            listview.setAdapter(adapter1);
-                            listview.setVisibility(View.VISIBLE);
-
-                           /* for( int i = 0,j=0; i <= selectedStrings.size() - 1; i++)
-                            {
-                                for(j=0; j <= adapter1.getCount() - 1; i++)
-                                    // get element number 0 and 1 and put it in a variable,
-                                    // and the next time get element      1 and 2 and put this in another variable.
-                                    if(selectedStrings.get(i)==adapter1.getItem(j))
-                                    {
-                                        System.out.println(selectedStrings.get(i));
-                                        System.out.println(adapter1.getItem(i));
-                                        checkstat.setChecked(true);
-                                    }
-
-                            }*/
-                        }
-                        /*else
-                        {
-
-                            System.out.println(selectedFromList);
-                            value=rice1;
-                            listview.setVisibility(View.VISIBLE);
-                            //listview.setVisibility(View.VISIBLE);
-                        }*/
-                     //  ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-                       // listview.setAdapter(adapter1);
-
-                        listview.setItemsCanFocus(false);
-                        //listview1.setAdapter(adapter1);
-                        //listview1.setItemsCanFocus(false);
 
 
-                        // we want multiple clicks
-                        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                        listview.setOnItemClickListener(new CheckBoxClick());
-                        //listview1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-                        //listview1.setOnItemClickListener(new CheckBoxClick());
 
 
                     }
@@ -302,52 +158,9 @@ public class NewOrder extends Fragment {
 
             }
 
-            /*@Override
-            //public void afterTextChanged(Editable s) {
 
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                // TODO Auto-generated method stub
-            }*/
         });
 
-       /* listview = (ListView)myView.findViewById(R.id.listView1);
-        listview.setVisibility(View.INVISIBLE);
-        //listview.setVisibility(View.INVISIBLE);
-        //string array
-        String[] foody = {"sunflower", "palm", "groundnut", "coconut", "navrathna", "edho"};
-        String[] rice1 = {"ponni", "sambha" ,"pacha arisi" ,"pulungal arisi"};
-        String[] value = {};
-        ArrayList<String> selectedStrings = new ArrayList<String>();
-        // set adapter for listview
-        if(selectedFromList=="oil")
-        {
-            System.out.println(selectedFromList);
-            value=foody;
-            listview.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-
-            value=rice1;
-            listview.setVisibility(View.VISIBLE);
-        }*/
-
-        /*ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), R.layout.list_item, value);
-        listview.setAdapter(adapter1);
-        listview.setItemsCanFocus(false);
-        // we want multiple clicks
-        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listview.setOnItemClickListener(new CheckBoxClick());*/
         return myView;
 
 

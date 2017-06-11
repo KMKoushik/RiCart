@@ -10,11 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.riact.ricart.utils.Constants;
+import com.riact.ricart.utils.Model;
+import com.riact.ricart.utils.MyAdapter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +29,9 @@ import org.json.JSONObject;
  */
 
 public class Dashboard extends Fragment {
+
+
+
 
     View myView;
      String json="{\n" +
@@ -42,6 +49,8 @@ public class Dashboard extends Fragment {
 
         String name=(String)Constants.userData.get(0);
         //Toast.makeText(getActivity(),Constants.items,Toast.LENGTH_LONG).show();
+
+
 
         myView= inflater.inflate(R.layout.dasboard,container,false);
         String outStanding="Your outstanding Invoice is "+"<font color='#EE0000'>SGD 2550.78</font><br>"+"Last updated on 2015-08-03 21:17 ";

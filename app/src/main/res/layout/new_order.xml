@@ -45,6 +45,7 @@
 
 
 
+
         <ListView
                 android:id="@+id/list_view"
                 android:cacheColorHint="#00000000"
@@ -55,7 +56,7 @@
                 android:padding="0dip"
                 android:smoothScrollbar="true"
                 android:layout_width="fill_parent"
-                android:layout_height="419dp"
+                android:layout_height="311dp"
                 android:drawSelectorOnTop="false"
                 android:layout_marginTop="5dip"
                 android:layout_marginLeft="5dip"
@@ -88,6 +89,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             />
+
 
 
 
