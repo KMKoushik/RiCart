@@ -35,6 +35,8 @@ import com.google.gson.reflect.TypeToken;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
+import com.riact.ricart.utils.OrderDbHandler;
+import com.riact.ricart.utils.UserDbHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +69,8 @@ public class NewOrder extends Fragment {
     EditText inputSearch;
     ArrayList<Model> ItemList;
     HashMap<String,ArrayList> itemMap=new HashMap<String, ArrayList>();
+    OrderDbHandler userDb=new OrderDbHandler(getActivity());
+
 
 
     @Nullable
@@ -125,14 +129,14 @@ public class NewOrder extends Fragment {
 
                 Gson gson = new Gson();
                 String arrayList = gson.toJson(Constants.orderList);
-                //showPopup(getActivity(),p,CheckBoxClick.selectedStrings);
+                userDb.addOrder("today",arrayList);
                 Toast.makeText(getActivity(),arrayList,Toast.LENGTH_LONG).show();
                 Type listType = new TypeToken<ArrayList<Model>>() {
                 }.getType();
 
                 ArrayList<Model> arr=new Gson().fromJson(arrayList,listType);
 
-                Toast.makeText(getActivity(),arr.get(0).getName(),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),userDb.getOrder("today").get(0),Toast.LENGTH_LONG).show();
 
             }
         });
