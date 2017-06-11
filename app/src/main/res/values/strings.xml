@@ -6,8 +6,15 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_menu">MenuActivity</string>
 
+    <string name="RiCart">Riact Shopping cart</string>
+    <string name="detailed_view">Get detailed view <u>here</u>.</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

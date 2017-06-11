@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-
-
     <LinearLayout
         android:orientation="vertical"
-        android:id="@+id/order_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:id="@+id/order_layout">
+
+        <TextView
+            android:text="Your orders !"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_layout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:gravity="left"
+            android:textColor="#000000"
+            android:id="@+id/textView3" />
+
+
+        <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ordertable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+
+
+        android:shrinkColumns="*"
+        android:stretchColumns="*">
+
+
+    </TableLayout>
 
     </LinearLayout>
 
-
-        <Button
-            android:text="Submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/order_submit" />
 
 
 
