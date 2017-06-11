@@ -8,6 +8,7 @@ public class Model {
     String name,itemCode,uom;
     int value;
     float price;
+    float quantity;
 
     public Model(String name, int value, String itemCode,String uom,float price) {
         this.name = name;
@@ -30,6 +31,8 @@ public class Model {
     public String getItemCode(){ return this.itemCode;}
 
     public String getUom(){return this.uom;}
+
+    public void setQuantity(float quantity){ this.quantity=quantity;}
 
     public float getPrice(){return this.price;}
 }
