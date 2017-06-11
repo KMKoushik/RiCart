@@ -30,6 +30,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
@@ -38,6 +40,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Type;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -116,8 +122,18 @@ public class NewOrder extends Fragment {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopup(getActivity(),p,CheckBoxClick.selectedStrings);
-                Toast.makeText(getActivity(),CheckBoxClick.selectedStrings.toString(),Toast.LENGTH_LONG).show();
+
+                Gson gson = new Gson();
+                String arrayList = gson.toJson(Constants.orderList);
+                //showPopup(getActivity(),p,CheckBoxClick.selectedStrings);
+                Toast.makeText(getActivity(),arrayList,Toast.LENGTH_LONG).show();
+                Type listType = new TypeToken<ArrayList<Model>>() {
+                }.getType();
+
+                ArrayList<Model> arr=new Gson().fromJson(arrayList,listType);
+
+                Toast.makeText(getActivity(),arr.get(0).getName(),Toast.LENGTH_LONG).show();
+
             }
         });
         lv.setVisibility(View.INVISIBLE);
