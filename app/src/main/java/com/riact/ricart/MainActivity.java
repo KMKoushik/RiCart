@@ -146,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                         String address=user.getString("cust_address");
                         String phone=user.getString("cust_phone");
                         userDb.addUsers(name,phone,address,email);
+                        Constants.userData=(ArrayList<String>) userDb.getUser();
                         Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(intent);
                         finish();
