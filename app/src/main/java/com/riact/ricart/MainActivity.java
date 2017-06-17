@@ -26,9 +26,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
-import com.riact.ricart.utils.Requests;
-import com.riact.ricart.utils.UserDbHandler;
-
+import com.riact.ricart.utils.RiactDbHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText email,password;
     String resp;
-    UserDbHandler userDb=new UserDbHandler(this);
+    RiactDbHandler userDb=new RiactDbHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,8 +7,7 @@ package com.riact.ricart.utils;
 public class Model {
     String name,itemCode,uom;
     int value;
-    float price;
-    float quantity;
+    float price,quantity,amount;
 
     public Model(String name, int value, String itemCode,String uom,float price) {
         this.name = name;
@@ -35,4 +34,9 @@ public class Model {
     public void setQuantity(float quantity){ this.quantity=quantity;}
 
     public float getPrice(){return this.price;}
+
+    public void setAmount(float amount){this.amount=amount;}
+
+    public float getAmount(){return this.amount;}
+
 }

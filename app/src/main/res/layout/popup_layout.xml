@@ -17,14 +17,21 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TableLayout
-        android:id="@+id/tabla_cuerpo"
+        android:id="@+id/cart_table"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:weightSum="1">
-
         <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            >
+        </TableRow>
+
+ <!--       <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -256,7 +263,14 @@
                 android:padding="5dp"
                 android:text="80"
                 android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
-                   </TableRow>
+                   </TableRow>-->
+
+    </TableLayout>
+
+
+
+    <RelativeLayout android:layout_height="match_parent"
+        android:layout_width="match_parent">
         <TextView
             android:id="@+id/chumma"
             android:layout_width="wrap_content"
@@ -269,9 +283,6 @@
             android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
 
         />
-
-
-        <RelativeLayout android:layout_weight="0.22">
 
             <Button
                 android:id="@+id/close"
@@ -302,7 +313,6 @@
         </RelativeLayout>
 
 
-    </TableLayout>
 
 
 

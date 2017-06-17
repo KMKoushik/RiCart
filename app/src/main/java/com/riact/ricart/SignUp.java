@@ -17,7 +17,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
-import com.riact.ricart.utils.UserDbHandler;
+import com.riact.ricart.utils.RiactDbHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ import java.net.URLEncoder;
 import static com.android.volley.VolleyLog.TAG;
 
 public class SignUp extends AppCompatActivity {
-    UserDbHandler userDb=new UserDbHandler(this);
+    RiactDbHandler userDb=new RiactDbHandler(this);
     String resp;
     EditText email,password,confirmPassword,address,customername,phone;
     Button submit;

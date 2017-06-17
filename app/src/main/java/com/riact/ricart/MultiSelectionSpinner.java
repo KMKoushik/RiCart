@@ -103,6 +103,11 @@ public class MultiSelectionSpinner extends Spinner implements
         }
     }
 
+    public void getPreviousSelected()
+    {
+        //this code will screw the entire app for sure
+    }
+
     public void setSelection(List<String> selection) {
         for (int i = 0; i < mSelection.length; i++) {
             mSelection[i] = false;
