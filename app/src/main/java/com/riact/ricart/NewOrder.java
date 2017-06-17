@@ -3,18 +3,15 @@ package com.riact.ricart;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,8 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -35,8 +30,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
@@ -46,18 +39,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Type;
-import java.sql.Blob;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static android.R.attr.fragment;
-import static android.R.attr.value;
+//import static com.riact.ricart.R.id.chumma;
 
 /**
  * Created by anton on 05/29/17.
@@ -70,12 +56,15 @@ public class NewOrder extends Fragment {
     ArrayAdapter<String> adapter;
     private LayoutInflater menuInflater;
     String selectedFromList;
+    String chumma;
+    float f=0;
     LinearLayout linearLayout;
     Point p=new Point();
     EditText inputSearch;
     ArrayList<Model> ItemList;
     HashMap<String,ArrayList> itemMap=new HashMap<String, ArrayList>();
     RiactDbHandler userDb;
+
 
 
 
@@ -99,7 +88,7 @@ public class NewOrder extends Fragment {
             Iterator keys = jsonObj.keys();
 
             while(keys.hasNext()) {
-                ArrayList<Model> modelItems = new ArrayList<>();
+                ArrayList modelItems = new ArrayList<>();
                 String currentDynamicKey = (String)keys.next();
                 JSONArray jsonArray=jsonObj.getJSONArray(currentDynamicKey);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -110,6 +99,7 @@ public class NewOrder extends Fragment {
                     float price=(float) item.getDouble("selling_price");
                     modelItems.add(new Model(itemdesc,0,itemCode,priceUom,price));
 
+                   // modelItems.ad(new Model(itemdesc,0,itemCode,priceUom,price));
                 }
                 itemMap.put(currentDynamicKey,modelItems);
                 prod.add(currentDynamicKey);
@@ -189,10 +179,13 @@ public class NewOrder extends Fragment {
                                 CheckBox cb = (CheckBox)view.findViewById(R.id.checkBox1);
                                 if(!cb.isChecked()) {
                                     Constants.orderList.add(ItemList.get(position));
+
                                     ItemList.get(position).putValue(1);
+
                                 }
                                 else {
                                     Constants.orderList.remove(ItemList.get(position));
+
                                     ItemList.get(position).putValue(0);
                                 }
 
@@ -228,6 +221,14 @@ public class NewOrder extends Fragment {
         context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int popupWidth = displayMetrics.widthPixels;
         int popupHeight = displayMetrics.heightPixels;
+        System.out.println("chumma");
+        for (Model model : data) {
+            System.out.println("chumma1");
+            System.out.println(model.getName());
+            System.out.println(model.getAmount());
+            System.out.println(model.getItemCode());
+            System.out.println(model.getPrice());
+        }
         String dats="";
         for (Model temp : data) {
             dats+="\n"+temp.getName();
@@ -242,10 +243,10 @@ public class NewOrder extends Fragment {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
-        View layout = layoutInflater.inflate(R.layout.popup_layout, viewGroup);
+       final View layout = layoutInflater.inflate(R.layout.popup_layout, viewGroup);
 
         TableLayout stk = (TableLayout)layout.findViewById(R.id.cart_table);
-        int drawableResId=R.drawable.cell_shape_header;
+       final int drawableResId=R.drawable.cell_shape_header;
         TableRow tbrow0 = new TableRow(context);
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
@@ -263,22 +264,98 @@ public class NewOrder extends Fragment {
         tv1.setGravity(Gravity.CENTER);
         tbrow0.addView(tv1);
         TextView tv2 = new TextView(getActivity());
-        tv2.setText(Html.fromHtml(" <b>QTY</b>"));
+        tv2.setText(Html.fromHtml(" <b>AMOUNT</b>"));
         tv2.setTextColor(Color.WHITE);
         tv2.setBackgroundResource(drawableResId);
         tv2.setGravity(Gravity.CENTER);
         tv2.setHeight(65);
         tbrow0.addView(tv2);
         TextView tv3 = new TextView(getActivity());
-        tv3.setText(Html.fromHtml(" <b>AMOUNT</b>"));
+        tv3.setText(Html.fromHtml(" <b>QTY</b>"));
         tv3.setTextColor(Color.WHITE);
         tv3.setBackgroundResource(drawableResId);
         tv3.setGravity(Gravity.CENTER);
         tv3.setHeight(65);
+
         tbrow0.addView(tv3);
         stk.addView(tbrow0);
+        for (final Model model : data) {
+            System.out.println("chumma1");
+            System.out.println(model.getName());
+            System.out.println(model.getAmount());
+            System.out.println(model.getItemCode());
+            System.out.println(model.getPrice());
+
+            TableRow tbrow1 = new TableRow(context);
+            tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
+            TextView tv00 = new TextView(getActivity());
+            tv00.setText(model.getName());
+            tv00.setTextColor(Color.WHITE);
+            tv00.setBackgroundResource(drawableResId);
+            tv00.setGravity(Gravity.CENTER);
+            tv00.setHeight(65);
+            tbrow1.addView(tv00);
+            final TextView tv11 = new TextView(getActivity());
+            tv11.setText(String.valueOf(model.getPrice()));
+            tv11.setTextColor(Color.WHITE);
+            tv11.setHeight(65);
+            tv11.setBackgroundResource(drawableResId);
+            tv11.setGravity(Gravity.CENTER);
+            tbrow1.addView(tv11);
+           final TextView tv22 = new TextView(getActivity());
+
+            tv22.setTextColor(Color.WHITE);
+            tv22.setBackgroundResource(drawableResId);
+            tv22.setGravity(Gravity.CENTER);
+            tv22.setHeight(65);
 
 
+           // model.setQuantity(tv22.);
+            tbrow1.addView(tv22);
+            EditText tv33 = new EditText(getActivity());
+
+            System.out.println("ff"+chumma);
+            tv33.setText(chumma);
+            tv33.setTextColor(Color.WHITE);
+            tv33.setBackgroundResource(drawableResId);
+            tv33.setGravity(Gravity.CENTER);
+            tv33.setHeight(65);
+            tv33.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                     chumma = s.toString();
+                    tv22.setText(String.valueOf(Float.parseFloat(chumma)*model.getPrice()));
+                     f= f+Float.parseFloat(chumma)*model.getPrice();
+
+
+                    System.out.println("aa"+chumma);
+
+                }
+            });
+
+            tbrow1.addView(tv33);
+           // String chumma = tv22.getText().toString();
+            System.out.println("bb"+chumma);
+            //tv33.setText(chumma);
+
+
+
+            stk.addView(tbrow1);
+        }
+       // TextView total = new TextView(R.layout.popup_layout);
+
+        TextView total=(TextView)layout.findViewById(R.id.chummaweee);
+        total.setText("the total amount is "+f);
 
         // Creating the PopupWindow
         final PopupWindow popup = new PopupWindow(context);

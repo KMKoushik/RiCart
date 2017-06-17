@@ -272,14 +272,14 @@
     <RelativeLayout android:layout_height="match_parent"
         android:layout_width="match_parent">
         <TextView
-            android:id="@+id/chumma"
+            android:id="@+id/chummaweee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="#000000"
             android:textSize="13dp"
             android:padding="5dp"
-            android:text="The total Amount to be paid is : 175 SGD"
+            android:text="The total Amount to be paid is "
             android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
 
         />
