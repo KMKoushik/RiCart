@@ -336,6 +336,8 @@ public class NewOrder extends Fragment {
                      chumma = s.toString();
                     tv22.setText(String.valueOf(Float.parseFloat(chumma)*model.getPrice()));
                      f= f+Float.parseFloat(chumma)*model.getPrice();
+                    TextView total=(TextView)layout.findViewById(R.id.total);
+                    total.setText("the total amount is "+f);
 
 
                     System.out.println("aa"+chumma);
@@ -346,6 +348,7 @@ public class NewOrder extends Fragment {
             tbrow1.addView(tv33);
            // String chumma = tv22.getText().toString();
             System.out.println("bb"+chumma);
+
             //tv33.setText(chumma);
 
 
@@ -354,8 +357,6 @@ public class NewOrder extends Fragment {
         }
        // TextView total = new TextView(R.layout.popup_layout);
 
-        TextView total=(TextView)layout.findViewById(R.id.chummaweee);
-        total.setText("the total amount is "+f);
 
         // Creating the PopupWindow
         final PopupWindow popup = new PopupWindow(context);
