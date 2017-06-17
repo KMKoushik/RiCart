@@ -53,7 +53,7 @@ public class SignUp extends AppCompatActivity {
                 String addresstxt=address.getText().toString();
                 String nameTxt=customername.getText().toString();
                 String phoneTxt=phone.getText().toString();
-                if(emailTxt.equals("")||passwordTxt.equals("")||addresstxt.equals("")||nameTxt.equals(""))
+                if(emailTxt.equals("")||passwordTxt.equals("")||nameTxt.equals(""))
                 {
                     Toast.makeText(getApplicationContext(),"Enter all data",Toast.LENGTH_LONG).show();
                 }

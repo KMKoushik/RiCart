@@ -23,6 +23,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.riact.ricart.utils.RiactDbHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,10 @@ public class Order extends Fragment {
     MultiSelectionSpinner spinner;
     Button submitBtn;
     Point p;
+    List list;
+    TableLayout stk1;
+    LinearLayout linearLayout;
+    TextView close;
 
 
     View myView;
@@ -47,7 +53,7 @@ public class Order extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         p=new Point();
         myView= inflater.inflate(R.layout.order,container,false);
-        LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
+        linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
         String jsonData="{\n" +
                 "\"data\" : [\n" +
                 "{\n" +
@@ -63,18 +69,101 @@ public class Order extends Fragment {
                 "}";
 
 
-        try {
+       /* try {
             showTable(myView,jsonData);
         } catch (JSONException e) {
             e.printStackTrace();
+        }*/
+
+        RiactDbHandler db = new RiactDbHandler(getActivity());
+        //Toast.makeText(getActivity(),db.getAllOrder().toString(),Toast.LENGTH_LONG).show();
+
+        List<List> Orderlist=db.getAllOrder();
+        stk1 = (TableLayout) myView.findViewById(R.id.ordertable);
+        int count=1;
+
+
+
+        for(final List list:Orderlist)
+        {
+
+            TableRow tbrow0 = new TableRow(getActivity());
+            tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
+            float textSize=11;
+            TextView tv = new TextView(getActivity());
+            tv.setTextColor(Color.BLACK);
+            tv.setGravity(Gravity.CENTER);
+            tv.setHeight(100);
+            tv.setTextSize(textSize);
+            tv.setText(""+count);
+            tbrow0.addView(tv);
+
+            TextView tv0 = new TextView(getActivity());
+            tv0.setTextColor(Color.BLACK);
+            tv0.setGravity(Gravity.CENTER);
+            tv0.setHeight(100);
+            tv0.setTextSize(textSize);
+            tv0.setText((String)list.get(0));
+            tbrow0.addView(tv0);
+
+
+            TextView tv1 = new TextView(getActivity());
+            tv1.setTextColor(Color.BLACK);
+            tv1.setGravity(Gravity.CENTER);
+            tv1.setHeight(100);
+            tv1.setTextSize(textSize);
+            tv1.setText((String)list.get(2));
+            tbrow0.addView(tv1);
+
+            TextView tv2 = new TextView(getActivity());
+            tv2.setTextColor(Color.BLACK);
+            tv2.setGravity(Gravity.CENTER);
+            tv2.setHeight(100);
+            tv2.setTextSize(textSize);
+            String txt=(String)list.get(3);
+            String value;
+            if(txt.equals("true"))
+                value="submitted";
+            else
+                value="saved";
+            tv2.setText(value);
+
+            tbrow0.addView(tv2);
+
+            TextView tv3 = new TextView(getActivity());
+            tv3.setTextColor(Color.BLACK);
+            tv3.setGravity(Gravity.CENTER);
+            tv3.setHeight(100);
+            tv3.setTextSize(textSize);
+            tv3.setText(Html.fromHtml("<u>View</u>"));
+            tbrow0.addView(tv3);
+            tv3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        showTable(myView,(String)list.get(1),(String) list.get(0));
+                        linearLayout.removeView(stk1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            count++;
+
+            stk1.addView(tbrow0);
+
+
         }
+
 
         return myView;
     }
 
-    public void showTable(View myView,String json) throws JSONException {
+    public void showTable(View myView,String json,String date) throws JSONException {
         int drawableResId=R.drawable.cell_shape_header;
-        TableLayout stk = (TableLayout) myView.findViewById(R.id.ordertable);
+        final TableLayout stk = (TableLayout) myView.findViewById(R.id.order_items);
         TableRow tbrow0 = new TableRow(getActivity());
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         float textSize=11;
@@ -120,20 +209,19 @@ public class Order extends Fragment {
         tbrow0.addView(tv4);
         stk.addView(tbrow0);
 
-        JSONObject jsonObj = new JSONObject(json);
-        JSONArray contacts = jsonObj.getJSONArray("data");
-        for (int i = 0; i < contacts.length(); i++) {
+        JSONArray jsonObj = new JSONArray(json);
+        for (int i = 0; i < jsonObj.length(); i++) {
             if(i%2==0)
                 drawableResId=R.drawable.cell_shape;
             else
                 drawableResId=R.drawable.cell_shape2;
 
-            JSONObject c = contacts.getJSONObject(i);
-            String description = c.getString("Description");
-            String uom = c.getString("UOM");
-            String Qty = c.getString("Qty");
-            String Price = c.getString("Price");
-            String amt= c.getString("Amt");
+            JSONObject c = jsonObj.getJSONObject(i);
+            String description = c.getString("name");
+            String uom = c.getString("uom");
+            String Qty = c.getString("quantity");
+            String Price = c.getString("price");
+            String amt= c.getString("amount");
             TableRow tbrow = new TableRow(getActivity());
             tbrow.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -141,7 +229,7 @@ public class Order extends Fragment {
             t1v.setText(description);
             t1v.setTextColor(Color.BLACK);
             t1v.setGravity(Gravity.CENTER);
-            t1v.setHeight(125);
+            t1v.setHeight(100);
 
             t1v.setTextSize(textSize);
             t1v.setBackgroundResource(drawableResId);
@@ -150,7 +238,7 @@ public class Order extends Fragment {
             t2v.setText(uom);
             t2v.setTextColor(Color.BLACK);
             t2v.setGravity(Gravity.CENTER);
-            t2v.setHeight(125);
+            t2v.setHeight(100);
             t2v.setTextSize(textSize);
             t2v.setBackgroundResource(drawableResId);
             tbrow.addView(t2v);
@@ -158,7 +246,7 @@ public class Order extends Fragment {
             t3v.setText(Qty);
             t3v.setTextColor(Color.BLACK);
             t3v.setGravity(Gravity.CENTER);
-            t3v.setHeight(125);
+            t3v.setHeight(100);
             t3v.setTextSize(textSize);
             t3v.setBackgroundResource(drawableResId);
             tbrow.addView(t3v);
@@ -166,7 +254,7 @@ public class Order extends Fragment {
             t4v.setText(Price);
             t4v.setTextColor(Color.BLACK);
             t4v.setGravity(Gravity.CENTER);
-            t4v.setHeight(125);
+            t4v.setHeight(100);
             t4v.setTextSize(textSize);
             t4v.setBackgroundResource(drawableResId);
             tbrow.addView(t4v);
@@ -175,15 +263,29 @@ public class Order extends Fragment {
             t5v.setText(amt);
             t5v.setTextColor(Color.BLACK);
             t5v.setGravity(Gravity.CENTER);
-            t5v.setHeight(125);
+            t5v.setHeight(100);
             t5v.setTextSize(textSize);
             t5v.setBackgroundResource(drawableResId);
             tbrow.addView(t5v);
             stk.addView(tbrow);
-
             // Phone node is JSON Object
-
         }
+
+        close=new TextView(getActivity());
+        close.setText("close");
+        close.setGravity(Gravity.CENTER);
+        stk.addView(close);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stk.setVisibility(View.INVISIBLE);
+                linearLayout.addView(stk1);
+            }
+        });
+
+
+
 
 
     }

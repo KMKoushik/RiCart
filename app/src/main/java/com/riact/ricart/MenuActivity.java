@@ -1,6 +1,7 @@
 package com.riact.ricart;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.riact.ricart.utils.RiactDbHandler;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -97,6 +100,36 @@ public class MenuActivity extends AppCompatActivity
         }else if(id==R.id.nav_profile){
 
             fm.beginTransaction().replace(R.id.content_menu,new Profile()).commit();
+        }
+        else if(id==R.id.nav_logout)
+        {
+            final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Warning");
+            alert.setMessage("Do you want to Logout?");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
+            {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    RiactDbHandler db=new RiactDbHandler(getApplicationContext());
+                    db.deleteUser();
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            alert.setNegativeButton("Cancel",new DialogInterface.OnClickListener()
+            {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+
+                }
+            });
+            alert.show();
+
         }
         else if (id == R.id.nav_exit) {
             final AlertDialog.Builder alert = new AlertDialog.Builder(this);

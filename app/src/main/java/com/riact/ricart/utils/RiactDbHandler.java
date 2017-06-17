@@ -3,6 +3,7 @@ package com.riact.ricart.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -28,6 +29,7 @@ public class RiactDbHandler extends SQLiteOpenHelper {
     public static final String KEY_DATE = "date";
     public static final String KEY_ORDER = "orders";
     public static final String KEY_TOTAL = "total";
+    public static final String KEY_ISSUBMITTED="issubmitted";
 
     public RiactDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DB_VERSION);
@@ -42,7 +44,7 @@ public class RiactDbHandler extends SQLiteOpenHelper {
         db.execSQL(createTableQuerry);
 
         createTableQuerry="CREATE TABLE " + TABLE_ORDER + "("
-                + KEY_DATE + "  TEXT," + KEY_ORDER + " TEXT,"+ KEY_TOTAL+" TEXT"+")";
+                + KEY_DATE + "  TEXT," + KEY_ORDER + " TEXT,"+ KEY_TOTAL+" TEXT,"+ KEY_ISSUBMITTED+" TEXT"+")";
         db.execSQL(createTableQuerry);
 
     }
@@ -52,7 +54,6 @@ public class RiactDbHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
         // Create tables again
-        onCreate(db);
 
     }
 
@@ -97,17 +98,37 @@ public class RiactDbHandler extends SQLiteOpenHelper {
         return user;
     }
 
-    public void addOrder(String date,String orderData,String total)
+    public void deleteUser()
+    {
+        String createTableQuerry="CREATE TABLE " + TABLE_USER + "("
+                + KEY_NAME + "  TEXT," + KEY_PHONE + " TEXT,"
+                + KEY_ADDRESS + " TEXT," + KEY_EMAIL+" TEXT"+")";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL(createTableQuerry);
+        db.close();
+
+
+    }
+
+    public void addOrder(String date,String orderData,String total,String isSubmitted)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_DATE,date);
         values.put(KEY_ORDER,orderData);
         values.put(KEY_TOTAL,total);
+        values.put(KEY_ISSUBMITTED,isSubmitted);
         db.insert(TABLE_ORDER, null, values);
-        //String query="INSERT INTO myorder(date,orders) VALUES ('today','poda naye')";
-        //db.execSQL(query);
         db.close();
+    }
+    public void updateSubmittedStatus(String date,String submitted)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ISSUBMITTED,submitted);
+        db.update(TABLE_ORDER, values, KEY_DATE+"="+date, null);
+
     }
 
     public List<String> getOrder(String date)
@@ -138,11 +159,54 @@ public class RiactDbHandler extends SQLiteOpenHelper {
         return order;
     }
 
-    public List<String> getAllOrder()
-    {
-        //get all orders here
-        return null;
+    public List<List> getAllOrder()
+    { String selectQuery = "SELECT  * FROM " + TABLE_ORDER;
+        SQLiteDatabase db = this.getWritableDatabase();
+        List<List> order=new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                    // Adding contact to list
+
+                    List list=new ArrayList();
+                    list.add(cursor.getString(0));
+                    list.add(cursor.getString(1));
+                    list.add(cursor.getString(2));
+                    list.add(cursor.getString(3));
+                    order.add(list);
+                } while (cursor.moveToNext());
+            }
+        }
+        catch (Exception e)
+        {
+e.printStackTrace();
+        }
+        finally {
+            db.close();
+        }
+
+        return order;
     }
 
+    public long getSubmittedCount()
+    {
+        String selectQuery = "SELECT COUNT(*) FROM " + TABLE_ORDER+" WHERE "+KEY_ISSUBMITTED+" = 'true'";
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        long numRows = DatabaseUtils.longForQuery(db, selectQuery, null);
+        db.close();
+
+        return numRows;
+    }
+    public long getSavedCount()
+    {
+        String selectQuery = "SELECT COUNT(*) FROM " + TABLE_ORDER+" WHERE "+KEY_ISSUBMITTED+" = 'false'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        long numRows = DatabaseUtils.longForQuery(db, selectQuery, null);
+        db.close();
+        return numRows;
+    }
 }

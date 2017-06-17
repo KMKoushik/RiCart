@@ -133,17 +133,17 @@ public class NewOrder extends Fragment {
             @Override
             public void onClick(View v) {
 
-             /*   SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 Date date=new Date();
                 String dateStr=sd.format(date);
                 Gson gson = new Gson();
                 String arrayList = gson.toJson(Constants.orderList);
-                userDb.addOrder(dateStr,arrayList);
+                userDb.addOrder(dateStr,arrayList,"50","false");
                 Type listType = new TypeToken<ArrayList<Model>>() {}.getType();
 
                 ArrayList<Model> arr=new Gson().fromJson(arrayList,listType);
 
-                Toast.makeText(getActivity(),userDb.getOrder(dateStr).get(0),Toast.LENGTH_LONG).show();*/
+                Toast.makeText(getActivity(),userDb.getOrder(dateStr).get(0),Toast.LENGTH_LONG).show();
                 showPopup(getActivity(),p,Constants.orderList);
 
             }
@@ -190,6 +190,8 @@ public class NewOrder extends Fragment {
                                 if(!cb.isChecked()) {
                                     Constants.orderList.add(ItemList.get(position));
                                     ItemList.get(position).putValue(1);
+                                    ItemList.get(position).setQuantity(1.0000f);
+
                                 }
                                 else {
                                     Constants.orderList.remove(ItemList.get(position));
