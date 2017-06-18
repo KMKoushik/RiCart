@@ -3,13 +3,16 @@ package com.riact.ricart;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
+import android.icu.text.MeasureFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -17,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +34,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
@@ -39,7 +45,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -134,7 +143,7 @@ public class NewOrder extends Fragment {
                 ArrayList<Model> arr=new Gson().fromJson(arrayList,listType);
 
                 Toast.makeText(getActivity(),userDb.getOrder(dateStr).get(0),Toast.LENGTH_LONG).show();*/
-                showPopup(getActivity(),p,Constants.orderList);
+                showPopup(getActivity(),p);
 
             }
         });
@@ -215,25 +224,13 @@ public class NewOrder extends Fragment {
 
     }
 
-    private void showPopup( Activity context, Point p, ArrayList<Model> data) {
+    private void showPopup(Activity context, Point p) {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int popupWidth = displayMetrics.widthPixels;
         int popupHeight = displayMetrics.heightPixels;
         System.out.println("chumma");
-        for (Model model : data) {
-            System.out.println("chumma1");
-            System.out.println(model.getName());
-            System.out.println(model.getAmount());
-            System.out.println(model.getItemCode());
-            System.out.println(model.getPrice());
-        }
-        String dats="";
-        for (Model temp : data) {
-            dats+="\n"+temp.getName();
-            System.out.println(temp.getName());
-        }
 
 
 
@@ -247,6 +244,7 @@ public class NewOrder extends Fragment {
 
         TableLayout stk = (TableLayout)layout.findViewById(R.id.cart_table);
        final int drawableResId=R.drawable.cell_shape_header;
+        float textSize=11;
         TableRow tbrow0 = new TableRow(context);
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
@@ -254,75 +252,85 @@ public class NewOrder extends Fragment {
         tv0.setTextColor(Color.WHITE);
         tv0.setBackgroundResource(drawableResId);
         tv0.setGravity(Gravity.CENTER);
+        tv0.setTextSize(textSize);
         tv0.setHeight(65);
         tbrow0.addView(tv0);
         TextView tv1 = new TextView(getActivity());
         tv1.setText(Html.fromHtml(" <b>PRICE</b> "));
         tv1.setTextColor(Color.WHITE);
         tv1.setHeight(65);
+        tv1.setTextSize(textSize);
         tv1.setBackgroundResource(drawableResId);
         tv1.setGravity(Gravity.CENTER);
         tbrow0.addView(tv1);
         TextView tv2 = new TextView(getActivity());
-        tv2.setText(Html.fromHtml(" <b>AMOUNT</b>"));
+        tv2.setText(Html.fromHtml(" <b>QTY</b>"));
         tv2.setTextColor(Color.WHITE);
         tv2.setBackgroundResource(drawableResId);
         tv2.setGravity(Gravity.CENTER);
         tv2.setHeight(65);
+        tv2.setTextSize(textSize);
         tbrow0.addView(tv2);
         TextView tv3 = new TextView(getActivity());
-        tv3.setText(Html.fromHtml(" <b>QTY</b>"));
+        tv3.setText(Html.fromHtml(" <b>AMMOUNT</b>"));
         tv3.setTextColor(Color.WHITE);
         tv3.setBackgroundResource(drawableResId);
         tv3.setGravity(Gravity.CENTER);
+        tv3.setTextSize(textSize);
         tv3.setHeight(65);
 
         tbrow0.addView(tv3);
         stk.addView(tbrow0);
-        for (final Model model : data) {
+        final int count=0;
+        for (final Model model : Constants.orderList) {
             System.out.println("chumma1");
             System.out.println(model.getName());
             System.out.println(model.getAmount());
             System.out.println(model.getItemCode());
             System.out.println(model.getPrice());
-
+            int background=R.drawable.cell_shape;
             TableRow tbrow1 = new TableRow(context);
             tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
             TextView tv00 = new TextView(getActivity());
             tv00.setText(model.getName());
-            tv00.setTextColor(Color.WHITE);
-            tv00.setBackgroundResource(drawableResId);
-            tv00.setGravity(Gravity.CENTER);
-            tv00.setHeight(65);
+            tv00.setTextColor(Color.BLACK);
+            //tv00.setBackgroundResource(background);
+            tv00.setMaxLines(2);
+            tv00.setWidth(250);
+            tv00.setGravity(Gravity.LEFT);
+            tv00.setHeight(75);
+            tv00.setTextSize(textSize);
             tbrow1.addView(tv00);
             final TextView tv11 = new TextView(getActivity());
             tv11.setText(String.valueOf(model.getPrice()));
-            tv11.setTextColor(Color.WHITE);
-            tv11.setHeight(65);
-            tv11.setBackgroundResource(drawableResId);
+            tv11.setTextColor(Color.BLACK);
+            tv11.setHeight(75);
+            //tv11.setBackgroundResource(background);
             tv11.setGravity(Gravity.CENTER);
+            tv11.setTextSize(textSize);
             tbrow1.addView(tv11);
-           final TextView tv22 = new TextView(getActivity());
+            final TextView tv22 = new TextView(getActivity());
 
-            tv22.setTextColor(Color.WHITE);
-            tv22.setBackgroundResource(drawableResId);
+            tv22.setTextColor(Color.BLACK);
+            //tv22.setBackgroundResource(background);
             tv22.setGravity(Gravity.CENTER);
-            tv22.setHeight(65);
+            tv22.setHeight(75);
+            tv22.setTextSize(textSize);
 
 
-           // model.setQuantity(tv22.);
-            tbrow1.addView(tv22);
-            EditText tv33 = new EditText(getActivity());
-
+            final EditText tv33 = new EditText(getActivity());
+            tv33.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
             System.out.println("ff"+chumma);
             tv33.setText(chumma);
-            tv33.setTextColor(Color.WHITE);
-            tv33.setBackgroundResource(drawableResId);
+            tv33.setTextColor(Color.BLACK);
+            //tv33.setBackgroundResource(background);
             tv33.setGravity(Gravity.CENTER);
-            tv33.setHeight(65);
+            tv33.setHeight(75);
+            tv33.setTextSize(textSize);
             tv33.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 
                 }
 
@@ -333,20 +341,27 @@ public class NewOrder extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                     chumma = s.toString();
-                    tv22.setText(String.valueOf(Float.parseFloat(chumma)*model.getPrice()));
-                     f= f+Float.parseFloat(chumma)*model.getPrice();
-                    TextView total=(TextView)layout.findViewById(R.id.total);
-                    total.setText("the total amount is "+f);
+                        chumma = s.toString();
+                    if(chumma.equals(""))
+                        chumma="0";
 
-
-                    System.out.println("aa"+chumma);
-
+                        tv22.setText(String.valueOf(Float.parseFloat(chumma) * model.getPrice()));
+                        f = f + Float.parseFloat(chumma) * model.getPrice();
+                        TextView total = (TextView) layout.findViewById(R.id.total);
+                    model.setQuantity(Float.parseFloat(chumma));
+                    model.setAmount(Float.parseFloat(chumma) * model.getPrice());
+                        total.setText("Total " + f);
                 }
             });
 
+
+
+            // model.setQuantity(tv22.);
+
             tbrow1.addView(tv33);
-           // String chumma = tv22.getText().toString();
+            tbrow1.addView(tv22);
+
+            // String chumma = tv22.getText().toString();
             System.out.println("bb"+chumma);
 
             //tv33.setText(chumma);
@@ -382,6 +397,27 @@ public class NewOrder extends Fragment {
             @Override
             public void onClick(View v) {
                 popup.dismiss();
+            }
+        });
+
+        Button submit = (Button)layout.findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date date=new Date();
+                String dateStr=sd.format(date);
+                Gson gson = new Gson();
+                String arrayList = gson.toJson(Constants.orderList);
+                userDb.addOrder(dateStr,arrayList,""+f,"false");
+                Type listType = new TypeToken<ArrayList<Model>>() {}.getType();
+
+                ArrayList<Model> arr=new Gson().fromJson(arrayList,listType);
+                Toast.makeText(getActivity(),userDb.getOrder(dateStr).get(0),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), MenuActivity.class);
+                startActivity(intent);
+                Constants.orderList.clear();
+
             }
         });
     }

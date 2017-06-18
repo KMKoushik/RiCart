@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -42,8 +43,8 @@ public class Order extends Fragment {
     Button submitBtn;
     Point p;
     List list;
-    TableLayout stk1;
-    LinearLayout linearLayout;
+    TableLayout stk1,stk;
+    RelativeLayout linearLayout;
     TextView close;
 
 
@@ -53,7 +54,7 @@ public class Order extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         p=new Point();
         myView= inflater.inflate(R.layout.order,container,false);
-        linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
+        linearLayout = (RelativeLayout) myView.findViewById(R.id.order_layout);
         String jsonData="{\n" +
                 "\"data\" : [\n" +
                 "{\n" +
@@ -163,8 +164,13 @@ public class Order extends Fragment {
 
     public void showTable(View myView,String json,String date) throws JSONException {
         int drawableResId=R.drawable.cell_shape_header;
-        final TableLayout stk = (TableLayout) myView.findViewById(R.id.order_items);
+        stk=new TableLayout(getActivity());
+        stk.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        stk.setStretchAllColumns(true);
+        stk.setShrinkAllColumns(true);
+        //stk=(TableLayout)myView.findViewById(R.id.order_items) ;
         TableRow tbrow0 = new TableRow(getActivity());
+
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         float textSize=11;
         TextView tv0 = new TextView(getActivity());
@@ -279,10 +285,12 @@ public class Order extends Fragment {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stk.setVisibility(View.INVISIBLE);
+                linearLayout.removeView(stk);
                 linearLayout.addView(stk1);
             }
         });
+
+        linearLayout.addView(stk);
 
 
 
