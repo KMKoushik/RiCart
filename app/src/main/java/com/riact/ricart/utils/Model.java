@@ -33,10 +33,12 @@ public class Model {
 
     public void setQuantity(float quantity){ this.quantity=quantity;}
 
-    public float getPrice(){return this.price;}
+    public Float getQuantity(){return this.quantity;}
+
+    public Float getPrice(){return this.price;}
 
     public void setAmount(float amount){this.amount=amount;}
 
-    public float getAmount(){return this.amount;}
+    public Float getAmount(){return this.amount;}
 
 }

@@ -202,7 +202,6 @@ public class NewOrder extends Fragment {
 
                             }
                         });
-                        Toast.makeText(getActivity(),selectedFromList,Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -283,16 +282,11 @@ public class NewOrder extends Fragment {
         stk.addView(tbrow0);
         final int count=0;
         for (final Model model : Constants.orderList) {
-            System.out.println("chumma1");
-            System.out.println(model.getName());
-            System.out.println(model.getAmount());
-            System.out.println(model.getItemCode());
-            System.out.println(model.getPrice());
             int background=R.drawable.cell_shape;
             TableRow tbrow1 = new TableRow(context);
             tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
             TextView tv00 = new TextView(getActivity());
-            tv00.setText(model.getName());
+            tv00.setText(model.getName()+" ("+model.getUom()+")");
             tv00.setTextColor(Color.BLACK);
             //tv00.setBackgroundResource(background);
             tv00.setMaxLines(2);
@@ -320,7 +314,6 @@ public class NewOrder extends Fragment {
 
             final EditText tv33 = new EditText(getActivity());
             tv33.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-            System.out.println("ff"+chumma);
             tv33.setText(chumma);
             tv33.setTextColor(Color.BLACK);
             //tv33.setBackgroundResource(background);
@@ -342,15 +335,16 @@ public class NewOrder extends Fragment {
                 @Override
                 public void afterTextChanged(Editable s) {
                         chumma = s.toString();
-                    if(chumma.equals(""))
+                    if(chumma.equals("")||chumma.equals("."))
                         chumma="0";
 
-                        tv22.setText(String.valueOf(Float.parseFloat(chumma) * model.getPrice()));
-                        f = f + Float.parseFloat(chumma) * model.getPrice();
+                        tv22.setText(String.valueOf(roundOff(Float.parseFloat(chumma) * model.getPrice())));
+
                         TextView total = (TextView) layout.findViewById(R.id.total);
-                    model.setQuantity(Float.parseFloat(chumma));
-                    model.setAmount(Float.parseFloat(chumma) * model.getPrice());
-                        total.setText("Total " + f);
+                    model.setQuantity(roundOff(Float.parseFloat(chumma)));
+                    model.setAmount(roundOff(Float.parseFloat(chumma) * model.getPrice()));
+                    f=calculateTotal();
+                        total.setText("Total : " + roundOff(f));
                 }
             });
 
@@ -362,7 +356,6 @@ public class NewOrder extends Fragment {
             tbrow1.addView(tv22);
 
             // String chumma = tv22.getText().toString();
-            System.out.println("bb"+chumma);
 
             //tv33.setText(chumma);
 
@@ -409,14 +402,17 @@ public class NewOrder extends Fragment {
                 String dateStr=sd.format(date);
                 Gson gson = new Gson();
                 String arrayList = gson.toJson(Constants.orderList);
-                userDb.addOrder(dateStr,arrayList,""+f,"false");
+                userDb.addOrder(dateStr,arrayList,""+roundOff(f),"false");
                 Type listType = new TypeToken<ArrayList<Model>>() {}.getType();
 
                 ArrayList<Model> arr=new Gson().fromJson(arrayList,listType);
-                Toast.makeText(getActivity(),userDb.getOrder(dateStr).get(0),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), MenuActivity.class);
                 startActivity(intent);
                 Constants.orderList.clear();
+                popup.dismiss();
+                getActivity().finish();
+
+
 
             }
         });
@@ -434,5 +430,23 @@ public class NewOrder extends Fragment {
     }
 
 
+
+    public float calculateTotal()
+    {
+        float total=0;
+        for(Model model:Constants.orderList)
+        {
+            total=total+(model.getPrice()*model.getQuantity());
+
+        }
+
+        return total;
+    }
+
+    public float roundOff(float val)
+    {
+        double value=Math.round(val*100)/100D;
+        return (float)value;
+    }
 
 }

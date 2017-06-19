@@ -84,6 +84,7 @@ public class RiactDbHandler extends SQLiteOpenHelper {
                     user.add(cursor.getString(0));
                     user.add(cursor.getString(1));
                     user.add(cursor.getString(2));
+                    user.add(cursor.getString(3));
                 } while (cursor.moveToNext());
             }
         }
@@ -105,6 +106,10 @@ public class RiactDbHandler extends SQLiteOpenHelper {
                 + KEY_ADDRESS + " TEXT," + KEY_EMAIL+" TEXT"+")";
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
+        db.execSQL(createTableQuerry);
+        createTableQuerry="CREATE TABLE " + TABLE_ORDER + "("
+                + KEY_DATE + "  TEXT," + KEY_ORDER + " TEXT,"+ KEY_TOTAL+" TEXT,"+ KEY_ISSUBMITTED+" TEXT"+")";
         db.execSQL(createTableQuerry);
         db.close();
 
@@ -127,15 +132,15 @@ public class RiactDbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_ISSUBMITTED,submitted);
-        db.update(TABLE_ORDER, values, KEY_DATE+"="+date, null);
+        db.update(TABLE_ORDER, values, KEY_DATE+"='"+date+"'", null);
 
     }
 
-    public List<String> getOrder(String date)
+    public String getOrder(String date)
     {
         String selectQuery = "SELECT  * FROM " + TABLE_ORDER+" WHERE date='"+date+"'";
         SQLiteDatabase db = this.getWritableDatabase();
-        List<String> order=new ArrayList<>();
+        String order=new String ();
         try {
             Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -143,8 +148,7 @@ public class RiactDbHandler extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     // Adding contact to list
-                    order.add(cursor.getString(1));
-                    order.add(cursor.getString(2));
+                    order=cursor.getString(1);
                 } while (cursor.moveToNext());
             }
         }
@@ -191,6 +195,24 @@ e.printStackTrace();
         return order;
     }
 
+    public void deleteOrder(String date)
+    {
+        String deleteQuer="DELETE  FROM "+TABLE_ORDER+" WHERE "+KEY_DATE+" ='"+date+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(deleteQuer);
+        db.close();
+    }
+
+    public void updateOrder(String date,String data,String amount)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ORDER,data);
+        values.put(KEY_TOTAL,amount);
+        db.update(TABLE_ORDER, values, KEY_DATE+"='"+date+"'", null);
+
+    }
+
     public long getSubmittedCount()
     {
         String selectQuery = "SELECT COUNT(*) FROM " + TABLE_ORDER+" WHERE "+KEY_ISSUBMITTED+" = 'true'";
@@ -209,4 +231,6 @@ e.printStackTrace();
         db.close();
         return numRows;
     }
+
+
 }
