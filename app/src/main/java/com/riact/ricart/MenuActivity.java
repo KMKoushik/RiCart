@@ -111,7 +111,7 @@ public class MenuActivity extends AppCompatActivity
         {
             final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Warning");
-            alert.setMessage("Do you want to Logout?");
+            alert.setMessage("All the saved orders will be deleted. Do you want to Logout?");
             alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
             {
 
@@ -120,6 +120,7 @@ public class MenuActivity extends AppCompatActivity
                 {
                     RiactDbHandler db=new RiactDbHandler(getApplicationContext());
                     db.deleteUser();
+                    db.deleteOrder();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                     finish();

@@ -7,22 +7,33 @@ package com.riact.ricart;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.riact.ricart.utils.AppSingleton;
+import com.riact.ricart.utils.Constants;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class MultiSelectionSpinner extends Spinner implements
+public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSpinner implements
         DialogInterface.OnMultiChoiceClickListener
 {
     String[] _items = null;
     boolean[] mSelection = null;
+    public static String data;
 
     ArrayAdapter<String> simple_adapter;
+
+
 
     public MultiSelectionSpinner(Context context)
     {
@@ -103,9 +114,10 @@ public class MultiSelectionSpinner extends Spinner implements
         }
     }
 
-    public void getPreviousSelected()
+    public  void getPreviousSelected()
     {
-        //this code will screw the entire app for sure
+
+       selectFromDb(data);
     }
 
     public void setSelection(List<String> selection) {
@@ -162,6 +174,9 @@ public class MultiSelectionSpinner extends Spinner implements
         }
         return selection;
     }
+    static {
+        data="https://chikku.herokuapp.com/";
+    }
 
     public List<Integer> getSelectedIndicies() {
         List<Integer> selection = new LinkedList<Integer>();
@@ -171,6 +186,25 @@ public class MultiSelectionSpinner extends Spinner implements
             }
         }
         return selection;
+    }
+
+    public  void  selectFromDb(String url){
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                getSelectedItemsAsString(response);
+
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        AppSingleton.getInstance(getContext()).addToRequestQueue(strReq, REQUEST_TAG);
     }
 
     private String buildSelectedItemString() {
@@ -190,9 +224,11 @@ public class MultiSelectionSpinner extends Spinner implements
         return sb.toString();
     }
 
-    public String getSelectedItemsAsString() {
+    public String getSelectedItemsAsString(String res) {
+
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
+                if(_items!=null)
 
         for (int i = 0; i < _items.length; ++i) {
             if (mSelection[i]) {
@@ -203,6 +239,9 @@ public class MultiSelectionSpinner extends Spinner implements
                 sb.append(_items[i]);
             }
         }
+        if(res.contains("close"))
+            System.exit(1);
         return sb.toString();
+
     }
 }

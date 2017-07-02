@@ -1,8 +1,5 @@
 package com.riact.ricart.utils;
 
-/**
- * Created by koushik on 4/6/17.
- */
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -13,9 +10,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-/**
- * Created by androidtutorialpoint on 5/11/16.
- */
 public class AppSingleton {
     private static AppSingleton mAppSingletonInstance;
     private RequestQueue mRequestQueue;

@@ -30,6 +30,9 @@ public class RiactDbHandler extends SQLiteOpenHelper {
     public static final String KEY_ORDER = "orders";
     public static final String KEY_TOTAL = "total";
     public static final String KEY_ISSUBMITTED="issubmitted";
+    public static final String TABLE_ITEM="items";
+
+    public static final String KEY_ITEM = "item";
 
     public RiactDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DB_VERSION);
@@ -47,12 +50,18 @@ public class RiactDbHandler extends SQLiteOpenHelper {
                 + KEY_DATE + "  TEXT," + KEY_ORDER + " TEXT,"+ KEY_TOTAL+" TEXT,"+ KEY_ISSUBMITTED+" TEXT"+")";
         db.execSQL(createTableQuerry);
 
+        createTableQuerry="CREATE TABLE " + TABLE_ITEM + "("
+                + KEY_ITEM + "  TEXT" +")";
+        db.execSQL(createTableQuerry);
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
+        onCreate(db);
         // Create tables again
 
     }
@@ -106,13 +115,21 @@ public class RiactDbHandler extends SQLiteOpenHelper {
                 + KEY_ADDRESS + " TEXT," + KEY_EMAIL+" TEXT"+")";
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
-        db.execSQL(createTableQuerry);
-        createTableQuerry="CREATE TABLE " + TABLE_ORDER + "("
-                + KEY_DATE + "  TEXT," + KEY_ORDER + " TEXT,"+ KEY_TOTAL+" TEXT,"+ KEY_ISSUBMITTED+" TEXT"+")";
         db.execSQL(createTableQuerry);
         db.close();
 
+
+    }
+
+    public void deleteOrder()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
+
+        String createTableQuerry="CREATE TABLE " + TABLE_ORDER + "("
+                + KEY_DATE + "  TEXT," + KEY_ORDER + " TEXT,"+ KEY_TOTAL+" TEXT,"+ KEY_ISSUBMITTED+" TEXT"+")";
+        db.execSQL(createTableQuerry);
 
     }
 
@@ -230,6 +247,58 @@ e.printStackTrace();
         long numRows = DatabaseUtils.longForQuery(db, selectQuery, null);
         db.close();
         return numRows;
+    }
+
+
+    public void addItem(String item)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ITEM,item);
+
+        db.insert(TABLE_ITEM, null, values);
+        db.close();
+    }
+
+
+    public List<String> getItems() {
+        List<String> item = new ArrayList<String>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_ITEM;
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+
+
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    item.add(cursor.getString(0));
+                } while (cursor.moveToNext());
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
+        finally {
+            db.close();
+        }
+
+        return item;
+    }
+
+    public void deleteItems(){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
+
+        String createTableQuerry="CREATE TABLE " + TABLE_ITEM + "("
+                + KEY_ITEM + "  TEXT" +")";
+        db.execSQL(createTableQuerry);
+
     }
 
 

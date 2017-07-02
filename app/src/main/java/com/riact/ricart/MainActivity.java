@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                resp="Some error occured";
+                resp="Failed to login";
                 progressDialog.hide();
                 Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                resp="Some error occured";
+                resp="Failed to fetch data";
                 Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
 
 

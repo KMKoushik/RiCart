@@ -5,16 +5,18 @@ package com.riact.ricart.utils;
  */
 
 public class Model {
-    String name,itemCode,uom;
-    int value;
+    String name,itemCode,uom,group;
+    int value,index;
     float price,quantity,amount;
 
-    public Model(String name, int value, String itemCode,String uom,float price) {
+    public Model(String name, int value, String itemCode,String uom,float price,String group,int index) {
         this.name = name;
         this.value = value;
         this.itemCode=itemCode;
         this.uom=uom;
         this.price=price;
+        this.group=group;
+        this.index=index;
     }
 
     public String getName() {
@@ -40,5 +42,9 @@ public class Model {
     public void setAmount(float amount){this.amount=amount;}
 
     public Float getAmount(){return this.amount;}
+
+    public String getGroup(){return this.group;}
+
+    public int getIndex(){return this.index;}
 
 }

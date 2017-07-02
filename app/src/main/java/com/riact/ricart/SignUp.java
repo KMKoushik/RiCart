@@ -64,7 +64,7 @@ public class SignUp extends AppCompatActivity {
 
                        String url=new String();
                         try {
-                            url=Constants.webAddress+ "set_customers.php?cust_name="+nameTxt+"&cust_email="+emailTxt+"&cust_address="+URLEncoder.encode(addresstxt,"UTF-8")+"&cust_phone="+phoneTxt+"&user_password="+passwordTxt;
+                            url=Constants.webAddress+ "set_customers.php?cust_name="+URLEncoder.encode(nameTxt,"UTF-8")+"&cust_email="+emailTxt+"&cust_address="+URLEncoder.encode(addresstxt,"UTF-8")+"&cust_phone="+phoneTxt+"&user_password="+passwordTxt;
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -168,7 +168,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                resp="Some error occured";
+                resp="SignUp failed";
                 Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
 
 

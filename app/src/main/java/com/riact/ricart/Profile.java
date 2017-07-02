@@ -82,7 +82,11 @@ public class Profile extends Fragment {
 
                         String url=new String();
                         try {
-                            url=Constants.webAddress+ "set_customers.php?cust_name="+nameTxt+"&cust_email="+Constants.userData.get(3)+"&cust_address="+ URLEncoder.encode(addressTxt,"UTF-8")+"&cust_phone="+phoneTxt+"&user_password="+passwordTxt;
+                            if(!passwordTxt.equals(""))
+                            url=Constants.webAddress+ "set_customers.php?cust_name="+URLEncoder.encode(nameTxt,"UTF-8")+"&cust_email="+Constants.userData.get(3)+"&cust_address="+ URLEncoder.encode(addressTxt,"UTF-8")+"&cust_phone="+phoneTxt+"&user_password="+passwordTxt;
+                            else
+                                url=Constants.webAddress+ "set_customers.php?cust_name="+URLEncoder.encode(nameTxt,"UTF-8")+"&cust_email="+Constants.userData.get(3)+"&cust_address="+ URLEncoder.encode(addressTxt,"UTF-8")+"&cust_phone="+phoneTxt;
+
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }
@@ -168,7 +172,7 @@ public class Profile extends Fragment {
                         Constants.userData=(ArrayList<String>)userDb.getUser();
                         Intent intent = new Intent(getActivity(), MenuActivity.class);
                         startActivity(intent);
-
+                        getActivity().finish();
                     }
 
 
