@@ -26,9 +26,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
-import com.riact.ricart.utils.Requests;
-import com.riact.ricart.utils.UserDbHandler;
-
+import com.riact.ricart.utils.RiactDbHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText email,password;
     String resp;
-    UserDbHandler userDb=new UserDbHandler(this);
+    RiactDbHandler userDb=new RiactDbHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                resp="Some error occured";
+                resp="Failed to login";
                 progressDialog.hide();
                 Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
 
@@ -146,14 +144,11 @@ public class MainActivity extends AppCompatActivity {
                         String address=user.getString("cust_address");
                         String phone=user.getString("cust_phone");
                         userDb.addUsers(name,phone,address,email);
+                        Constants.userData=(ArrayList<String>) userDb.getUser();
                         Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                         startActivity(intent);
                         finish();
-
                     }
-
-
-
                 }catch (Exception e)
                 {
                     e.printStackTrace();
@@ -164,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
-                resp="Some error occured";
+                resp="Failed to fetch data";
                 Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
 
 

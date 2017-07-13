@@ -39,8 +39,6 @@ public class ItemsDbHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ITEM);
-
-        // Create tables again
         onCreate(db);
 
     }
@@ -66,12 +64,8 @@ public class ItemsDbHandler extends SQLiteOpenHelper {
 
             Cursor cursor = db.rawQuery(selectQuery, null);
 
-            // looping through all rows and adding to list
             if (cursor.moveToFirst()) {
                 do {
-
-
-                    // Adding contact to list
                     item.add(cursor.getString(0));
                 } while (cursor.moveToNext());
             }

@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
+import com.riact.ricart.utils.RiactDbHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,6 +51,8 @@ public class Dashboard extends Fragment {
         String name=(String)Constants.userData.get(0);
         //Toast.makeText(getActivity(),Constants.items,Toast.LENGTH_LONG).show();
 
+        RiactDbHandler db=new RiactDbHandler(getActivity());
+
 
 
         myView= inflater.inflate(R.layout.dasboard,container,false);
@@ -58,14 +61,15 @@ public class Dashboard extends Fragment {
         welcome.setText(Html.fromHtml("Welcome <b>"+name+"!</b> "));
         TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
         signUp.setText(Html.fromHtml(outStanding));
-          LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
+
+        TextView totalOder=(TextView)myView.findViewById(R.id.total_selected);
+        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+db.getSubmittedCount()+"</font></b>"+" orders"));
+
+        TextView totalSaved=(TextView)myView.findViewById(R.id.total_saved);
+        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+db.getSavedCount()+"</font></b>"+ " orders"));
+        TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
 
 
-              TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
-
-        detiledview.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
                     try {
 
@@ -74,8 +78,7 @@ public class Dashboard extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-            });
+
         return myView;
     }
 
@@ -165,11 +168,6 @@ public class Dashboard extends Fragment {
             tbrow.addView(t4v);
             stk.addView(tbrow);
 
-            // Phone node is JSON Object
-
-
         }
-
-
     }
 }
