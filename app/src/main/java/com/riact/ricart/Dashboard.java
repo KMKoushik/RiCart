@@ -9,16 +9,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.MyAdapter;
 import com.riact.ricart.utils.RiactDbHandler;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +35,9 @@ import org.json.JSONObject;
  */
 
 public class Dashboard extends Fragment {
+
+    private NetworkImageView imageView;
+    private ImageLoader imageLoader;
 
 
 
@@ -69,9 +77,23 @@ public class Dashboard extends Fragment {
         totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+db.getSavedCount()+"</font></b>"+ " orders"));
         TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
 
+        imageView = (NetworkImageView) myView.findViewById(R.id.imageView);
+
+        // Image url
+        String image_url = "https://api.androidhive.info/images/sample.jpg";
+
+        // ImageLoader class instance
+        imageLoader = AppSingleton.getInstance(myView.getContext())
+                .getImageLoader();
+        imageLoader.get(image_url, ImageLoader.getImageListener(imageView,
+                R.drawable.ricart_logo, android.R.drawable
+                        .ic_dialog_alert));
+        imageView.setImageUrl(image_url, imageLoader);
 
 
-                    try {
+
+
+        try {
 
                         init(myView,json);
 

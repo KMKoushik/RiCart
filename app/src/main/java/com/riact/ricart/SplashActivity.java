@@ -31,7 +31,6 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 Constants.items=response;
-                new MultiSelectionSpinner(getApplicationContext()).getPreviousSelected();
 
                 db.deleteItems();
                 db.addItem(Constants.items);

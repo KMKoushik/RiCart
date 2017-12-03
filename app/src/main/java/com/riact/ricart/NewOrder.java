@@ -80,7 +80,7 @@ public class NewOrder extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.new_order, container, false);
         userDb=new RiactDbHandler(myView.getContext());
         linearLayout = (LinearLayout) myView.findViewById(R.id.neworder_layout);
@@ -125,7 +125,7 @@ public class NewOrder extends Fragment {
                     item.setAmount(model.getAmount());
 
                 }
-                showPopup(getActivity(),p);
+                showPopup(getActivity(),p,container);
             }
 
         } catch (JSONException e) {
@@ -147,7 +147,7 @@ public class NewOrder extends Fragment {
             @Override
             public void onClick(View v) {
 
-                showPopup(getActivity(),p);
+                showPopup(getActivity(),p,container);
 
             }
         });
@@ -237,7 +237,7 @@ public class NewOrder extends Fragment {
 
     }
 
-    private void showPopup(Activity context, Point p) {
+    private void showPopup(Activity context, Point p,ViewGroup container) {
 
 
 
@@ -268,7 +268,7 @@ public class NewOrder extends Fragment {
 
         final TableLayout stk = (TableLayout)layout.findViewById(R.id.cart_table);
        final int drawableResId=R.drawable.cell_shape_header;
-        float textSize=11;
+        float textSize=13;
         TableRow tbrow0 = new TableRow(context);
         TableLayout.LayoutParams tp=new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         tp.topMargin=25;
@@ -282,7 +282,7 @@ public class NewOrder extends Fragment {
         tv0.setTextSize(textSize);
         tv0.setHeight(65);
         tbrow0.addView(tv0);
-        TextView tv5 = new TextView(getActivity());
+        /*TextView tv5 = new TextView(getActivity());
         tv5.setText(Html.fromHtml(" <b>UOM</b>"));
         tv5.setTextColor(Color.WHITE);
         tv5.setBackgroundResource(drawableResId);
@@ -297,7 +297,7 @@ public class NewOrder extends Fragment {
         tv1.setTextSize(textSize);
         tv1.setBackgroundResource(drawableResId);
         tv1.setGravity(Gravity.CENTER);
-        tbrow0.addView(tv1);
+        tbrow0.addView(tv1);*/
         TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>QTY</b>"));
         tv2.setTextColor(Color.WHITE);
@@ -323,37 +323,45 @@ public class NewOrder extends Fragment {
         tv4.setHeight(65);
         tbrow0.addView(tv4);
         stk.addView(tbrow0);
-        final int count=0;
+         int count=0;
         for (final Model model : Constants.orderList) {
+            count++;
+
             int background=R.drawable.cell_shape;
             final TableRow tbrow1 = new TableRow(context);
+            if(count%2==0)
+            tbrow1.setBackgroundResource(R.drawable.itemclr1);
+            else
+                tbrow1.setBackgroundResource(R.drawable.itemclr2);
+
             tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
-            TextView tv00 = new TextView(getActivity());
+
+            LayoutInflater inflater = (context).getLayoutInflater();
+            LinearLayout convertView = (LinearLayout) LayoutInflater.from(
+                    context).inflate(
+                    R.layout.cartitem_layout, null);
+            TextView tv00 = (TextView) convertView.findViewById(R.id.itemName);
             tv00.setText(model.getName());
             tv00.setTextColor(Color.BLACK);
             //tv00.setBackgroundResource(background);
             tv00.setMaxLines(2);
-            tv00.setWidth(250);
+            //tv00.setWidth(250);
             tv00.setGravity(Gravity.LEFT);
-            tv00.setHeight(75);
             tv00.setTextSize(textSize);
-            tbrow1.addView(tv00);
-            TextView tv55 = new TextView(getActivity());
-            tv55.setText(model.getUom());
+            TextView tv55 = (TextView) convertView.findViewById(R.id.itemuom);
+            tv55.setText("UOM : "+model.getUom());
             tv55.setTextColor(Color.BLACK);
             //tv00.setBackgroundResource(background);
             tv55.setGravity(Gravity.CENTER);
-            tv55.setHeight(75);
             tv55.setTextSize(textSize);
-            tbrow1.addView(tv55);
-            final TextView tv11 = new TextView(getActivity());
-            tv11.setText(String.valueOf(model.getPrice()));
+            final TextView tv11 = (TextView) convertView.findViewById(R.id.itemprice);
+            tv11.setText(String.valueOf("Price : "+model.getPrice()));
             tv11.setTextColor(Color.BLACK);
-            tv11.setHeight(75);
             //tv11.setBackgroundResource(background);
             tv11.setGravity(Gravity.CENTER);
             tv11.setTextSize(textSize);
-            tbrow1.addView(tv11);
+            tbrow1.addView(convertView);
+
             final TextView tv22 = new TextView(getActivity());
 
             tv22.setTextColor(Color.BLACK);
@@ -416,7 +424,11 @@ public class NewOrder extends Fragment {
                 tv33.setText("1.0000");
 
                 ImageButton tv44 = new ImageButton(getActivity());
-            tv44.setBackgroundColor(getResources().getColor(R.color.background));
+            if (count%2==0)
+            tv44.setBackgroundResource(R.drawable.itemclr1);
+            else
+                tv44.setBackgroundResource(R.drawable.itemclr2);
+
             tv44.setImageResource(R.drawable.delete);
             tbrow1.addView(tv44);
 
