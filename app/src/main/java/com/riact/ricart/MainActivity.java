@@ -145,9 +145,8 @@ public class MainActivity extends AppCompatActivity {
                         String phone=user.getString("cust_phone");
                         userDb.addUsers(name,phone,address,email);
                         Constants.userData=(ArrayList<String>) userDb.getUser();
-                        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                        startActivity(intent);
-                        finish();
+                        getPastOrders(Constants.webAddress+"get_orders_by_cust.php?cust_code="+email);
+
                     }
                 }catch (Exception e)
                 {
@@ -161,6 +160,41 @@ public class MainActivity extends AppCompatActivity {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 resp="Failed to fetch data";
                 Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
+
+    }
+
+    public void getPastOrders(String url)
+    {
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+
+
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+                Constants.pastOrders = response;
+                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                resp="Failed to fetch data";
+                Toast.makeText(getApplicationContext(),resp,Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivity(intent);
+                finish();
 
 
             }

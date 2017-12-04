@@ -103,7 +103,14 @@ public class MenuActivity extends AppCompatActivity
         } else if (id == R.id.nav_new_order) {
 
             fm.beginTransaction().replace(R.id.content_menu,new NewOrder()).commit();
-        }else if(id==R.id.nav_profile){
+        } else if(id == R.id.nav_past_order){
+
+            fm.beginTransaction().replace(R.id.content_menu,new PastOrders()).commit();
+
+
+        }
+
+        else if(id==R.id.nav_profile){
 
             fm.beginTransaction().replace(R.id.content_menu,new Profile()).commit();
         }

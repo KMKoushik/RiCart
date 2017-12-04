@@ -60,7 +60,24 @@ public class Dashboard extends Fragment {
         //Toast.makeText(getActivity(),Constants.items,Toast.LENGTH_LONG).show();
 
         RiactDbHandler db=new RiactDbHandler(getActivity());
+        int submittedCount=0;
+        int acceptedCount = 0;
 
+        try {
+            JSONArray jsonObj = new JSONArray(Constants.pastOrders);
+            for(int i =0;i<jsonObj.length();i++){
+
+                JSONObject item = jsonObj.getJSONObject(i);
+                String uploadedStatus = (String) item.get("upload_status");
+                if(uploadedStatus.equals("1"))
+                    submittedCount++;
+                if(uploadedStatus.equals("2"))
+                    acceptedCount++;
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
         myView= inflater.inflate(R.layout.dasboard,container,false);
@@ -71,10 +88,10 @@ public class Dashboard extends Fragment {
         signUp.setText(Html.fromHtml(outStanding));
 
         TextView totalOder=(TextView)myView.findViewById(R.id.total_selected);
-        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+db.getSubmittedCount()+"</font></b>"+" orders"));
+        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+submittedCount+"</font></b>"+" orders"));
 
         TextView totalSaved=(TextView)myView.findViewById(R.id.total_saved);
-        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+db.getSavedCount()+"</font></b>"+ " orders"));
+        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+acceptedCount+"</font></b>"+ " orders"));
         TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
 
         imageView = (NetworkImageView) myView.findViewById(R.id.imageView);
@@ -93,18 +110,18 @@ public class Dashboard extends Fragment {
 
 
 
-        try {
+       /* try {
 
                         init(myView,json);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
 
         return myView;
     }
 
-    public void init(View myView,String json) throws JSONException {
+    /*public void init(View myView,String json) throws JSONException {
 
         LinearLayout linearLayout = (LinearLayout) myView.findViewById(R.id.dashboard_layout);
         linearLayout.removeView(myView.findViewById(R.id.get_details));
@@ -191,5 +208,5 @@ public class Dashboard extends Fragment {
             stk.addView(tbrow);
 
         }
-    }
+    }*/
 }

@@ -29,7 +29,7 @@
 
 
         <TextView
-            android:text="You have saved "
+            android:text="Number of orders submited "
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -41,7 +41,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:text="You have submittd "
+            android:text="Number of orders saved"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

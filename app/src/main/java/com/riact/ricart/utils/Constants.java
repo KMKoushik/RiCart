@@ -12,4 +12,5 @@ public class Constants {
     public static String items="";
     public static ArrayList<Model> orderList=new ArrayList<>();
     public static String date=new String();
+    public static String pastOrders = new String ();
 }

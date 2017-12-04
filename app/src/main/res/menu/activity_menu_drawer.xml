@@ -10,6 +10,11 @@
             android:icon="@drawable/orders"
             android:title="Order" />
         <item
+            android:id="@+id/nav_past_order"
+            android:icon="@drawable/orders"
+            android:title="Past Order" />
+
+        <item
             android:id="@+id/nav_new_order"
             android:icon="@drawable/neworder"
             android:title="New Order" />
