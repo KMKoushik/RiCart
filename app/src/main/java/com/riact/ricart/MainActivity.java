@@ -50,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
         TextView signUp = (TextView) findViewById(R.id.titlename);
         Constants.userData=(ArrayList<String>) userDb.getUser();
         if(!Constants.userData.isEmpty()){
-            Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-            startActivity(intent);
-            finish();
+            getPastOrders(Constants.webAddress+"get_orders_by_cust.php?cust_code="+Constants.userData.get(3));
 
         }
         String first = "No account yet? ";

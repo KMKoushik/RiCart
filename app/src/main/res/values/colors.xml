@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#1C1079</color>
     <color name="colorAccent">#2C1099</color>
 
-    <color name="background">#add8e6</color>
+    <color name="background">#EEEBF0</color>
 
     <color name="popup">#ffffff</color>
+    <color name="black">#000000</color>
 
     <color name="black_overlay">#66000000</color>
 </resources>

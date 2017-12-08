@@ -4,131 +4,156 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/dashboard_layout"
-        android:weightSum="1">
-
-        <TextView
-            android:text="Welcome ARV Stores"
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"
-            android:id="@+id/welcome_text"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:gravity="left"
-            />
-
-
-
-        <TextView
-            android:text="Number of orders submited "
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:id="@+id/total_saved"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:gravity="center"
+            android:id="@+id/dashboard_layout"
+            android:weightSum="1">
 
-        <TextView
-            android:text="Number of orders saved"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:id="@+id/total_selected"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-        <TextView
-            android:text="Outstanding Invoice details for Customer ARV - ARV STORES is SGD 1095.00
-Last updated on 2015-08-03 21:17"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:id="@+id/dashboard_text"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:text="@string/detailed_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:id="@+id/get_details"
-            android:textColor="#000000"
-            android:textSize="15sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <com.android.volley.toolbox.NetworkImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/imageView"
-            />
-
-      <!--  -->
-
-
-
-        <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tableLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-
-
-        android:shrinkColumns="*"
-        android:stretchColumns="*">
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:gravity="center_horizontal"
-            android:layout_margin="1dp"
-            android:layout_weight="1"
-            >
             <TextView
-                android:id="@+id/customer_invoice"
+                android:text="KNP Trading Private Limited"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:id="@+id/heading"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:text="Welcome"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:id="@+id/welcome_text"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                />
+
+            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+
+                android:layout_height="match_parent"
+                android:stretchColumns="*">
+                <TableRow>
+                    <TextView
+                        android:text="Orders created"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:padding="3dip"
+                        android:textSize="15dp"
+                        android:background="@drawable/cell_shape"/>
+                    <TextView
+                        android:text="Orders submitted"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:padding="3dip"
+                        android:textSize="15dp"
+                        android:background="@drawable/cell_shape"
+                        />
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/total_saved"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="30dp"
+                        android:background="@drawable/cell_shape"
+                        android:padding="3dip" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/total_selected"
+                        android:textSize="30dp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/cell_shape"
+
+                        android:padding="3dip" />
+                </TableRow>
+            </TableLayout>
+
+
+            <!--<TextView
+                android:text="Number of orders submited "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:typeface="serif"
-                android:textSize="18dp"
-                android:text="Customer Outstanding Invoices"
-                android:gravity="center"
-                android:layout_span="6"
-                android:visibility="invisible"></TextView>
-        </TableRow>
+                android:layout_marginTop="10dp"
+                android:id="@+id/total_saved"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:text="Number of orders saved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:id="@+id/total_selected"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />-->
 
 
-    </TableLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:id="@+id/ll_example"
-        android:layout_width="match_parent"
-        android:layout_height="204dp"
-        android:gravity="center"
-        android:layout_weight="3.60">
 
-    </LinearLayout>
 
-    </LinearLayout>
-</RelativeLayout>
+            <!--<TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tableLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+
+
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                >
+                <TextView
+                    android:id="@+id/customer_invoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:typeface="serif"
+                    android:textSize="18dp"
+                    android:text="Customer Outstanding Invoices"
+                    android:gravity="center"
+                    android:layout_span="6"
+                    android:visibility="invisible"></TextView>
+            </TableRow>
+
+
+        </TableLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_example"
+            android:layout_width="match_parent"
+            android:layout_height="204dp"
+            android:gravity="center"
+            android:layout_weight="3.60">
+
+        </LinearLayout>-->
+
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>

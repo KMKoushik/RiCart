@@ -43,7 +43,7 @@ public class Dashboard extends Fragment {
 
 
     View myView;
-     String json="{\n" +
+    String json="{\n" +
             "\"data\":  [ {\"iv_no\":\"352240\",\"date\":\"2015-04-30\",\"amount\":\"246.96\",\"balance\":\"246.96\"},\n" +
             "{\"iv_no\":\"352476\",\"date\":\"2015-05-08\",\"amount\":\"129.47\",\"balance\":\"376.43\"},\n" +
             " {\"iv_no\":\"352706\",\"date\":\"2015-05-15\",\"amount\":\"153.87\",\"balance\":\"530.30\"},\n" +
@@ -84,16 +84,14 @@ public class Dashboard extends Fragment {
         String outStanding="Your outstanding Invoice is "+"<font color='#EE0000'>SGD 2550.78</font><br>"+"Last updated on 2015-08-03 21:17 ";
         final TextView welcome=(TextView) myView.findViewById(R.id.welcome_text);
         welcome.setText(Html.fromHtml("Welcome <b>"+name+"!</b> "));
-        TextView signUp = (TextView) myView.findViewById(R.id.dashboard_text);
-        signUp.setText(Html.fromHtml(outStanding));
 
         TextView totalOder=(TextView)myView.findViewById(R.id.total_selected);
-        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+submittedCount+"</font></b>"+" orders"));
+        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+submittedCount+"</font></b>"));
 
         TextView totalSaved=(TextView)myView.findViewById(R.id.total_saved);
-        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+acceptedCount+"</font></b>"+ " orders"));
-        TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
-
+        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+acceptedCount+"</font></b>"));
+        //TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
+/*
         imageView = (NetworkImageView) myView.findViewById(R.id.imageView);
 
         // Image url
@@ -107,7 +105,7 @@ public class Dashboard extends Fragment {
                         .ic_dialog_alert));
         imageView.setImageUrl(image_url, imageLoader);
 
-
+*/
 
 
        /* try {

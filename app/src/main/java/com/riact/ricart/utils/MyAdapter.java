@@ -49,13 +49,13 @@ public class MyAdapter extends ArrayAdapter  {
                 NetworkImageView imageView = (NetworkImageView) convertView.findViewById(R.id.imageView);
 
                 // Image url
-                String image_url = Constants.webAddress+"/items/";
+                String image_url = Constants.webAddress+"/items/"+modelItems.get(position).getItemCode()+".png";
 
                 // ImageLoader class instance
                 ImageLoader imageLoader = AppSingleton.getInstance(convertView.getContext())
                         .getImageLoader();
                 imageLoader.get(image_url, ImageLoader.getImageListener(imageView,
-                        R.drawable.ricart_logo, android.R.drawable
+                        R.drawable.loading, android.R.drawable
                                 .ic_dialog_alert));
                 imageView.setImageUrl(image_url, imageLoader);
 

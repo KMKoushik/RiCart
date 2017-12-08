@@ -11,7 +11,7 @@
             android:title="Order" />
         <item
             android:id="@+id/nav_past_order"
-            android:icon="@drawable/orders"
+            android:icon="@drawable/past_orders"
             android:title="Past Order" />
 
         <item

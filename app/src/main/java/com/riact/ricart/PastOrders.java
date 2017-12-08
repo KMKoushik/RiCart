@@ -294,46 +294,26 @@ public class PastOrders extends Fragment {
         stk.addView(tbrow0);
         itemJson=new JSONObject();
 
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMddhhmmss");
-        String dateStr = ndf.format(sd.parse(date));
-        mainArray=new JSONArray();
+
 
 
         JSONArray jsonObj = new JSONArray(json);
-        itemJson.put("no_of_orders",""+jsonObj.length());
-        itemJson.put("order_number",dateStr);
-        itemJson.put("order_date",date.substring(0,date.indexOf(" ")));
-        itemJson.put("pda_number","");
-        itemJson.put("sales_man","");
-        itemJson.put("route_code","");
-        itemJson.put("cust_code",""+Constants.userData.get(3));
-        itemJson.put("cust_name",""+Constants.userData.get(0));
-        itemJson.put("status_code","N");
-        JSONArray array = new JSONArray();
 
         for (int i = 0; i < jsonObj.length(); i++) {
             if(i%2==0)
-                drawableResId=R.drawable.cell_shape;
+                drawableResId=R.drawable.itemclr1;
             else
-                drawableResId=R.drawable.cell_shape2;
+                drawableResId=R.drawable.itemclr2;
 
             JSONObject item =new JSONObject();
 
             JSONObject c = jsonObj.getJSONObject(i);
-            String description = c.getString("name");
-            String uom = c.getString("uom");
-            String Qty = c.getString("quantity");
-            String Price = c.getString("price");
+            String description = c.getString("item_desc");
+            String uom = c.getString("Uom");
+            String Qty = c.getString("Qty");
+            String Price = c.getString("unit_price");
             String amt= c.getString("amount");
 
-
-            item.put("item_code",c.getString("itemCode"));
-            item.put("item_desc",description);
-            item.put("uom",uom);
-            item.put("qty",Qty);
-            item.put("unit_price",Price);
-            array.put(item);
             TableRow tbrow = new TableRow(getActivity());
             tbrow.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -377,12 +357,12 @@ public class PastOrders extends Fragment {
             t5v.setHeight(90);
             t5v.setTextSize(textSize);
             tbrow.addView(t5v);
+            tbrow.setBackgroundResource(drawableResId);
             stk.addView(tbrow);
             // Phone node is JSON Object
         }
 
-        itemJson.put("order_items",array);
-        mainArray.put(itemJson);
+
 
 
         TextView tot=new TextView(getActivity());

@@ -306,9 +306,9 @@ public class Order extends Fragment {
 
         for (int i = 0; i < jsonObj.length(); i++) {
             if(i%2==0)
-                drawableResId=R.drawable.cell_shape;
+                drawableResId=R.drawable.itemclr1;
             else
-                drawableResId=R.drawable.cell_shape2;
+                drawableResId=R.drawable.itemclr2;
 
             JSONObject item =new JSONObject();
 
@@ -369,6 +369,7 @@ public class Order extends Fragment {
             t5v.setHeight(90);
             t5v.setTextSize(textSize);
             tbrow.addView(t5v);
+            tbrow.setBackgroundResource(drawableResId);
             stk.addView(tbrow);
             // Phone node is JSON Object
         }
