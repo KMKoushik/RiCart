@@ -83,6 +83,26 @@
                 </TableRow>
             </TableLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:id="@+id/order_layout">
+                >
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+
+                    android:id="@+id/menu_layout">
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
             <!--<TextView
                 android:text="Number of orders submited "

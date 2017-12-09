@@ -30,8 +30,10 @@
                 android:gravity="center"
                 android:background="@drawable/buttonshape"
                 android:text="clear "
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
 
-                android:textColor="#ffffff"
+                android:textColor="#000"
                 />
 
             <Button
@@ -41,7 +43,9 @@
                 android:gravity="center"
                 android:background="@drawable/buttonshape"
                 android:text="Cart "
-                android:textColor="#ffffff"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="#000"/>
         </LinearLayout>
 
 

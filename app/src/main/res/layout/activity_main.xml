@@ -57,7 +57,7 @@
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="Login"
-            android:textColor="#FFFFFF"
+            android:textColor="#000"
 
 
             android:background="@drawable/buttonshape"
@@ -80,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:textSize="16dip"
+                android:textColor="@color/black"
                 android:gravity="center"
 
                 android:text="No account yet? Create one"

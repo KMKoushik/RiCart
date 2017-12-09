@@ -267,7 +267,7 @@ public class NewOrder extends Fragment {
         tobepaid.setGravity(Gravity.RIGHT);
 
         final TableLayout stk = (TableLayout)layout.findViewById(R.id.cart_table);
-       final int drawableResId=R.drawable.cell_shape_header;
+       final int drawableResId=R.drawable.dashboard_header;
         float textSize=13;
         TableRow tbrow0 = new TableRow(context);
         TableLayout.LayoutParams tp=new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -276,7 +276,7 @@ public class NewOrder extends Fragment {
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
         tv0.setText(Html.fromHtml(" <b>ITEM NAME</b>"));
-        tv0.setTextColor(Color.WHITE);
+        tv0.setTextColor(Color.BLACK);
         tv0.setBackgroundResource(drawableResId);
         tv0.setGravity(Gravity.CENTER);
         tv0.setTextSize(textSize);
@@ -300,7 +300,7 @@ public class NewOrder extends Fragment {
         tbrow0.addView(tv1);*/
         TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>QTY</b>"));
-        tv2.setTextColor(Color.WHITE);
+        tv2.setTextColor(Color.BLACK);
         tv2.setBackgroundResource(drawableResId);
         tv2.setGravity(Gravity.CENTER);
         tv2.setHeight(65);
@@ -308,7 +308,7 @@ public class NewOrder extends Fragment {
         tbrow0.addView(tv2);
         TextView tv3 = new TextView(getActivity());
         tv3.setText(Html.fromHtml(" <b>AMT</b>"));
-        tv3.setTextColor(Color.WHITE);
+        tv3.setTextColor(Color.BLACK);
         tv3.setBackgroundResource(drawableResId);
         tv3.setGravity(Gravity.CENTER);
         tv3.setTextSize(textSize);
@@ -316,7 +316,7 @@ public class NewOrder extends Fragment {
         tbrow0.addView(tv3);
         TextView tv4 = new TextView(getActivity());
         tv4.setText(Html.fromHtml(" <b>ACTION</b>"));
-        tv4.setTextColor(Color.WHITE);
+        tv4.setTextColor(Color.BLACK);
         tv4.setBackgroundResource(drawableResId);
         tv4.setGravity(Gravity.CENTER);
         tv4.setTextSize(textSize);
@@ -329,10 +329,9 @@ public class NewOrder extends Fragment {
 
             int background=R.drawable.cell_shape;
             final TableRow tbrow1 = new TableRow(context);
-            if(count%2==0)
-            tbrow1.setBackgroundResource(R.drawable.itemclr1);
-            else
-                tbrow1.setBackgroundResource(R.drawable.itemclr2);
+
+            tbrow1.setBackgroundResource(R.drawable.dashboard_row);
+
 
             tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -424,12 +423,11 @@ public class NewOrder extends Fragment {
                 tv33.setText("1.0000");
 
                 ImageButton tv44 = new ImageButton(getActivity());
-            if (count%2==0)
-            tv44.setBackgroundResource(R.drawable.itemclr1);
-            else
-                tv44.setBackgroundResource(R.drawable.itemclr2);
+
 
             tv44.setImageResource(R.drawable.delete);
+            tv44.setBackgroundColor(getResources().getColor(R.color.background));
+
             tbrow1.addView(tv44);
 
             tv44.setOnClickListener(new View.OnClickListener() {

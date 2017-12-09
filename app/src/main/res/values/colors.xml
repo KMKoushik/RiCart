@@ -5,6 +5,8 @@
     <color name="colorAccent">#2C1099</color>
 
     <color name="background">#EEEBF0</color>
+    <color name="Selected">#d3dbe8</color>
+    <color name="NonSelected">#cccccc</color>
 
     <color name="popup">#ffffff</color>
     <color name="black">#000000</color>

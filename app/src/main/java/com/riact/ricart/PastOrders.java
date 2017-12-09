@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -105,6 +106,7 @@ public class PastOrders extends Fragment {
         Constants.orderList.clear();
 
         stk1 = new TableLayout(getActivity());
+        int drawableResId=R.drawable.dashboard_header;
         TableLayout.LayoutParams lp=new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0,5,0,5);
         stk1.setLayoutParams(lp);
@@ -121,33 +123,46 @@ public class PastOrders extends Fragment {
         tv0.setGravity(Gravity.CENTER);
         tv0.setTextSize(textSize);
         tv0.setHeight(65);
+        tv0.setBackgroundResource(drawableResId);
         tbrow0.addView(tv0);
+        TextView tv5 = new TextView(getActivity());
+        tv5.setText(Html.fromHtml(" <b>ORDER</b> "));
+        tv5.setTextColor(Color.BLACK);
+        tv5.setHeight(65);
+        tv5.setTextSize(textSize);
+        tv5.setGravity(Gravity.CENTER);
+        tv5.setBackgroundResource(drawableResId);
+        tbrow0.addView(tv5);
         TextView tv1 = new TextView(getActivity());
         tv1.setText(Html.fromHtml(" <b>DATE</b> "));
         tv1.setTextColor(Color.BLACK);
         tv1.setHeight(65);
         tv1.setTextSize(textSize);
         tv1.setGravity(Gravity.CENTER);
+        tv1.setBackgroundResource(drawableResId);
         tbrow0.addView(tv1);
         TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>AMOUNT</b>"));
         tv2.setTextColor(Color.BLACK);
-        tv2.setGravity(Gravity.RIGHT);
+        tv2.setGravity(Gravity.CENTER);
         tv2.setHeight(65);
         tv2.setTextSize(textSize);
+        tv2.setBackgroundResource(drawableResId);
         tbrow0.addView(tv2);
         TextView tv3 = new TextView(getActivity());
         tv3.setText(Html.fromHtml(" <b>STATUS</b>"));
         tv3.setTextColor(Color.BLACK);
-        tv3.setGravity(Gravity.RIGHT);
+        tv3.setGravity(Gravity.CENTER);
         tv3.setTextSize(textSize);
         tv3.setHeight(65);
+        tv3.setBackgroundResource(drawableResId);
         tbrow0.addView(tv3);
         TextView tv4 = new TextView(getActivity());
         tv4.setText(Html.fromHtml(" <b>ACTION</b>"));
         tv4.setTextColor(Color.BLACK);
-        tv4.setGravity(Gravity.RIGHT);
+        tv4.setGravity(Gravity.CENTER);
         tv4.setTextSize(textSize);
+        tv4.setBackgroundResource(drawableResId);
         tv4.setHeight(65);
         tbrow0.addView(tv4);
 
@@ -156,11 +171,14 @@ public class PastOrders extends Fragment {
         JSONArray jsonObj = new JSONArray(Constants.pastOrders);
         for(int i =0;i<jsonObj.length();i++)
         {
+            drawableResId=R.drawable.dashboard_row;
+
             JSONObject item = jsonObj.getJSONObject(i);
             final String orderDae = item.getString("order_date");
             final String totalAmmount = item.getString("total_ord_amount");
             String status = item.getString("upload_status");
             final String jsonText = item.getString("order_dtl");
+            String orderNo = item.getString("order_ref_no");
 
 
             TableRow tbrow1 = new TableRow(getActivity());
@@ -172,6 +190,14 @@ public class PastOrders extends Fragment {
             tv.setTextSize(textSize);
             tv.setText(""+count);
             tbrow1.addView(tv);
+
+            TextView tv41 = new TextView(getActivity());
+            tv41.setTextColor(Color.BLACK);
+            tv41.setGravity(Gravity.CENTER);
+            tv41.setHeight(50);
+            tv41.setTextSize(textSize);
+            tv41.setText(orderNo);
+            tbrow1.addView(tv41);
 
             TextView tv01 = new TextView(getActivity());
             tv01.setTextColor(Color.BLACK);
@@ -192,7 +218,7 @@ public class PastOrders extends Fragment {
 
             TextView tv21 = new TextView(getActivity());
             tv21.setTextColor(Color.BLACK);
-            tv21.setGravity(Gravity.RIGHT);
+            tv21.setGravity(Gravity.CENTER);
             tv21.setHeight(50);
             tv21.setTextSize(textSize);
              final String txt=status;
@@ -201,12 +227,17 @@ public class PastOrders extends Fragment {
 
             tbrow1.addView(tv21);
 
-            TextView tv31 = new TextView(getActivity());
+            /*TextView tv31 = new TextView(getActivity());
             tv31.setTextColor(Color.BLACK);
-            tv31.setGravity(Gravity.RIGHT);
+            tv31.setGravity(Gravity.CENTER);
             tv31.setHeight(50);
             tv31.setTextSize(textSize);
-            tv31.setText(Html.fromHtml("<u>View</u>"));
+            tv31.setText(Html.fromHtml("<u>View</u>"));*/
+            ImageButton tv31 = new ImageButton(getActivity());
+
+            tv31.setImageResource(R.drawable.search);
+            tv31.setBackgroundResource(R.drawable.dashboard_row);
+            tbrow1.setBackgroundResource(drawableResId);
             tbrow1.addView(tv31);
             tv31.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -390,8 +421,8 @@ public class PastOrders extends Fragment {
         LinearLayout.LayoutParams lp1=new LinearLayout.LayoutParams(150,70);
 
         close= new Button(getActivity());
-        close.setText("Close");
-        close.setTextColor(Color.WHITE);
+        close.setText("Back");
+        close.setTextColor(Color.BLACK);
         close.setTextSize(12);
         close.setBackgroundResource(R.drawable.newbutton);
         close.setGravity(Gravity.CENTER);

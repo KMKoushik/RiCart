@@ -101,7 +101,7 @@
            android:layout_marginBottom="24dp"
            android:padding="12dp"
            android:text="Update"
-           android:textColor="#FFFFFF"
+           android:textColor="#000"
 
 
            android:background="@drawable/buttonshape"

@@ -17,6 +17,7 @@ import android.text.Html;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -38,6 +40,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -60,6 +63,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.android.volley.VolleyLog.TAG;
+
 /**
  * Created by koushik on 28/5/17.
  */
@@ -78,6 +83,7 @@ public class Order extends Fragment {
     JSONArray mainArray;
 
 
+
     View myView;
     @Nullable
     @Override
@@ -90,13 +96,17 @@ public class Order extends Fragment {
         db=new RiactDbHandler(getActivity());
 
 
+        try {
             showOrder();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return myView;
     }
 
-    public void showOrder()
-    {
+    public void showOrder() throws ParseException {
+        int drawableResId=R.drawable.dashboard_header;
         Constants.orderList.clear();
         Orderlist=db.getAllOrder();
         stk1 = new TableLayout(getActivity());
@@ -116,33 +126,46 @@ public class Order extends Fragment {
         tv0.setGravity(Gravity.CENTER);
         tv0.setTextSize(textSize);
         tv0.setHeight(65);
+        tv0.setBackgroundResource(drawableResId);
         tbrow0.addView(tv0);
+        TextView tv5 = new TextView(getActivity());
+        tv5.setText(Html.fromHtml(" <b>ORDER NO</b>"));
+        tv5.setTextColor(Color.BLACK);
+        tv5.setGravity(Gravity.CENTER);
+        tv5.setTextSize(textSize);
+        tv5.setHeight(65);
+        tv5.setBackgroundResource(drawableResId);
+        tbrow0.addView(tv5);
         TextView tv1 = new TextView(getActivity());
         tv1.setText(Html.fromHtml(" <b>DATE</b> "));
         tv1.setTextColor(Color.BLACK);
         tv1.setHeight(65);
         tv1.setTextSize(textSize);
         tv1.setGravity(Gravity.CENTER);
+        tv1.setBackgroundResource(drawableResId);
         tbrow0.addView(tv1);
         TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>AMOUNT</b>"));
         tv2.setTextColor(Color.BLACK);
-        tv2.setGravity(Gravity.RIGHT);
+        tv2.setGravity(Gravity.CENTER);
         tv2.setHeight(65);
         tv2.setTextSize(textSize);
+        tv2.setBackgroundResource(drawableResId);
         tbrow0.addView(tv2);
         TextView tv3 = new TextView(getActivity());
         tv3.setText(Html.fromHtml(" <b>STATUS</b>"));
         tv3.setTextColor(Color.BLACK);
-        tv3.setGravity(Gravity.RIGHT);
+        tv3.setGravity(Gravity.CENTER);
         tv3.setTextSize(textSize);
+        tv3.setBackgroundResource(drawableResId);
         tv3.setHeight(65);
         tbrow0.addView(tv3);
         TextView tv4 = new TextView(getActivity());
         tv4.setText(Html.fromHtml(" <b>ACTION</b>"));
         tv4.setTextColor(Color.BLACK);
-        tv4.setGravity(Gravity.RIGHT);
+        tv4.setGravity(Gravity.CENTER);
         tv4.setTextSize(textSize);
+        tv4.setBackgroundResource(drawableResId);
         tv4.setHeight(65);
         tbrow0.addView(tv4);
 
@@ -150,6 +173,7 @@ public class Order extends Fragment {
 
         for(final List list:Orderlist)
         {
+            drawableResId=R.drawable.dashboard_row;
 
             TableRow tbrow1 = new TableRow(getActivity());
             tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -161,12 +185,27 @@ public class Order extends Fragment {
             tv.setText(""+count);
             tbrow1.addView(tv);
 
+
+            String date = (String)list.get(0);
+            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMddhhmmss");
+            String dateStr = ndf.format(sd.parse(date));
+
+            TextView tv41 = new TextView(getActivity());
+            tv41.setTextColor(Color.BLACK);
+            tv41.setGravity(Gravity.CENTER);
+            tv41.setHeight(50);
+            tv41.setTextSize(textSize);
+            tv41.setText(dateStr);
+            tbrow1.addView(tv41);
+
             TextView tv01 = new TextView(getActivity());
             tv01.setTextColor(Color.BLACK);
             tv01.setGravity(Gravity.CENTER);
             tv01.setHeight(50);
             tv01.setTextSize(textSize);
-            tv01.setText((String)list.get(0));
+
+            tv01.setText((date.substring(0,date.indexOf(" "))));
             tbrow1.addView(tv01);
 
 
@@ -180,26 +219,31 @@ public class Order extends Fragment {
 
             TextView tv21 = new TextView(getActivity());
             tv21.setTextColor(Color.BLACK);
-            tv21.setGravity(Gravity.RIGHT);
+            tv21.setGravity(Gravity.CENTER);
             tv21.setHeight(50);
             tv21.setTextSize(textSize);
             final String txt=(String)list.get(3);
             String value;
             if(txt.equals("true"))
-                value="Submitted";
+                value="SB";
             else
-                value="Saved";
+                value="SV";
             tv21.setText(value);
 
             tbrow1.addView(tv21);
 
-            TextView tv31 = new TextView(getActivity());
+         /*   TextView tv31 = new TextView(getActivity());
             tv31.setTextColor(Color.BLACK);
-            tv31.setGravity(Gravity.RIGHT);
+            tv31.setGravity(Gravity.CENTER);
             tv31.setHeight(50);
             tv31.setTextSize(textSize);
-            tv31.setText(Html.fromHtml("<u>View</u>"));
+            tv31.setText(Html.fromHtml("<u>View</u>"));*/
+            ImageButton tv31 = new ImageButton(getActivity());
+
+            tv31.setImageResource(R.drawable.search);
+            tv31.setBackgroundResource(R.drawable.dashboard_row);
             tbrow1.addView(tv31);
+            tbrow1.setBackgroundResource(drawableResId);
             tv31.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -406,7 +450,7 @@ public class Order extends Fragment {
             editBtn = new Button(getActivity());
             editBtn.setText("Edit");
             editBtn.setTextSize(12);
-            editBtn.setTextColor(Color.WHITE);
+            editBtn.setTextColor(Color.BLACK);
             editBtn.setBackgroundResource(R.drawable.newbutton);
             editBtn.setGravity(Gravity.CENTER);
             editBtn.setLayoutParams(lp1);
@@ -433,7 +477,7 @@ public class Order extends Fragment {
             delete = new Button(getActivity());
             delete.setText("Delete");
             delete.setTextSize(12);
-            delete.setTextColor(Color.WHITE);
+            delete.setTextColor(Color.BLACK);
             delete.setBackgroundResource(R.drawable.newbutton);
             delete.setLayoutParams(lp1);
             delete.setGravity(Gravity.CENTER);
@@ -446,7 +490,11 @@ public class Order extends Fragment {
                             db.deleteOrder(date);
                             Orderlist = db.getAllOrder();
                             linearLayout.removeView(stk);
-                            showOrder();
+                    try {
+                        showOrder();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
 
                 }
@@ -454,7 +502,7 @@ public class Order extends Fragment {
 
             submitBtn = new Button(getActivity());
             submitBtn.setText("Submit");
-            submitBtn.setTextColor(Color.WHITE);
+            submitBtn.setTextColor(Color.BLACK);
             submitBtn.setTextSize(12);
             submitBtn.setBackgroundResource(R.drawable.newbutton);
             submitBtn.setLayoutParams(lp1);
@@ -472,8 +520,8 @@ public class Order extends Fragment {
 
         }
         close= new Button(getActivity());
-        close.setText("Close");
-        close.setTextColor(Color.WHITE);
+        close.setText("Back");
+        close.setTextColor(Color.BLACK);
         close.setTextSize(12);
         close.setBackgroundResource(R.drawable.newbutton);
         close.setGravity(Gravity.CENTER);
@@ -524,7 +572,12 @@ public class Order extends Fragment {
                         db.updateSubmittedStatus(date, "true");
                         Orderlist = db.getAllOrder();
                         linearLayout.removeView(stk);
-                        showOrder();
+                        getPastOrders(Constants.webAddress+"get_orders_by_cust.php?cust_code="+Constants.userData.get(3));
+                        try {
+                            showOrder();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -549,8 +602,28 @@ public class Order extends Fragment {
 
         };
         AppSingleton.getInstance(getActivity()).addToRequestQueue(stringRequest, REQUEST_TAG);
-
     }
 
+    public void getPastOrders(String url)
+    {
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+                Constants.pastOrders = response;
 
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getActivity(),"Failed to fetch past orders",Toast.LENGTH_LONG).show();
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getActivity()).addToRequestQueue(strReq, REQUEST_TAG);
+
+    }
 }
