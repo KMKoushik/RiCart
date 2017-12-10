@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class Dashboard extends Fragment {
     Boolean flag;
     JSONObject itemJson;
     JSONArray mainArray;
-    int showSaved = 1;
+    int showSaved = 0;
 
 
 
@@ -111,17 +112,21 @@ public class Dashboard extends Fragment {
         welcome.setText(Html.fromHtml("Welcome <b>"+name+"!</b> "));
 
         final TextView totalOder=(TextView)myView.findViewById(R.id.total_selected);
-        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+acceptedCount+"</font></b>"));
+        totalOder.setText(Html.fromHtml(totalOder.getText().toString()+"<b><font size=15>"+submittedCount+"</font></b>"));
+
+        if(Orderlist!=null)
+                Orderlist.clear();
+        Orderlist = db.getAllOrder();
 
 
 
         final TextView totalSaved=(TextView)myView.findViewById(R.id.total_saved);
-        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+submittedCount+"</font></b>"));
+        totalSaved.setText(Html.fromHtml(totalSaved.getText().toString()+"<b><font size=15>"+db.getSavedCount()+"</font></b>"));
         //TextView detiledview=   (TextView) myView.findViewById(R.id.get_details);
         totalSaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSaved = 1;
+                showSaved = 0;
                 try {
                     if(stk1!=null)
                         linearLayout.removeView(stk1);
@@ -132,6 +137,8 @@ public class Dashboard extends Fragment {
                     totalOder.setBackgroundColor(getResources().getColor(R.color.NonSelected));
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -139,7 +146,7 @@ public class Dashboard extends Fragment {
         totalOder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSaved = 2;
+                showSaved = 1;
                 try {
                     if(stk1!=null)
                         linearLayout.removeView(stk1);
@@ -152,12 +159,16 @@ public class Dashboard extends Fragment {
                     totalSaved.setBackgroundColor(getResources().getColor(R.color.NonSelected));
                 } catch (JSONException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
         });
         try {
             showOrder();
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
         totalSaved.setBackgroundColor(getResources().getColor(R.color.Selected));
@@ -166,20 +177,20 @@ public class Dashboard extends Fragment {
         return myView;
     }
 
-    public void showOrder() throws JSONException {
+    public void showOrder() throws JSONException, ParseException {
         Constants.orderList.clear();
-        int drawableResId=R.drawable.dashboard_header;
+        int drawableResId = R.drawable.dashboard_header;
 
         stk1 = new TableLayout(getActivity());
-        TableLayout.LayoutParams lp=new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,5,0,5);
+        TableLayout.LayoutParams lp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 5, 0, 5);
         stk1.setLayoutParams(lp);
         stk1.setStretchAllColumns(true);
         stk1.setShrinkAllColumns(true);
         stk1.setGravity(Gravity.CENTER);
-        int count=1;
-        float textSize=13;
-        TableRow tbrow0 = new TableRow(getActivity());
+        int count = 1;
+        float textSize = 13;
+        /*TableRow tbrow0 = new TableRow(getActivity());
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
         tv0.setText(Html.fromHtml(" <b>SL NO</b>"));
@@ -226,64 +237,65 @@ public class Dashboard extends Fragment {
         tbrow0.addView(tv4);
 
         stk1.addView(tbrow0);
-
-        JSONArray jsonObj = new JSONArray(Constants.pastOrders);
-        for(int i =0;i<jsonObj.length();i++) {
+*/
+        if("1".equals(String.valueOf(showSaved)))
+        {
+            JSONArray jsonObj = new JSONArray(Constants.pastOrders);
+        for (int i = 0; i < jsonObj.length(); i++) {
             JSONObject item = jsonObj.getJSONObject(i);
             final String orderDae = item.getString("order_date");
             final String totalAmmount = item.getString("total_ord_amount");
             String status = item.getString("upload_status");
             final String jsonText = item.getString("order_dtl");
             String orderNo = item.getString("order_ref_no");
-            drawableResId=R.drawable.dashboard_row;
+            drawableResId = R.drawable.dashboard_row;
 
-            if(status.equals(String.valueOf(showSaved)))
-            {
+            if (status.equals(String.valueOf(showSaved))) {
 
 
-            TableRow tbrow1 = new TableRow(getActivity());
-            tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
-            TextView tv = new TextView(getActivity());
-            tv.setTextColor(Color.BLACK);
-            tv.setGravity(Gravity.CENTER);
-            tv.setHeight(50);
-            tv.setTextSize(textSize);
-            tv.setText("" + count);
-            //tv.setBackgroundResource(drawableResId);
-            tbrow1.addView(tv);
+                TableRow tbrow1 = new TableRow(getActivity());
+                tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
+                TextView tv = new TextView(getActivity());
+                tv.setTextColor(Color.BLACK);
+                tv.setGravity(Gravity.CENTER);
+                tv.setHeight(50);
+                tv.setTextSize(textSize);
+                tv.setText("" + count);
+                //tv.setBackgroundResource(drawableResId);
+                tbrow1.addView(tv);
 
-            TextView tv21 = new TextView(getActivity());
-            tv21.setTextColor(Color.BLACK);
-            tv21.setGravity(Gravity.CENTER);
-            tv21.setHeight(50);
-            tv21.setTextSize(textSize);
-            final String txt = status;
+                TextView tv21 = new TextView(getActivity());
+                tv21.setTextColor(Color.BLACK);
+                tv21.setGravity(Gravity.CENTER);
+                tv21.setHeight(50);
+                tv21.setTextSize(textSize);
+                final String txt = status;
 
-            tv21.setText(orderNo);
-            //tv21.setBackgroundResource(drawableResId);
+                tv21.setText(orderNo);
+                //tv21.setBackgroundResource(drawableResId);
 
-            tbrow1.addView(tv21);
+                tbrow1.addView(tv21);
 
-            TextView tv01 = new TextView(getActivity());
-            tv01.setTextColor(Color.BLACK);
-            tv01.setGravity(Gravity.CENTER);
-            tv01.setHeight(50);
-            tv01.setTextSize(textSize);
-            tv01.setText(orderDae);
+                TextView tv01 = new TextView(getActivity());
+                tv01.setTextColor(Color.BLACK);
+                tv01.setGravity(Gravity.CENTER);
+                tv01.setHeight(50);
+                tv01.setTextSize(textSize);
+                tv01.setText(orderDae);
 //            tv01.setBackgroundResource(drawableResId);
 
-            tbrow1.addView(tv01);
+                tbrow1.addView(tv01);
 
 
-            TextView tv11 = new TextView(getActivity());
-            tv11.setTextColor(Color.BLACK);
-            tv11.setGravity(Gravity.END);
-            tv11.setHeight(50);
-            tv11.setTextSize(textSize);
-            tv11.setText(totalAmmount);
+                TextView tv11 = new TextView(getActivity());
+                tv11.setTextColor(Color.BLACK);
+                tv11.setGravity(Gravity.END);
+                tv11.setHeight(50);
+                tv11.setTextSize(textSize);
+                tv11.setText(totalAmmount);
 //            tv11.setBackgroundResource(drawableResId);
 
-            tbrow1.addView(tv11);
+                tbrow1.addView(tv11);
 
 
 
@@ -298,28 +310,130 @@ public class Dashboard extends Fragment {
 
                 tv31.setImageResource(R.drawable.search);
                 tv31.setBackgroundResource(R.drawable.dashboard_row);
-            tbrow1.addView(tv31);
-            tbrow1.setBackgroundResource(drawableResId);
-            tv31.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        showTable(myView, jsonText, orderDae, totalAmmount, txt);
-                        linearLayout.removeView(stk1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                tbrow1.addView(tv31);
+                tbrow1.setBackgroundResource(drawableResId);
+                tv31.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            showTable(myView, jsonText, orderDae, totalAmmount, txt);
+                            linearLayout.removeView(stk1);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
 
 
-            count++;
+                count++;
 
-            stk1.addView(tbrow1);
+                stk1.addView(tbrow1);
 
+            }
         }
+    }
+    else {
+
+
+            for(final List list:Orderlist) {
+
+                final String txt = (String) list.get(3);
+                if (!txt.equals("true"))
+                {
+                    drawableResId = R.drawable.dashboard_row;
+
+                    TableRow tbrow1 = new TableRow(getActivity());
+                    tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
+                    TextView tv = new TextView(getActivity());
+                    tv.setTextColor(Color.BLACK);
+                    tv.setGravity(Gravity.CENTER);
+                    tv.setHeight(50);
+                    tv.setTextSize(textSize);
+                    tv.setText("" + count);
+                    tbrow1.addView(tv);
+
+
+                    String date = (String) list.get(0);
+                    SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMddhhmmss");
+                    String dateStr = ndf.format(sd.parse(date));
+
+                    TextView tv41 = new TextView(getActivity());
+                    tv41.setTextColor(Color.BLACK);
+                    tv41.setGravity(Gravity.CENTER);
+                    tv41.setHeight(50);
+                    tv41.setTextSize(textSize);
+                    tv41.setText(dateStr);
+                    tbrow1.addView(tv41);
+
+                    TextView tv01 = new TextView(getActivity());
+                    tv01.setTextColor(Color.BLACK);
+                    tv01.setGravity(Gravity.CENTER);
+                    tv01.setHeight(50);
+                    tv01.setTextSize(textSize);
+
+                    tv01.setText((date.substring(0, date.indexOf(" "))));
+                    tbrow1.addView(tv01);
+
+
+                    TextView tv11 = new TextView(getActivity());
+                    tv11.setTextColor(Color.BLACK);
+                    tv11.setGravity(Gravity.RIGHT);
+                    tv11.setHeight(50);
+                    tv11.setTextSize(textSize);
+                    tv11.setText(String.format("%.2f", Float.parseFloat((String) list.get(2))));
+                    tbrow1.addView(tv11);
+
+                   /* TextView tv21 = new TextView(getActivity());
+                    tv21.setTextColor(Color.BLACK);
+                    tv21.setGravity(Gravity.CENTER);
+                    tv21.setHeight(50);
+                    tv21.setTextSize(textSize);
+                    String value;
+                    if (txt.equals("true"))
+                        value = "SB";
+                    else
+                        value = "SV";
+                    tv21.setText(value);
+
+                    tbrow1.addView(tv21);*/
+
+         /*   TextView tv31 = new TextView(getActivity());
+            tv31.setTextColor(Color.BLACK);
+            tv31.setGravity(Gravity.CENTER);
+            tv31.setHeight(50);
+            tv31.setTextSize(textSize);
+            tv31.setText(Html.fromHtml("<u>View</u>"));*/
+                    ImageButton tv31 = new ImageButton(getActivity());
+
+                    tv31.setImageResource(R.drawable.search);
+                    tv31.setBackgroundResource(R.drawable.dashboard_row);
+                    tbrow1.addView(tv31);
+                    tbrow1.setBackgroundResource(drawableResId);
+                    tv31.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                showTable(myView, (String) list.get(1), (String) list.get(0), (String) list.get(2), txt);
+                                linearLayout.removeView(stk1);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+
+                    count++;
+
+                    stk1.addView(tbrow1);
+                }
+
+
+            }
         }
         linearLayout.removeView(buttonLayout);
 

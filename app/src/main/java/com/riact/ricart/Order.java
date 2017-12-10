@@ -171,9 +171,11 @@ public class Order extends Fragment {
 
         stk1.addView(tbrow0);
 
-        for(final List list:Orderlist)
-        {
-            drawableResId=R.drawable.dashboard_row;
+        for(final List list:Orderlist) {
+            final String txt = (String) list.get(3);
+            if (!txt.equals("true"))
+            {
+                drawableResId = R.drawable.dashboard_row;
 
             TableRow tbrow1 = new TableRow(getActivity());
             tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -182,11 +184,11 @@ public class Order extends Fragment {
             tv.setGravity(Gravity.CENTER);
             tv.setHeight(50);
             tv.setTextSize(textSize);
-            tv.setText(""+count);
+            tv.setText("" + count);
             tbrow1.addView(tv);
 
 
-            String date = (String)list.get(0);
+            String date = (String) list.get(0);
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMddhhmmss");
             String dateStr = ndf.format(sd.parse(date));
@@ -205,7 +207,7 @@ public class Order extends Fragment {
             tv01.setHeight(50);
             tv01.setTextSize(textSize);
 
-            tv01.setText((date.substring(0,date.indexOf(" "))));
+            tv01.setText((date.substring(0, date.indexOf(" "))));
             tbrow1.addView(tv01);
 
 
@@ -214,7 +216,7 @@ public class Order extends Fragment {
             tv11.setGravity(Gravity.RIGHT);
             tv11.setHeight(50);
             tv11.setTextSize(textSize);
-            tv11.setText(String.format("%.2f", Float.parseFloat((String)list.get(2))));
+            tv11.setText(String.format("%.2f", Float.parseFloat((String) list.get(2))));
             tbrow1.addView(tv11);
 
             TextView tv21 = new TextView(getActivity());
@@ -222,12 +224,11 @@ public class Order extends Fragment {
             tv21.setGravity(Gravity.CENTER);
             tv21.setHeight(50);
             tv21.setTextSize(textSize);
-            final String txt=(String)list.get(3);
             String value;
-            if(txt.equals("true"))
-                value="SB";
+            if (txt.equals("true"))
+                value = "SB";
             else
-                value="SV";
+                value = "SV";
             tv21.setText(value);
 
             tbrow1.addView(tv21);
@@ -248,7 +249,7 @@ public class Order extends Fragment {
                 @Override
                 public void onClick(View v) {
                     try {
-                        showTable(myView,(String)list.get(1),(String) list.get(0),(String) list.get(2),txt);
+                        showTable(myView, (String) list.get(1), (String) list.get(0), (String) list.get(2), txt);
                         linearLayout.removeView(stk1);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -262,6 +263,7 @@ public class Order extends Fragment {
             count++;
 
             stk1.addView(tbrow1);
+        }
 
 
         }
