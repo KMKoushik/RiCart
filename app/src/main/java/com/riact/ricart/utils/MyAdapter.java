@@ -63,10 +63,8 @@ public class MyAdapter extends ArrayAdapter  {
                 itemUom.setText("UOM : "+modelItems.get(position).getUom());
                 itemPrice.setText("Price : "+String.format("%.2f",modelItems.get(position).getPrice()));
 
-                if(position%2==0)
-                        convertView.setBackgroundResource(R.drawable.itemclr1);
-                else
-                        convertView.setBackgroundResource(R.drawable.itemclr2);
+                        convertView.setBackgroundResource(R.drawable.dashboard_row);
+
 
 
                 if(modelItems.get(position).getValue() == 1)

@@ -272,6 +272,11 @@ public class NewOrder extends Fragment {
         TableRow tbrow0 = new TableRow(context);
         TableLayout.LayoutParams tp=new TableLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         tp.topMargin=25;
+
+        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.leftMargin=5;
+
+
         tbrow0.setLayoutParams(tp);
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
@@ -344,6 +349,8 @@ public class NewOrder extends Fragment {
             tv00.setTextColor(Color.BLACK);
             //tv00.setBackgroundResource(background);
             tv00.setMaxLines(2);
+            //tv00.setLayoutParams(layoutParams);
+
             //tv00.setWidth(250);
             tv00.setGravity(Gravity.LEFT);
             tv00.setTextSize(textSize);
@@ -541,6 +548,8 @@ public class NewOrder extends Fragment {
                         popup.dismiss();
                         getActivity().finish();
                     }
+                    Toast.makeText(getActivity(),"Your order is saved!",Toast.LENGTH_LONG).show();
+
                 }
                 else {
                     Toast.makeText(getActivity(),"Cart is empty. Unable to save!",Toast.LENGTH_LONG).show();
