@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_past_order"
             android:icon="@drawable/past_orders"
-            android:title="Past Order" />
+            android:title="Order History" />
 
         <item
             android:id="@+id/nav_new_order"
@@ -26,9 +26,5 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="Logout" />
-        <item
-            android:id="@+id/nav_exit"
-            android:icon="@drawable/exit"
-            android:title="Exit" />
     </group>
 </menu>

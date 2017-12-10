@@ -46,21 +46,7 @@ public class MenuActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to exit?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        MenuActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
 
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -145,7 +131,7 @@ public class MenuActivity extends AppCompatActivity
             alert.show();
 
         }
-        else if (id == R.id.nav_exit) {
+        /*else if (id == R.id.nav_exit) {
             final AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Warning");
             alert.setMessage("Do you want to exit?");
@@ -170,7 +156,7 @@ public class MenuActivity extends AppCompatActivity
 
             alert.show();
 
-        }
+        }*/
         //
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

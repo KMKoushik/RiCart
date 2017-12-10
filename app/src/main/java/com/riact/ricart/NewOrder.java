@@ -514,6 +514,22 @@ public class NewOrder extends Fragment {
             }
         });
 
+        Button cancel = (Button) layout.findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(!Constants.orderList.isEmpty())
+                Constants.orderList.clear();
+                for(Model m : ItemList)
+                    m.putValue(0);
+                inputSearch.setText("");
+
+                popup.dismiss();
+
+            }
+        });
+
         Button submit = (Button)layout.findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

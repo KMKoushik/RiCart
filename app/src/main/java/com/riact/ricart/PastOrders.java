@@ -89,6 +89,8 @@ public class PastOrders extends Fragment {
         myView= inflater.inflate(R.layout.order,container,false);
         linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
         buttonLayout = (LinearLayout)myView.findViewById(R.id.menu_layout);
+        TextView textView = (TextView) myView.findViewById(R.id.order_header);
+        textView.setText("Order History");
 
         db=new RiactDbHandler(getActivity());
 
@@ -115,7 +117,7 @@ public class PastOrders extends Fragment {
         stk1.setGravity(Gravity.CENTER);
         int count=1;
         float textSize=11;
-        TableRow tbrow0 = new TableRow(getActivity());
+        /*TableRow tbrow0 = new TableRow(getActivity());
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
         tv0.setText(Html.fromHtml(" <b>SL NO</b>"));
@@ -166,12 +168,15 @@ public class PastOrders extends Fragment {
         tv4.setHeight(65);
         tbrow0.addView(tv4);
 
-        stk1.addView(tbrow0);
+        stk1.addView(tbrow0);*/
 
         JSONArray jsonObj = new JSONArray(Constants.pastOrders);
         for(int i =0;i<jsonObj.length();i++)
         {
             drawableResId=R.drawable.dashboard_row;
+            LinearLayout convertView = (LinearLayout) LayoutInflater.from(
+                    getActivity()).inflate(
+                    R.layout.orderitem_layout, null);
 
             JSONObject item = jsonObj.getJSONObject(i);
             final String orderDae = item.getString("order_date");
@@ -189,43 +194,49 @@ public class PastOrders extends Fragment {
             tv.setHeight(50);
             tv.setTextSize(textSize);
             tv.setText(""+count);
-            tbrow1.addView(tv);
+           // tbrow1.addView(tv);
 
-            TextView tv41 = new TextView(getActivity());
-            tv41.setTextColor(Color.BLACK);
+            TextView tv41 = (TextView) convertView.findViewById(R.id.order_no);
+           /* tv41.setTextColor(Color.BLACK);
             tv41.setGravity(Gravity.CENTER);
             tv41.setHeight(50);
-            tv41.setTextSize(textSize);
-            tv41.setText(orderNo);
-            tbrow1.addView(tv41);
+            tv41.setTextSize(textSize);*/
+            tv41.setText("Order No : "+orderNo);
+            //tbrow1.addView(tv41);
 
-            TextView tv01 = new TextView(getActivity());
-            tv01.setTextColor(Color.BLACK);
+            TextView tv01 = (TextView) convertView.findViewById(R.id.date);
+            /*tv01.setTextColor(Color.BLACK);
             tv01.setGravity(Gravity.CENTER);
             tv01.setHeight(50);
-            tv01.setTextSize(textSize);
+            tv01.setTextSize(textSize);*/
             tv01.setText(orderDae);
-            tbrow1.addView(tv01);
+            //tbrow1.addView(tv01);
 
 
-            TextView tv11 = new TextView(getActivity());
-            tv11.setTextColor(Color.BLACK);
+            TextView tv11 = (TextView) convertView.findViewById(R.id.ammout);
+           /* tv11.setTextColor(Color.BLACK);
             tv11.setGravity(Gravity.RIGHT);
             tv11.setHeight(50);
-            tv11.setTextSize(textSize);
+            tv11.setTextSize(textSize);*/
             tv11.setText(totalAmmount);
-            tbrow1.addView(tv11);
+            //tbrow1.addView(tv11);
 
-            TextView tv21 = new TextView(getActivity());
-            tv21.setTextColor(Color.BLACK);
+            TextView tv21 = (TextView) convertView.findViewById(R.id.status);
+           /* tv21.setTextColor(Color.BLACK);
             tv21.setGravity(Gravity.CENTER);
             tv21.setHeight(50);
-            tv21.setTextSize(textSize);
-             final String txt=status;
+            tv21.setTextSize(textSize);*/
+           final String txt = status;
+             if (status.equals("1"))
+                 tv21.setText("Submitted");
+            else
+                 tv21.setText("Delivered");
 
-            tv21.setText(status);
 
-            tbrow1.addView(tv21);
+
+
+
+            tbrow1.addView(convertView);
 
             /*TextView tv31 = new TextView(getActivity());
             tv31.setTextColor(Color.BLACK);
@@ -233,13 +244,14 @@ public class PastOrders extends Fragment {
             tv31.setHeight(50);
             tv31.setTextSize(textSize);
             tv31.setText(Html.fromHtml("<u>View</u>"));*/
-            ImageButton tv31 = new ImageButton(getActivity());
+            /*ImageButton tv31 = new ImageButton(getActivity());
 
             tv31.setImageResource(R.drawable.search);
             tv31.setBackgroundResource(R.drawable.dashboard_row);
+            tbrow1.addView(tv31);*/
             tbrow1.setBackgroundResource(drawableResId);
-            tbrow1.addView(tv31);
-            tv31.setOnClickListener(new View.OnClickListener() {
+
+            convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     try {
@@ -279,8 +291,11 @@ public class PastOrders extends Fragment {
         TableRow tbrow0 = new TableRow(getActivity());
         final Type listType = new TypeToken<ArrayList<Model>>() {}.getType();
 
-        orderItems=new Gson().fromJson(db.getOrder(date),listType);
-        tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
+
+
+
+        //orderItems=new Gson().fromJson(db.getOrder(date),listType);
+        //tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         float textSize=11;
         TextView tv0 = new TextView(getActivity());
         tv0.setText(Html.fromHtml(" <b>Description</b>"));
@@ -290,14 +305,14 @@ public class PastOrders extends Fragment {
         tv0.setHeight(65);
         tv0.setTextSize(textSize);
         tbrow0.addView(tv0);
-        TextView tv1 = new TextView(getActivity());
+       /* TextView tv1 = new TextView(getActivity());
         tv1.setText(Html.fromHtml(" <b>UOM</b> "));
         tv1.setTextColor(Color.WHITE);
         tv1.setHeight(65);
         tv1.setTextSize(textSize);
         tv1.setBackgroundResource(drawableResId);
         tv1.setGravity(Gravity.CENTER);
-        tbrow0.addView(tv1);
+        tbrow0.addView(tv1);*/
         TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>Qty</b>"));
         tv2.setTextColor(Color.WHITE);
@@ -306,14 +321,14 @@ public class PastOrders extends Fragment {
         tv2.setHeight(65);
         tv2.setTextSize(textSize);
         tbrow0.addView(tv2);
-        TextView tv3 = new TextView(getActivity());
+        /*TextView tv3 = new TextView(getActivity());
         tv3.setText(Html.fromHtml(" <b>Price</b>"));
         tv3.setTextColor(Color.WHITE);
         tv3.setBackgroundResource(drawableResId);
         tv3.setGravity(Gravity.CENTER);
         tv3.setHeight(65);
         tv3.setTextSize(textSize);
-        tbrow0.addView(tv3);
+        tbrow0.addView(tv3);*/
         TextView tv4 = new TextView(getActivity());
         tv4.setText(Html.fromHtml(" <b>Amt</b>"));
         tv4.setTextColor(Color.WHITE);
@@ -331,10 +346,12 @@ public class PastOrders extends Fragment {
         JSONArray jsonObj = new JSONArray(json);
 
         for (int i = 0; i < jsonObj.length(); i++) {
-            if(i%2==0)
-                drawableResId=R.drawable.itemclr1;
-            else
-                drawableResId=R.drawable.itemclr2;
+                drawableResId=R.drawable.dashboard_row;
+
+
+            LinearLayout convertView = (LinearLayout) LayoutInflater.from(
+                    getActivity()).inflate(
+                    R.layout.cartitem_layout, null);
 
             JSONObject item =new JSONObject();
 
@@ -348,41 +365,45 @@ public class PastOrders extends Fragment {
             TableRow tbrow = new TableRow(getActivity());
             tbrow.setGravity(Gravity.CENTER_HORIZONTAL);
 
-            TextView t1v = new TextView(getActivity());
+            TextView t1v = (TextView) convertView.findViewById(R.id.itemName);
             t1v.setText(description);
-            t1v.setTextColor(Color.BLACK);
-            t1v.setGravity(Gravity.CENTER);
-            t1v.setHeight(90);
-            t1v.setWidth(250);
+           // t1v.setTextColor(Color.BLACK);
+            //t1v.setGravity(Gravity.CENTER);
+            //t1v.setHeight(90);
+            //t1v.setWidth(250);
             t1v.setMaxLines(2);
-            t1v.setGravity(Gravity.LEFT);
+            //t1v.setGravity(Gravity.LEFT);
 
-            t1v.setTextSize(textSize);
-            tbrow.addView(t1v);
-            TextView t2v = new TextView(getActivity());
-            t2v.setText(uom);
-            t2v.setTextColor(Color.BLACK);
-            t2v.setGravity(Gravity.CENTER);
-            t2v.setHeight(90);
-            t2v.setTextSize(textSize);
-            tbrow.addView(t2v);
+            //t1v.setTextSize(textSize);
+//            tbrow.addView(t1v);
+            TextView t2v = (TextView) convertView.findViewById(R.id.itemuom);
+            t2v.setText("UOM : "+uom);
+            //t2v.setTextColor(Color.BLACK);
+            //t2v.setGravity(Gravity.CENTER);
+            //t2v.setHeight(90);
+            //t2v.setTextSize(textSize);
+            //tbrow.addView(t2v);
+            tbrow.addView(convertView);
+
             TextView t3v = new TextView(getActivity());
             t3v.setText(String.format("%.4f",Float.parseFloat(Qty)));
             t3v.setGravity(Gravity.RIGHT);
+            t3v.setPadding(2,25,10,0);
             t3v.setTextColor(Color.BLACK);
             t3v.setHeight(90);
             t3v.setTextSize(textSize);
             tbrow.addView(t3v);
-            TextView t4v = new TextView(getActivity());
-            t4v.setText(String.format("%.2f",Float.parseFloat(Price)));
-            t4v.setGravity(Gravity.RIGHT);
-            t4v.setTextColor(Color.BLACK);
-            t4v.setHeight(90);
-            t4v.setTextSize(textSize);
-            tbrow.addView(t4v);
+            TextView t4v = (TextView) convertView.findViewById(R.id.itemprice);
+            t4v.setText("Price : "+String.format("%.2f",Float.parseFloat(Price)));
+            //t4v.setGravity(Gravity.RIGHT);
+            //t4v.setTextColor(Color.BLACK);
+            //t4v.setHeight(90);
+            //t4v.setTextSize(textSize);
 
             TextView t5v = new TextView(getActivity());
             t5v.setText(String.format("%.2f",Float.parseFloat(amt)));
+            t5v.setPadding(2,25,10,0);
+
             t5v.setGravity(Gravity.RIGHT);
             t5v.setTextColor(Color.BLACK);
             t5v.setHeight(90);

@@ -38,7 +38,7 @@
 
             <Button
                 android:id="@+id/close"
-                android:layout_width="130dp"
+                android:layout_width="100dp"
                 android:textSize="10dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="14dp"
@@ -50,11 +50,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
+            <Button
+                android:id="@+id/cancel"
+                android:layout_width="100dp"
+                android:textSize="10dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonshapesmall"
+                android:text="Cancel"
+                android:textColor="#000"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+
 
 
             <Button
                 android:id="@+id/submit"
-                android:layout_width="130dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:textSize="10dp"
                 android:layout_marginEnd="16dp"

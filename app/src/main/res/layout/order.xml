@@ -5,6 +5,18 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Saved Orders"
+        android:padding="5dp"
+        android:id="@+id/order_header"
+        android:textColor="@color/black"
+        />
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +31,7 @@
         </LinearLayout>
 
 
+    </LinearLayout>
     </LinearLayout>
 
 

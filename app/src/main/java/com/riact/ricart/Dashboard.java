@@ -252,6 +252,10 @@ public class Dashboard extends Fragment {
 
             if (status.equals(String.valueOf(showSaved))) {
 
+                LinearLayout convertView = (LinearLayout) LayoutInflater.from(
+                        getActivity()).inflate(
+                        R.layout.orderitem_layout, null);
+
 
                 TableRow tbrow1 = new TableRow(getActivity());
                 tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -262,40 +266,41 @@ public class Dashboard extends Fragment {
                 tv.setTextSize(textSize);
                 tv.setText("" + count);
                 //tv.setBackgroundResource(drawableResId);
-                tbrow1.addView(tv);
+                //tbrow1.addView(tv);
 
-                TextView tv21 = new TextView(getActivity());
-                tv21.setTextColor(Color.BLACK);
+                TextView tv21 = (TextView) convertView.findViewById(R.id.order_no);
+                /*tv21.setTextColor(Color.BLACK);
                 tv21.setGravity(Gravity.CENTER);
                 tv21.setHeight(50);
-                tv21.setTextSize(textSize);
+                tv21.setTextSize(textSize);*/
                 final String txt = status;
 
-                tv21.setText(orderNo);
+                tv21.setText("Order No : "+orderNo);
                 //tv21.setBackgroundResource(drawableResId);
 
-                tbrow1.addView(tv21);
+                //tbrow1.addView(tv21);
 
-                TextView tv01 = new TextView(getActivity());
-                tv01.setTextColor(Color.BLACK);
+                TextView tv01 = (TextView) convertView.findViewById(R.id.date);
+                /*tv01.setTextColor(Color.BLACK);
                 tv01.setGravity(Gravity.CENTER);
                 tv01.setHeight(50);
                 tv01.setTextSize(textSize);
-                tv01.setText(orderDae);
+                */
 //            tv01.setBackgroundResource(drawableResId);
+                tv01.setText("Date : "+orderDae);
 
-                tbrow1.addView(tv01);
+//                tbrow1.addView(tv01);
 
 
-                TextView tv11 = new TextView(getActivity());
-                tv11.setTextColor(Color.BLACK);
+                TextView tv11 = (TextView) convertView.findViewById(R.id.ammout);
+               /* tv11.setTextColor(Color.BLACK);
                 tv11.setGravity(Gravity.END);
                 tv11.setHeight(50);
-                tv11.setTextSize(textSize);
-                tv11.setText(totalAmmount);
+                tv11.setTextSize(textSize);*/
+                tv11.setText("Ammount : " + totalAmmount);
 //            tv11.setBackgroundResource(drawableResId);
 
-                tbrow1.addView(tv11);
+                tbrow1.addView(convertView);
 
 
 
@@ -306,13 +311,9 @@ public class Dashboard extends Fragment {
             tv31.setTextSize(textSize);
             tv31.setText(Html.fromHtml("<u>View</u>"));
 //            tv31.setBackgroundResource(drawableResId);*/
-                ImageButton tv31 = new ImageButton(getActivity());
 
-                tv31.setImageResource(R.drawable.search);
-                tv31.setBackgroundResource(R.drawable.dashboard_row);
-                tbrow1.addView(tv31);
                 tbrow1.setBackgroundResource(drawableResId);
-                tv31.setOnClickListener(new View.OnClickListener() {
+                convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         try {
@@ -344,6 +345,10 @@ public class Dashboard extends Fragment {
                 {
                     drawableResId = R.drawable.dashboard_row;
 
+                    LinearLayout convertView = (LinearLayout) LayoutInflater.from(
+                            getActivity()).inflate(
+                            R.layout.orderitem_layout, null);
+
                     TableRow tbrow1 = new TableRow(getActivity());
                     tbrow1.setGravity(Gravity.CENTER_HORIZONTAL);
                     TextView tv = new TextView(getActivity());
@@ -351,8 +356,8 @@ public class Dashboard extends Fragment {
                     tv.setGravity(Gravity.CENTER);
                     tv.setHeight(50);
                     tv.setTextSize(textSize);
-                    tv.setText("" + count);
-                    tbrow1.addView(tv);
+                    //tv.setText("" + count);
+                    //tbrow1.addView(tv);
 
 
                     String date = (String) list.get(0);
@@ -360,31 +365,31 @@ public class Dashboard extends Fragment {
                     SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMddhhmmss");
                     String dateStr = ndf.format(sd.parse(date));
 
-                    TextView tv41 = new TextView(getActivity());
-                    tv41.setTextColor(Color.BLACK);
+                    TextView tv41 = (TextView) convertView.findViewById(R.id.order_no);
+                    /*tv41.setTextColor(Color.BLACK);
                     tv41.setGravity(Gravity.CENTER);
                     tv41.setHeight(50);
-                    tv41.setTextSize(textSize);
-                    tv41.setText(dateStr);
-                    tbrow1.addView(tv41);
+                    tv41.setTextSize(textSize);*/
+                    tv41.setText("Order No : " + dateStr);
+                    //tbrow1.addView(tv41);
 
-                    TextView tv01 = new TextView(getActivity());
-                    tv01.setTextColor(Color.BLACK);
+                    TextView tv01 = (TextView) convertView.findViewById(R.id.date);
+                    /*tv01.setTextColor(Color.BLACK);
                     tv01.setGravity(Gravity.CENTER);
                     tv01.setHeight(50);
-                    tv01.setTextSize(textSize);
+                    tv01.setTextSize(textSize);*/
 
                     tv01.setText((date.substring(0, date.indexOf(" "))));
-                    tbrow1.addView(tv01);
+                    //tbrow1.addView(tv01);
 
 
-                    TextView tv11 = new TextView(getActivity());
-                    tv11.setTextColor(Color.BLACK);
+                    TextView tv11 = (TextView) convertView.findViewById(R.id.ammout);
+                    /*tv11.setTextColor(Color.BLACK);
                     tv11.setGravity(Gravity.RIGHT);
                     tv11.setHeight(50);
-                    tv11.setTextSize(textSize);
+                    tv11.setTextSize(textSize);*/
                     tv11.setText(String.format("%.2f", Float.parseFloat((String) list.get(2))));
-                    tbrow1.addView(tv11);
+                    tbrow1.addView(convertView);
 
                    /* TextView tv21 = new TextView(getActivity());
                     tv21.setTextColor(Color.BLACK);
@@ -406,13 +411,9 @@ public class Dashboard extends Fragment {
             tv31.setHeight(50);
             tv31.setTextSize(textSize);
             tv31.setText(Html.fromHtml("<u>View</u>"));*/
-                    ImageButton tv31 = new ImageButton(getActivity());
 
-                    tv31.setImageResource(R.drawable.search);
-                    tv31.setBackgroundResource(R.drawable.dashboard_row);
-                    tbrow1.addView(tv31);
                     tbrow1.setBackgroundResource(drawableResId);
-                    tv31.setOnClickListener(new View.OnClickListener() {
+                    convertView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             try {
@@ -454,7 +455,7 @@ public class Dashboard extends Fragment {
         TableRow tbrow0 = new TableRow(getActivity());
         final Type listType = new TypeToken<ArrayList<Model>>() {}.getType();
 
-        orderItems=new Gson().fromJson(db.getOrder(date),listType);
+        //orderItems=new Gson().fromJson(db.getOrder(date),listType);
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         float textSize=11;
         TextView tv0 = new TextView(getActivity());
@@ -512,13 +513,25 @@ public class Dashboard extends Fragment {
                 drawableResId=R.drawable.itemclr2;
 
             JSONObject item =new JSONObject();
-
             JSONObject c = jsonObj.getJSONObject(i);
-            String description = c.getString("item_desc");
-            String uom = c.getString("Uom");
-            String Qty = c.getString("Qty");
-            String Price = c.getString("unit_price");
-            String amt= c.getString("amount");
+            String description,uom,Qty,Price,amt;
+
+            if("false".equals(status)) {
+
+                 description = c.getString("name");
+                 uom = c.getString("uom");
+                 Qty = c.getString("quantity");
+                 Price = c.getString("price");
+                 amt = c.getString("amount");
+            }
+            else {
+                 description = c.getString("item_desc");
+                 uom = c.getString("Uom");
+                 Qty = c.getString("Qty");
+                 Price = c.getString("unit_price");
+                 amt = c.getString("amount");
+
+            }
 
             TableRow tbrow = new TableRow(getActivity());
             tbrow.setGravity(Gravity.CENTER_HORIZONTAL);
