@@ -46,6 +46,11 @@ public class SplashActivity extends AppCompatActivity {
                     getPastOrders(Constants.webAddress+"get_orders_by_cust.php?cust_code="+Constants.userData.get(3));
 
                 }
+                else{
+                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                }
 
 
             }
