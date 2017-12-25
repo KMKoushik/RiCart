@@ -1,10 +1,14 @@
 package com.riact.ricart.utils;
 
+import android.support.annotation.NonNull;
+
+import java.util.Comparator;
+
 /**
  * Created by koushik on 11/6/17.
  */
 
-public class Model {
+public class Model implements Comparable<Model> {
     String name,itemCode,uom,group;
     int value,index;
     float price,quantity,amount;
@@ -46,6 +50,35 @@ public class Model {
     public String getGroup(){return this.group;}
 
     public int getIndex(){return this.index;}
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+
+    @Override
+    public int compareTo(@NonNull Model o) {
+        return 0;
+    }
+
+
+    public static Comparator<Model> ItemNameComparotor
+            = new Comparator<Model>() {
+
+        public int compare(Model fruit1, Model fruit2) {
+
+            String fruitName1 = fruit1.getName().toUpperCase();
+            String fruitName2 = fruit2.getName().toUpperCase();
+
+            //ascending order
+            return fruitName1.compareTo(fruitName2);
+
+            //descending order
+            //return fruitName2.compareTo(fruitName1);
+        }
+
+    };
 
 
 }

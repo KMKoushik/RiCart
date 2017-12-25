@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
-import android.icu.text.MeasureFormat;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -20,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +28,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,7 +39,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
-import com.riact.ricart.utils.MyAdapter;
+import com.riact.ricart.utils.ItemAdapter;
 import com.riact.ricart.utils.RiactDbHandler;
 
 import org.json.JSONArray;
@@ -49,6 +49,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,14 +67,19 @@ public class NewOrder extends Fragment {
     private LayoutInflater menuInflater;
     String selectedFromList;
     String chumma;
+    ArrayList<Model> groupItemList;
     float f=0;
     LinearLayout linearLayout;
     Point p=new Point();
     EditText inputSearch;
     ArrayList<Model> ItemList;
-    HashMap<String,ArrayList<Model>> itemMap=new HashMap<String, ArrayList<Model>>();
     RiactDbHandler userDb;
     TextView total,gst,tobepaid ;
+    int checkedVal=1;
+    ArrayList<Model> totalItemList = new ArrayList<>();
+    ArrayList<Model> itemList;
+
+
 
 
 
@@ -86,40 +92,75 @@ public class NewOrder extends Fragment {
         linearLayout = (LinearLayout) myView.findViewById(R.id.neworder_layout);
         listview= (ListView) myView.findViewById(R.id.listView1);
 
+        RadioGroup itemtypeGroup = (RadioGroup) myView.findViewById(R.id.radioGrp);
+        RadioButton providerRadio = (RadioButton) myView.findViewById(R.id.search_grp);
+        itemtypeGroup.clearCheck();
+        providerRadio.performClick();
+
+        itemtypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged (RadioGroup group,int checkedId){
 
 
+                if (checkedId == R.id.search_grp) {
+
+                    checkedVal = 1;
+                    inputSearch.setText("");
+
+                } else if (checkedId == R.id.serach_item) {
+
+                    checkedVal =2;
+                    inputSearch.setText("");
 
 
-
+                }
+            }
+        });
 
         ArrayList<String > prod=new ArrayList<>();
         try {
             JSONObject jsonObj = new JSONObject(Constants.items);
             Iterator keys = jsonObj.keys();
 
+            if(Constants.itemMap.isEmpty()){
+
             while(keys.hasNext()) {
                 ArrayList modelItems = new ArrayList<>();
-                String currentDynamicKey = (String)keys.next();
-                JSONArray jsonArray=jsonObj.getJSONArray(currentDynamicKey);
+                String currentDynamicKey = (String) keys.next();
+                JSONArray jsonArray = jsonObj.getJSONArray(currentDynamicKey);
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item= jsonArray.getJSONObject(i);
-                    String itemCode=item.getString("item_code");
-                    String itemdesc=item.getString("item_desc");
-                    String priceUom=item.getString("price_uom");
-                    float price=(float) item.getDouble("selling_price");
-                    modelItems.add(new Model(itemdesc,0,itemCode,priceUom,price,currentDynamicKey,i));
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    String itemCode = item.getString("item_code");
+                    String itemdesc = item.getString("item_desc");
+                    String priceUom = item.getString("price_uom");
+                    float price = (float) item.getDouble("selling_price");
+                    modelItems.add(new Model(itemdesc, 0, itemCode, priceUom, price, currentDynamicKey, i));
 
-                   // modelItems.ad(new Model(itemdesc,0,itemCode,priceUom,price));
+                    // modelItems.ad(new Model(itemdesc,0,itemCode,priceUom,price));
                 }
-                itemMap.put(currentDynamicKey,modelItems);
-                prod.add(currentDynamicKey);
+                Constants.itemMap.put(currentDynamicKey, modelItems);
             }
+            }
+
+            for(String groupName : Constants.itemMap.keySet())
+            {
+                ArrayList<Model> item = Constants.itemMap.get(groupName);
+                if(item!=null) {
+                    totalItemList.addAll(item);
+                    prod.add(groupName);
+
+
+                }
+            }
+            Collections.sort(Constants.GROUP_LIST);
+            Collections.sort(totalItemList,Model.ItemNameComparotor);
 
             if(!Constants.orderList.isEmpty())
             {
                 for(Model model:Constants.orderList)
                 {
-                    Model item=itemMap.get(model.getGroup()).get(model.getIndex());
+                    Model item=Constants.itemMap.get(model.getGroup()).get(model.getIndex());
                     item.putValue(1);
                     item.setQuantity(model.getQuantity());
                     item.setAmount(model.getAmount());
@@ -178,49 +219,83 @@ public class NewOrder extends Fragment {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
 
+                if(checkedVal ==1) {
 
-                NewOrder.this.adapter.getFilter().filter(cs);
-                lv.setVisibility(View.VISIBLE);
-                listview.setVisibility(View.INVISIBLE);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
-                         selectedFromList =(String) (lv.getItemAtPosition(myItemInt));
-                        inputSearch.setText(selectedFromList);
-                        ItemList=itemMap.get(selectedFromList);
-                        MyAdapter itemAdapter = new MyAdapter(getActivity(), ItemList);
-                        listview.setAdapter(itemAdapter);
-                        lv.setVisibility(View.INVISIBLE);
-                        listview.setVisibility(View.VISIBLE);
-                        listview.setItemsCanFocus(false);
-                        listview.setOnItemClickListener( new AdapterView.OnItemClickListener()
-                        {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView , View view , int position ,long arg3)
-                            {
-                                CheckBox cb = (CheckBox)view.findViewById(R.id.checkBox1);
-                                if(!cb.isChecked()) {
-                                    Constants.orderList.add(ItemList.get(position));
 
-                                    ItemList.get(position).putValue(1);
+                    NewOrder.this.adapter.getFilter().filter(cs);
+                    lv.setVisibility(View.VISIBLE);
+                    listview.setVisibility(View.INVISIBLE);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        public void onItemClick(AdapterView<?> myAdapter, View myView, int myItemInt, long mylng) {
+                            selectedFromList = (String) (lv.getItemAtPosition(myItemInt));
+                            inputSearch.setText(selectedFromList);
+                            groupItemList = Constants.itemMap.get(selectedFromList);
+                            ItemAdapter itemAdapter = new ItemAdapter(myView.getContext(), groupItemList);
+                            listview.setAdapter(itemAdapter);
+                            lv.setVisibility(View.INVISIBLE);
+                            listview.setVisibility(View.VISIBLE);
+                            listview.setItemsCanFocus(false);
+                            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
+                                    CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox1);
+                                    if (!cb.isChecked()) {
+                                        Constants.orderList.add(groupItemList.get(position));
+
+                                        groupItemList.get(position).putValue(1);
+
+                                    } else {
+                                        Constants.orderList.remove(groupItemList.get(position));
+
+                                        groupItemList.get(position).putValue(0);
+                                    }
+
+                                    cb.setChecked(!cb.isChecked());
 
                                 }
-                                else {
-                                    Constants.orderList.remove(ItemList.get(position));
+                            });
+                        }
+                    });
+                }
+                else {
 
-                                    ItemList.get(position).putValue(0);
-                                }
+                    itemList= (ArrayList<Model>) totalItemList.clone();
+                    ItemAdapter itemAdapter = new ItemAdapter(myView.getContext(), itemList);
 
-                                cb.setChecked(!cb.isChecked());
 
+                    itemAdapter.getFilter().filter(cs);
+                    lv.setVisibility(View.INVISIBLE);
+                    listview.setVisibility(View.VISIBLE);
+
+                    listview.setAdapter(itemAdapter);
+                    listview.setItemsCanFocus(false);
+                    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long arg3) {
+                            CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox1);
+                            if (!cb.isChecked()) {
+                                Constants.orderList.add(itemList.get(position));
+
+                                itemList.get(position).putValue(1);
+
+                            } else {
+                                Constants.orderList.remove(itemList.get(position));
+
+                                itemList.get(position).putValue(0);
                             }
-                        });
-                    }
-                });
+
+                            cb.setChecked(!cb.isChecked());
+
+                        }
+                    });
+                }
+
             }
+
+
 
             @Override
             public void afterTextChanged(Editable s) {
-                System.out.println("Sethuru");
 
             }
 
@@ -228,6 +303,8 @@ public class NewOrder extends Fragment {
         });
 
         inputSearch.setText("");
+
+
 
         return myView;
 
@@ -258,13 +335,16 @@ public class NewOrder extends Fragment {
        final View layout = layoutInflater.inflate(R.layout.popup_layout, viewGroup);
         total = new TextView(getActivity());
         total.setTextColor(Color.BLACK);
-        total.setGravity(Gravity.RIGHT);
+        total.setGravity(Gravity.LEFT);
+        total.setPadding(30,30,0,0);
         gst=new TextView(getActivity());
         gst.setTextColor(Color.BLACK);
-        gst.setGravity(Gravity.RIGHT);
+        gst.setGravity(Gravity.LEFT);
+        gst.setPadding(30,0,0,0);
         tobepaid=new TextView(getActivity());
         tobepaid.setTextColor(Color.BLACK);
-        tobepaid.setGravity(Gravity.RIGHT);
+        tobepaid.setGravity(Gravity.LEFT);
+        tobepaid.setPadding(30,0,0,30);
 
         final TableLayout stk = (TableLayout)layout.findViewById(R.id.cart_table);
        final int drawableResId=R.drawable.dashboard_header;
@@ -277,7 +357,7 @@ public class NewOrder extends Fragment {
         layoutParams.leftMargin=5;
 
 
-        tbrow0.setLayoutParams(tp);
+        /*tbrow0.setLayoutParams(tp);
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
         tv0.setText(Html.fromHtml(" <b>ITEM NAME</b>"));
@@ -286,7 +366,7 @@ public class NewOrder extends Fragment {
         tv0.setGravity(Gravity.CENTER);
         tv0.setTextSize(textSize);
         tv0.setHeight(65);
-        tbrow0.addView(tv0);
+        tbrow0.addView(tv0);*/
         /*TextView tv5 = new TextView(getActivity());
         tv5.setText(Html.fromHtml(" <b>UOM</b>"));
         tv5.setTextColor(Color.WHITE);
@@ -303,7 +383,7 @@ public class NewOrder extends Fragment {
         tv1.setBackgroundResource(drawableResId);
         tv1.setGravity(Gravity.CENTER);
         tbrow0.addView(tv1);*/
-        TextView tv2 = new TextView(getActivity());
+        /*TextView tv2 = new TextView(getActivity());
         tv2.setText(Html.fromHtml(" <b>QTY</b>"));
         tv2.setTextColor(Color.BLACK);
         tv2.setBackgroundResource(drawableResId);
@@ -327,7 +407,7 @@ public class NewOrder extends Fragment {
         tv4.setTextSize(textSize);
         tv4.setHeight(65);
         tbrow0.addView(tv4);
-        stk.addView(tbrow0);
+        stk.addView(tbrow0);*/
          int count=0;
         for (final Model model : Constants.orderList) {
             count++;
@@ -348,10 +428,10 @@ public class NewOrder extends Fragment {
             tv00.setText(model.getName());
             tv00.setTextColor(Color.BLACK);
             //tv00.setBackgroundResource(background);
-            tv00.setMaxLines(2);
+            tv00.setMaxLines(3);
             //tv00.setLayoutParams(layoutParams);
 
-            //tv00.setWidth(250);
+            tv00.setWidth(600);
             tv00.setGravity(Gravity.LEFT);
             tv00.setTextSize(textSize);
             TextView tv55 = (TextView) convertView.findViewById(R.id.itemuom);
@@ -361,7 +441,9 @@ public class NewOrder extends Fragment {
             tv55.setGravity(Gravity.CENTER);
             tv55.setTextSize(textSize);
             final TextView tv11 = (TextView) convertView.findViewById(R.id.itemprice);
-            tv11.setText(String.valueOf("Price : "+model.getPrice()));
+            //tv11.setText(String.valueOf("Price : " +model.getPrice()));
+            tv11.setText(String.valueOf("Price : " + String.format("%.2f",model.getPrice())));
+            //t3v.setText(String.format("%.3f",Float.parseFloat(Qty)));
             tv11.setTextColor(Color.BLACK);
             //tv11.setBackgroundResource(background);
             tv11.setGravity(Gravity.CENTER);
@@ -378,12 +460,14 @@ public class NewOrder extends Fragment {
 
 
             final EditText tv33 = new EditText(getActivity());
-            tv33.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                tv33.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
             Float quantiy=model.getQuantity();
             tv33.setSelectAllOnFocus(true);
             tv33.setTextColor(Color.BLACK);
             tv33.setGravity(Gravity.CENTER);
-            tv33.setHeight(75);
+            //tv33.setHeight(75);
+            tv33.setHeight(160);
             tv33.setTextSize(textSize);
             tv33.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -413,8 +497,8 @@ public class NewOrder extends Fragment {
                     float gstVal=(f*7)/100;
                     float finalamt=f+gstVal;
                     total.setText("Total : SGD  " + String.format("%.2f",roundOff(f)));
-                    gst.setText("GST @ 7%: SGD  "+String.format("%.2f",roundOff(gstVal)));
-                    tobepaid.setText(Html.fromHtml("<b>Grant Total : SGD  "+String.format("%.2f",roundOff(finalamt))+"</b>"));
+                    gst.setText("GST : SGD  "+String.format("%.2f",roundOff(gstVal)));
+                    tobepaid.setText(Html.fromHtml("Order Total : SGD  "+String.format("%.2f",roundOff(finalamt))));
                 }
             });
 
@@ -425,9 +509,9 @@ public class NewOrder extends Fragment {
             tbrow1.addView(tv33);
             tbrow1.addView(tv22);
             if(quantiy!=0.0)
-                tv33.setText(""+String.format("%.4f",quantiy));
+                tv33.setText(""+String.format("%.3f",quantiy));
             else
-                tv33.setText("1.0000");
+                tv33.setText("1.000");
 
                 ImageButton tv44 = new ImageButton(getActivity());
 
@@ -442,8 +526,8 @@ public class NewOrder extends Fragment {
                 public void onClick(View v) {
                     stk.removeView(tbrow1);
                     Constants.orderList.remove(model);
-                    final ArrayList<Model> ItemList=itemMap.get(model.getGroup());
-                    MyAdapter itemAdapter = new MyAdapter(getActivity(), ItemList);
+                    final ArrayList<Model> ItemList=Constants.itemMap.get(model.getGroup());
+                    ItemAdapter itemAdapter = new ItemAdapter(getActivity(), ItemList);
                     listview.setAdapter(itemAdapter);
                     listview.setAdapter(itemAdapter);
                     lv.setVisibility(View.INVISIBLE);
@@ -477,8 +561,8 @@ public class NewOrder extends Fragment {
                     float gstVal=(f*7)/100;
                     float finalamt=f+gstVal;
                     total.setText("Total : SGD  " + String.format("%.2f",roundOff(f)));
-                    gst.setText("GST @ 7%: SGD  "+String.format("%.2f",roundOff(gstVal)));
-                    tobepaid.setText(Html.fromHtml("<b>Grant Total : SGD  "+String.format("%.2f",roundOff(finalamt))+"</b>"));
+                    gst.setText("GST : SGD  "+String.format("%.2f",roundOff(gstVal)));
+                    tobepaid.setText(Html.fromHtml("<b>Order Total : SGD  "+String.format("%.2f",roundOff(finalamt))+"</b>"));
                 }
             });
 
@@ -520,9 +604,11 @@ public class NewOrder extends Fragment {
             public void onClick(View v) {
 
                 if(!Constants.orderList.isEmpty())
-                Constants.orderList.clear();
-                for(Model m : ItemList)
-                    m.putValue(0);
+                    Constants.orderList.clear();
+                if(ItemList != null) {
+                    for (Model m : ItemList)
+                        m.putValue(0);
+                }
                 inputSearch.setText("");
 
                 popup.dismiss();

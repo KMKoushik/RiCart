@@ -14,9 +14,17 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
+import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.RiactDbHandler;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import static com.riact.ricart.utils.Constants.GROUP_LIST;
+import static com.riact.ricart.utils.Constants.itemMap;
 
 import static com.android.volley.VolleyLog.TAG;
 
@@ -99,5 +107,7 @@ public class SplashActivity extends AppCompatActivity {
         AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
 
     }
+
+
 
 }
