@@ -18,6 +18,7 @@ import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.RiactDbHandler;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,6 +50,35 @@ public class SplashActivity extends AppCompatActivity {
 
                 db.deleteItems();
                 db.addItem(Constants.items);
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(Constants.items);
+
+                Iterator keys = jsonObj.keys();
+
+                if(Constants.itemMap.isEmpty()){
+
+                    while(keys.hasNext()) {
+                        ArrayList modelItems = new ArrayList<>();
+                        String currentDynamicKey = (String) keys.next();
+                        JSONArray jsonArray = jsonObj.getJSONArray(currentDynamicKey);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject item = jsonArray.getJSONObject(i);
+                            String itemCode = item.getString("item_code");
+                            String itemdesc = item.getString("item_desc");
+                            String priceUom = item.getString("price_uom");
+                            float price = (float) item.getDouble("selling_price");
+                            modelItems.add(new Model(itemdesc, 0, itemCode, priceUom, price, currentDynamicKey, i));
+
+                            // modelItems.ad(new Model(itemdesc,0,itemCode,priceUom,price));
+                        }
+                        Constants.itemMap.put(currentDynamicKey, modelItems);
+                    }
+                }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Constants.userData=(ArrayList<String>) db.getUser();
                 if(!Constants.userData.isEmpty()){
                     getPastOrders(Constants.webAddress+"get_orders_by_cust.php?cust_code="+Constants.userData.get(3));

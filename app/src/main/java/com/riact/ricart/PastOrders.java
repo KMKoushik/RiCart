@@ -49,6 +49,7 @@ import com.riact.ricart.utils.AppSingleton;
 import com.riact.ricart.utils.Constants;
 import com.riact.ricart.utils.Model;
 import com.riact.ricart.utils.RiactDbHandler;
+import com.riact.ricart.utils.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -368,8 +369,11 @@ public class PastOrders extends Fragment {
             String Price = c.getString("unit_price");
             String amt= c.getString("amount");
             String itemCode = c.getString("item_code");
+            String group = c.getString("group_desc");
+            int index = Utils.getIndexOfItem(group,itemCode);
 
-            Model item = new Model(description,1,itemCode,uom,Float.valueOf(Price),"",i);
+            Model item = new Model(description,1,itemCode,uom,Float.valueOf(Price),group,index);
+            item.setQuantity(Float.valueOf(Qty));
 
             Constants.orderList.add(item);
 
