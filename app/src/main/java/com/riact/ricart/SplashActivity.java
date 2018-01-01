@@ -119,6 +119,7 @@ public class SplashActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
                 startActivity(intent);
                 finish();
+                getFavourites(Constants.webAddress+"get_past_orders_by_cust.php?cust_code="+Constants.userData.get(3));
 
             }
         }, new Response.ErrorListener() {
@@ -129,6 +130,34 @@ public class SplashActivity extends AppCompatActivity {
                 Constants.items=db.getItems().get(0);
                 startActivity(i);
                 finish();
+
+
+            }
+        });
+        // Adding String request to request queue
+        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
+
+    }
+
+    public void getFavourites(String url){
+
+        String  REQUEST_TAG = "com.androidtutorialpoint.volleyStringRequest";
+
+
+
+        StringRequest strReq = new StringRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+
+                Constants.favourites = response;
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
 
 
             }

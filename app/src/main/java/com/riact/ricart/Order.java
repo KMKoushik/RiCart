@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -98,6 +99,7 @@ public class Order extends Fragment {
         buttonLayout = (LinearLayout)myView.findViewById(R.id.menu_layout);
         tvorderheader = (TextView) myView.findViewById(R.id.order_header);
 
+
         db=new RiactDbHandler(getActivity());
 
 
@@ -112,9 +114,12 @@ public class Order extends Fragment {
 
     public void showOrder() throws ParseException {
         tvorderheader.setVisibility(View.VISIBLE);
+
         int drawableResId=R.drawable.dashboard_header;
         Constants.orderList.clear();
         Orderlist=db.getAllOrder();
+        ScrollView scrollView = new ScrollView(new Activity());
+        scrollView.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
         stk1 = new TableLayout(getActivity());
         TableLayout.LayoutParams lp=new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0,5,0,5);
@@ -285,7 +290,6 @@ public class Order extends Fragment {
 
         }
         linearLayout.removeView(buttonLayout);
-
         linearLayout.addView(stk1);
 
 
@@ -578,8 +582,9 @@ public class Order extends Fragment {
             }
         });
 
-        linearLayout.addView(stk);
         linearLayout.addView(buttonLayout);
+
+        linearLayout.addView(stk);
     }
 
 

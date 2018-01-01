@@ -95,6 +95,9 @@ public class MenuActivity extends AppCompatActivity
 
 
         }
+        else if(id == R.id.nav_favourites){
+            fm.beginTransaction().replace(R.id.content_menu,new Favourites()).commit();
+        }
 
         else if(id==R.id.nav_profile){
 

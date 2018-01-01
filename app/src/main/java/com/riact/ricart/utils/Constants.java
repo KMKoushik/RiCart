@@ -16,6 +16,7 @@ public class Constants {
     public static String pastOrders = new String ();
     public static ArrayList<String> GROUP_LIST = new ArrayList<>();
     public static HashMap<String,ArrayList<Model>> itemMap = new HashMap<>();
+    public static String favourites = "";
 
 
 }
