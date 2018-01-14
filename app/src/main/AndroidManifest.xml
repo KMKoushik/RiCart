@@ -12,14 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" android:label="@string/RiCart"
+            android:screenOrientation="portrait"
             />
-        <activity android:name=".SignUp" >
+        <activity android:name=".SignUp" android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
 
         </activity>
         <activity android:name=".SplashActivity" android:label="@string/RiCart"
+            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +33,7 @@
             android:name=".MenuActivity"
             android:label="@string/RiCart"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize">
 
         </activity>

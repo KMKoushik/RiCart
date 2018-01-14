@@ -8,11 +8,17 @@
         <item
             android:id="@+id/nav_order"
             android:icon="@drawable/orders"
-            android:title="Order" />
+            android:title="Orders" />
         <item
             android:id="@+id/nav_past_order"
             android:icon="@drawable/past_orders"
             android:title="Order History" />
+
+        <item
+            android:id="@+id/nav_favourites"
+            android:icon="@drawable/star"
+            android:title="Favourites" />
+
 
         <item
             android:id="@+id/nav_new_order"

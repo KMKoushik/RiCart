@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,21 +17,23 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.riact.ricart.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * Created by koushik on 11/6/17.
  */
 
-public class MyAdapter extends ArrayAdapter  {
+public class ItemAdapter extends ArrayAdapter  {
         ArrayList<Model> modelItems = null;
         Context context;
         CheckBox cb;
         TextView name;
+        private Filter filter;
 
         TextView itemUom;
         TextView itemPrice;
-        public MyAdapter(Context context, ArrayList resource) {
+        public ItemAdapter(Context context, ArrayList resource) {
                 super(context, R.layout.list_item,resource);
                 // TODO Auto-generated constructor stub
                 this.context = context;
@@ -72,6 +75,63 @@ public class MyAdapter extends ArrayAdapter  {
                 else
                         cb.setChecked(false);
                 return convertView;
+        }
+
+        @Override
+        public Filter getFilter() {
+                if (filter == null)
+                        filter = new AppFilter<Model>(modelItems);
+                return filter;
+        }
+
+
+        private class AppFilter<T> extends Filter {
+
+                private ArrayList<T> sourceObjects;
+
+                public AppFilter(List<T> objects) {
+                        sourceObjects = new ArrayList<T>();
+                        synchronized (this) {
+                                sourceObjects.addAll(objects);
+                        }
+                }
+
+                @Override
+                protected FilterResults performFiltering(CharSequence chars) {
+                        String filterSeq = chars.toString().toLowerCase();
+                        FilterResults result = new FilterResults();
+                        if (filterSeq != null && filterSeq.length() > 0) {
+                                ArrayList<T> filter = new ArrayList<T>();
+
+                                for (T object : sourceObjects) {
+                                        // the filtering itself:
+                                        if (object.toString().toLowerCase().contains(filterSeq))
+                                                filter.add(object);
+                                }
+                                result.count = filter.size();
+                                result.values = filter;
+                        } else {
+                                // add all objects
+                                synchronized (this) {
+                                        result.values = sourceObjects;
+                                        result.count = sourceObjects.size();
+                                }
+                        }
+                        return result;
+                }
+
+                @SuppressWarnings("unchecked")
+                @Override
+                protected void publishResults(CharSequence constraint,
+                                              FilterResults results) {
+                        // NOTE: this function is *always* called from the UI thread.
+                        ArrayList<T> filtered = (ArrayList<T>) results.values;
+                        notifyDataSetChanged();
+                        clear();
+                        for (int i = 0, l = filtered.size(); i < l; i++)
+                                add((Model) filtered.get(i));
+                        notifyDataSetInvalidated();
+                }
         }
 
 }

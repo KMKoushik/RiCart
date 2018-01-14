@@ -24,4 +24,36 @@ public class Utils {
         }
         catch(Exception ex){}
     }
+
+    public static int getIndexOfItem(String group,String itemCode){
+
+        int val =0;
+
+        for(Model model:Constants.itemMap.get(group)){
+
+            if(model.getItemCode().equals(itemCode)){
+                val = model.getIndex();
+            }
+
+
+        }
+
+        return val;
+    }
+
+    public static float getPriceOfItem(String group,String itemCode){
+
+        float val =0;
+
+        for(Model model:Constants.itemMap.get(group)){
+
+            if(model.getItemCode().equals(itemCode)){
+                val = model.getPrice();
+            }
+
+
+        }
+
+        return val;
+    }
 }

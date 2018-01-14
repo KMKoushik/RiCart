@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,9 +28,11 @@ import android.widget.AbsoluteLayout;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -74,6 +77,7 @@ public class Order extends Fragment {
     Point p;
     TableLayout stk1,stk;
     LinearLayout buttonLayout,linearLayout;
+    ImageView submitImg, closeImg, deleteImg, editImg;
     RiactDbHandler db;
     List<List> Orderlist;
     ArrayList<Model> orderItems;
@@ -81,6 +85,7 @@ public class Order extends Fragment {
     Boolean flag;
     JSONObject itemJson;
     JSONArray mainArray;
+    TextView tvorderheader;
 
 
 
@@ -92,6 +97,8 @@ public class Order extends Fragment {
         myView= inflater.inflate(R.layout.order,container,false);
         linearLayout = (LinearLayout) myView.findViewById(R.id.order_layout);
         buttonLayout = (LinearLayout)myView.findViewById(R.id.menu_layout);
+        tvorderheader = (TextView) myView.findViewById(R.id.order_header);
+
 
         db=new RiactDbHandler(getActivity());
 
@@ -106,9 +113,13 @@ public class Order extends Fragment {
     }
 
     public void showOrder() throws ParseException {
+        tvorderheader.setVisibility(View.VISIBLE);
+
         int drawableResId=R.drawable.dashboard_header;
         Constants.orderList.clear();
         Orderlist=db.getAllOrder();
+        ScrollView scrollView = new ScrollView(new Activity());
+        scrollView.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.MATCH_PARENT));
         stk1 = new TableLayout(getActivity());
         TableLayout.LayoutParams lp=new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0,5,0,5);
@@ -117,7 +128,7 @@ public class Order extends Fragment {
         stk1.setShrinkAllColumns(true);
         stk1.setGravity(Gravity.CENTER);
         int count=1;
-        float textSize=11;
+        float textSize=10;
         /*TableRow tbrow0 = new TableRow(getActivity());
         tbrow0.setGravity(Gravity.CENTER_HORIZONTAL);
         TextView tv0 = new TextView(getActivity());
@@ -194,7 +205,11 @@ public class Order extends Fragment {
             String date = (String) list.get(0);
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             SimpleDateFormat ndf = new SimpleDateFormat("yyyyMMddhhmmss");
-            String dateStr = ndf.format(sd.parse(date));
+            final String dateStr = ndf.format(sd.parse(date));
+
+            Float totAmt = Float.parseFloat((String) list.get(2));
+            float gstVal = roundOff((totAmt*7)/100);
+            float finalamt = (totAmt+gstVal);
 
             TextView tv41 = (TextView) convertView.findViewById(R.id.order_no);
             /*tv41.setTextColor(Color.BLACK);
@@ -219,8 +234,12 @@ public class Order extends Fragment {
             tv11.setGravity(Gravity.RIGHT);
             tv11.setHeight(50);
             tv11.setTextSize(textSize);*/
-            tv11.setText("Ammount : "+ String.format("%.2f", Float.parseFloat((String) list.get(2))));
+            //tv11.setText("Amount : "+ String.format("%.2f", Float.parseFloat((String) list.get(2))));
+            tv11.setText("Amount : " + String.format("%.2f",finalamt));
             //tbrow1.addView(tv11);
+
+            ImageView iv21 = (ImageView) convertView.findViewById(R.id.status);
+            iv21.setVisibility(View.INVISIBLE);
 
             TextView tv21 = new TextView(getActivity());
             tv21.setTextColor(Color.BLACK);
@@ -252,7 +271,7 @@ public class Order extends Fragment {
                 @Override
                 public void onClick(View v) {
                     try {
-                        showTable(myView, (String) list.get(1), (String) list.get(0), (String) list.get(2), txt);
+                        showTable(myView, (String) list.get(1), dateStr, (String) list.get(0), (String) list.get(2), txt);
                         linearLayout.removeView(stk1);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -271,13 +290,13 @@ public class Order extends Fragment {
 
         }
         linearLayout.removeView(buttonLayout);
-
         linearLayout.addView(stk1);
 
 
     }
 
-    public void showTable(final View myView, String json, final String date,String total ,final String status) throws JSONException, ParseException {
+    public void showTable(final View myView, String json, final String ordernumber, final String date,String total ,final String status) throws JSONException, ParseException {
+        tvorderheader.setVisibility(View.INVISIBLE);
         int drawableResId=R.drawable.cell_shape_header;
         buttonLayout=new LinearLayout(getActivity());
         stk=new TableLayout(getActivity());
@@ -293,12 +312,12 @@ public class Order extends Fragment {
 
         orderItems=new Gson().fromJson(db.getOrder(date),listType);
         TextView tv0 = new TextView(getActivity());
-        tv0.setText(Html.fromHtml(" <b>Description</b>"));
-        tv0.setTextColor(Color.WHITE);
-        tv0.setBackgroundResource(drawableResId);
-        tv0.setGravity(Gravity.CENTER);
+        tv0.setText("Order No : " + ordernumber);
+        tv0.setTextColor(Color.BLACK);
+        tv0.setGravity(Gravity.LEFT);
         tv0.setHeight(65);
-        tv0.setTextSize(textSize);
+        //tv0.setTypeface(null, Typeface.BOLD);
+        tv0.setTextSize(textSize+2);
         tbrow0.addView(tv0);
        /* TextView tv1 = new TextView(getActivity());
         tv1.setText(Html.fromHtml(" <b>UOM</b> "));
@@ -315,7 +334,7 @@ public class Order extends Fragment {
         tv2.setGravity(Gravity.CENTER);
         tv2.setHeight(65);
         tv2.setTextSize(textSize);
-        tbrow0.addView(tv2);
+        //tbrow0.addView(tv2);
         /*TextView tv3 = new TextView(getActivity());
         tv3.setText(Html.fromHtml(" <b>Price</b>"));
         tv3.setTextColor(Color.WHITE);
@@ -331,7 +350,7 @@ public class Order extends Fragment {
         tv4.setGravity(Gravity.CENTER);
         tv4.setHeight(65);
         tv4.setTextSize(textSize);
-        tbrow0.addView(tv4);
+        //tbrow0.addView(tv4);
         stk.addView(tbrow0);
         itemJson=new JSONObject();
 
@@ -381,11 +400,12 @@ public class Order extends Fragment {
 
             TextView t1v = (TextView) convertView.findViewById(R.id.itemName);
             t1v.setText(description);
+            t1v.setWidth(600);
             /*t1v.setTextColor(Color.BLACK);
             t1v.setGravity(Gravity.CENTER);
             t1v.setHeight(90);
             t1v.setWidth(250);*/
-            t1v.setMaxLines(2);
+            t1v.setMaxLines(3);
            // t1v.setGravity(Gravity.LEFT);
 
             /*t1v.setTextSize(textSize);
@@ -400,7 +420,7 @@ public class Order extends Fragment {
             tbrow.addView(convertView);
 
             TextView t3v = new TextView(getActivity());
-            t3v.setText(String.format("%.4f",Float.parseFloat(Qty)));
+            t3v.setText(String.format("%.3f",Float.parseFloat(Qty)));
             t3v.setGravity(Gravity.RIGHT);
             t3v.setTextColor(Color.BLACK);
            // t3v.setHeight(90);
@@ -434,7 +454,8 @@ public class Order extends Fragment {
         lp2.topMargin=30;
 
         tot.setLayoutParams(lp2);
-        tot.setGravity(Gravity.RIGHT);
+        tot.setPadding(30,30,0,0);
+        tot.setGravity(Gravity.LEFT);
         tot.setTextColor(Color.BLACK);
         tot.setText("Total : SGD "+String.format("%.2f",Float.parseFloat(total)));
         stk.addView(tot);
@@ -442,28 +463,35 @@ public class Order extends Fragment {
         float gstVal=roundOff((f*7)/100);
         float finalamt=(f+gstVal);
         TextView gst=new TextView(getActivity());
-        gst.setGravity(Gravity.RIGHT);
+        gst.setGravity(Gravity.LEFT);
         gst.setTextColor(Color.BLACK);
-        gst.setText("GST @ 7% : SGD "+String.format("%.2f",gstVal));
+        gst.setPadding(30,0,0,0);
+        gst.setText("GST : SGD "+String.format("%.2f",gstVal));
         stk.addView(gst);
         TextView toBePaid=new TextView(getActivity());
-        toBePaid.setGravity(Gravity.RIGHT);
+        toBePaid.setGravity(Gravity.LEFT);
         toBePaid.setTextColor(Color.BLACK);
-        toBePaid.setText(Html.fromHtml("<b>Grant Total : SGD "+String.format("%.2f",finalamt)+"</b>"));
+        toBePaid.setPadding(30,0,0,30);
+        toBePaid.setText(Html.fromHtml("Order Total : SGD "+String.format("%.2f",finalamt)));
         stk.addView(toBePaid);
-        LinearLayout.LayoutParams lp1=new LinearLayout.LayoutParams(150,70);
+        LinearLayout.LayoutParams lp1=new LinearLayout.LayoutParams(150,100);
         if(status.equals("false")) {
 
-            editBtn = new Button(getActivity());
+            /*editBtn = new Button(getActivity());
             editBtn.setText("Edit");
             editBtn.setTextSize(12);
             editBtn.setTextColor(Color.BLACK);
             editBtn.setBackgroundResource(R.drawable.newbutton);
             editBtn.setGravity(Gravity.CENTER);
             editBtn.setLayoutParams(lp1);
-            buttonLayout.addView(editBtn);
+            buttonLayout.addView(editBtn);*/
 
-            editBtn.setOnClickListener(new View.OnClickListener() {
+            editImg = new ImageView(getActivity());
+            editImg.setImageResource(R.drawable.edit);
+            editImg.setLayoutParams(lp1);
+            buttonLayout.addView(editImg);
+
+            editImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -481,15 +509,19 @@ public class Order extends Fragment {
             lp1.topMargin=20;
 
 
-            delete = new Button(getActivity());
+            /*delete = new Button(getActivity());
             delete.setText("Delete");
             delete.setTextSize(12);
             delete.setTextColor(Color.BLACK);
             delete.setBackgroundResource(R.drawable.newbutton);
             delete.setLayoutParams(lp1);
             delete.setGravity(Gravity.CENTER);
-            buttonLayout.addView(delete);
-            delete.setOnClickListener(new View.OnClickListener() {
+            buttonLayout.addView(delete);*/
+            deleteImg = new ImageView(getActivity());
+            deleteImg.setImageResource(R.drawable.delete1);
+            deleteImg.setLayoutParams(lp1);
+            buttonLayout.addView(deleteImg);
+            deleteImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -502,49 +534,57 @@ public class Order extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-
+                    //tvorderheader.setVisibility(View.VISIBLE);
                 }
             });
 
-            submitBtn = new Button(getActivity());
+            /*submitBtn = new Button(getActivity());
             submitBtn.setText("Submit");
             submitBtn.setTextColor(Color.BLACK);
             submitBtn.setTextSize(12);
             submitBtn.setBackgroundResource(R.drawable.newbutton);
             submitBtn.setLayoutParams(lp1);
             submitBtn.setGravity(Gravity.CENTER);
-            buttonLayout.addView(submitBtn);
-            submitBtn.setOnClickListener(new View.OnClickListener() {
+            buttonLayout.addView(submitBtn);*/
+            submitImg = new ImageView(getActivity());
+            submitImg.setImageResource(R.drawable.submit);
+            submitImg.setLayoutParams(lp1);
+            buttonLayout.addView(submitImg);
+            submitImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                    volleyStringRequst("http://www.riact.com/Riact/Ricart/placeorder.php",mainArray.toString(),date);
                 }
             });
 
-
-
+            //tvorderheader.setVisibility(View.VISIBLE);
 
         }
-        close= new Button(getActivity());
+        /*close= new Button(getActivity());
         close.setText("Back");
         close.setTextColor(Color.BLACK);
         close.setTextSize(12);
         close.setBackgroundResource(R.drawable.newbutton);
         close.setGravity(Gravity.CENTER);
         close.setLayoutParams(lp1);
-        buttonLayout.addView(close);
-        close.setOnClickListener(new View.OnClickListener() {
+        buttonLayout.addView(close);*/
+        closeImg = new ImageView(getActivity());
+        closeImg.setImageResource(R.drawable.back);
+        closeImg.setLayoutParams(lp1);
+        buttonLayout.addView(closeImg);
+        closeImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 linearLayout.removeView(stk);
                 linearLayout.addView(stk1);
                 linearLayout.removeView(buttonLayout);
+                tvorderheader.setVisibility(View.VISIBLE);
             }
         });
 
-        linearLayout.addView(stk);
         linearLayout.addView(buttonLayout);
+
+        linearLayout.addView(stk);
     }
 
 

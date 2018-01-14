@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent" android:layout_height="match_parent">
+        android:layout_width="fill_parent" android:layout_height="match_parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -13,24 +13,22 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:id="@+id/dashboard_layout"
-            android:weightSum="1">
+            >
 
             <TextView
-                android:text="KNP Trading Private Limited"
+                android:text="@string/company_name"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:id="@+id/heading"
                 android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:gravity="center"
+                android:gravity="left"
                 />
 
             <TextView
                 android:text="Welcome"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
                 android:id="@+id/welcome_text"
                 android:textColor="#000000"
@@ -42,7 +40,7 @@
 
             <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
 
                 android:layout_height="match_parent"
                 android:stretchColumns="*">
@@ -53,14 +51,13 @@
                         android:textColor="@color/black"
                         android:padding="3dip"
                         android:textSize="15dp"
-                        android:background="@drawable/cell_shape"/>
+                        />
                     <TextView
                         android:text="Orders submitted"
                         android:gravity="center"
                         android:textColor="@color/black"
                         android:padding="3dip"
                         android:textSize="15dp"
-                        android:background="@drawable/cell_shape"
                         />
                 </TableRow>
 
@@ -88,14 +85,14 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:id="@+id/order_layout">
                 >
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
 
                     android:id="@+id/menu_layout">
 
